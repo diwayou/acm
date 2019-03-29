@@ -1,4 +1,6 @@
-package com.diwayou.acm.book; /*************************************************************************
+package com.diwayou.acm.book;
+
+/*************************************************************************
  *  Compilation:  javac SET.java
  *  Execution:    java SET
  *  
@@ -91,6 +93,7 @@ public class SET<Key extends Comparable<Key>> implements Iterable<Key> {
     /**
      * Return an Iterator for this set.
      */
+    @Override
     public Iterator<Key> iterator() {
         return set.iterator();
     }

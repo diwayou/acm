@@ -1,4 +1,6 @@
-package com.diwayou.acm.util; /*************************************************************************
+package com.diwayou.acm.util;
+
+/*************************************************************************
  *  Compilation:  javac Stopwatch.java
  *
  *

@@ -14,10 +14,9 @@ package com.diwayou.acm.util;
  *************************************************************************/
 
 import javax.sound.sampled.*;
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -133,13 +132,10 @@ public final class StdAudio {
         return d;
     }
 
-
-
-
     /**
      * Play a sound file (in .wav or .au format) in a background thread.
      */
-    public static void play(String filename) {
+    public static void play(String filename, int count) {
         URL url = null;
         try {
             File file = new File(filename);
@@ -148,24 +144,15 @@ public final class StdAudio {
         catch (MalformedURLException e) { e.printStackTrace(); }
         // URL url = StdAudio.class.getResource(filename);
         if (url == null) throw new RuntimeException("audio " + filename + " not found");
-        AudioClip clip = Applet.newAudioClip(url);
-        clip.play();
-    }
 
-    /**
-     * Loop a sound file (in .wav or .au format) in a background thread.
-     */
-    public static void loop(String filename) {
-        URL url = null;
         try {
-            File file = new File(filename);
-            if (file.canRead()) url = file.toURI().toURL();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(url);
+            Clip clip = AudioSystem.getClip();
+            clip.open(inputStream);
+            clip.loop(count);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
         }
-        catch (MalformedURLException e) { e.printStackTrace(); }
-        // URL url = StdAudio.class.getResource(filename);
-        if (url == null) throw new RuntimeException("audio " + filename + " not found");
-        AudioClip clip = Applet.newAudioClip(url);
-        clip.loop();
     }
 
 
