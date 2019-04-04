@@ -1,9 +1,16 @@
 package com.diwayou.acm.swing;
 
+import com.diwayou.acm.http.ChromeInitUtil;
+import com.diwayou.acm.http.HttpRobot;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -11,7 +18,7 @@ import java.util.List;
  * for use in a Swing user interface. It creates a toolbar with a thumbnail preview
  * of each image.  Clicking on the thumbnail will show the full image
  * in the main display area.
- *
+ * <p>
  * IconDemoApp.java requires the following files: <br>
  * The following files are copyright 2006 spriggs.net and licensed under a
  * Creative Commons License (http://creativecommons.org/licenses/by-sa/3.0/)
@@ -23,8 +30,8 @@ import java.util.List;
  * images/sunw05.jpg <br>
  *
  * @author Collin Fagan
- * @date 7/25/2007
  * @version 2.0
+ * @date 7/25/2007
  */
 public class ImageIconExample extends JFrame {
 
@@ -39,13 +46,13 @@ public class ImageIconExample extends JFrame {
      * List of all the descriptions of the image files. These correspond one to
      * one with the image file names
      */
-    private String[] imageCaptions = { "Original SUNW Logo", "The Clocktower",
+    private String[] imageCaptions = {"Original SUNW Logo", "The Clocktower",
             "Clocktower from the West", "The Mansion", "Sun Auditorium"};
 
     /**
      * List of all the image files to load.
      */
-    private String[] imageFileNames = { "sunw01.jpg", "sunw02.jpg",
+    private String[] imageFileNames = {"sunw01.jpg", "sunw02.jpg",
             "sunw03.jpg", "sunw04.jpg", "sunw05.jpg"};
 
     /**
@@ -55,11 +62,9 @@ public class ImageIconExample extends JFrame {
      * @param args
      */
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ImageIconExample app = new ImageIconExample();
-                app.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            ImageIconExample app = new ImageIconExample();
+            app.setVisible(true);
         });
     }
 
@@ -81,11 +86,12 @@ public class ImageIconExample extends JFrame {
         // buttons in the toolbar.
         buttonBar.add(Box.createGlue());
         buttonBar.add(Box.createGlue());
+        buttonBar.setRollover(true);
 
         add(buttonBar, BorderLayout.SOUTH);
         add(photographLabel, BorderLayout.CENTER);
 
-        setSize(400, 300);
+        setSize(800, 600);
 
         // this centers the frame on the screen
         setLocationRelativeTo(null);
@@ -100,27 +106,39 @@ public class ImageIconExample extends JFrame {
          */
         @Override
         protected Void doInBackground() throws Exception {
-            for (int i = 0; i < imageCaptions.length; i++) {
-                ImageIcon icon;
-                icon = createImageIcon(imagedir + imageFileNames[i], imageCaptions[i]);
+            ChromeInitUtil.setDriverPath("D:\\opensource\\chromedriver.exe");
 
-                ThumbnailAction thumbAction;
-                if (icon != null) {
+            HttpRobot robot = new HttpRobot();
+            String content = robot.get("http://m.51tiangou.com");
+            Document document = Jsoup.parse(content);
 
-                    ImageIcon thumbnailIcon = new ImageIcon(getScaledImage(icon.getImage(), 32, 32));
+            document.select("img[src]").stream()
+                    .map(e -> e.attr("src"))
+                    .filter(s -> !s.contains("log"))
+                    .forEach(this::publishImage);
 
-                    thumbAction = new ThumbnailAction(icon, thumbnailIcon, imageCaptions[i]);
-
-                } else {
-                    // the image failed to load for some reason
-                    // so load a placeholder instead
-                    thumbAction = new ThumbnailAction(placeholderIcon, placeholderIcon, imageCaptions[i]);
-                }
-                publish(thumbAction);
-            }
             // unfortunately we must return something, and only null is valid to
             // return when the return type is void.
             return null;
+        }
+
+        private void publishImage(String url) {
+            ImageIcon icon;
+            icon = createImageIcon("http:" + url, url);
+            if (icon == null) {
+                System.out.println("未读取到图片url=" + url);
+                return;
+            }
+
+            if (icon.getIconWidth() < 400 || icon.getIconHeight() < 300) {
+                System.out.println("图片太小url=" + url);
+                return;
+            }
+
+            ImageIcon thumbnailIcon = new ImageIcon(getScaledImage(icon.getImage(), 32, 32));
+            ThumbnailAction thumbAction = new ThumbnailAction(icon, thumbnailIcon, url);
+
+            publish(thumbAction);
         }
 
         /**
@@ -141,28 +159,31 @@ public class ImageIconExample extends JFrame {
 
     /**
      * Creates an ImageIcon if the path is valid.
-     * @param path - resource path
+     *
+     * @param url         - resource path
      * @param description - description of the file
      */
-    protected ImageIcon createImageIcon(String path,
+    protected ImageIcon createImageIcon(String url,
                                         String description) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL, description);
-        } else {
-            System.err.println("Couldn't find file: " + path);
+        try {
+            BufferedImage image = ImageIO.read(new URL(url));
+
+            return new ImageIcon(image, description);
+        } catch (Exception e) {
+            System.err.println("Couldn't find file: " + url);
             return null;
         }
     }
 
     /**
      * Resizes an image using a Graphics2D object backed by a BufferedImage.
+     *
      * @param srcImg - source image to scale
-     * @param w - desired width
-     * @param h - desired height
+     * @param w      - desired width
+     * @param h      - desired height
      * @return - the new resized image
      */
-    private Image getScaledImage(Image srcImg, int w, int h){
+    private Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -177,16 +198,16 @@ public class ImageIconExample extends JFrame {
     private class ThumbnailAction extends AbstractAction {
 
         /**
-         *The icon if the full image we want to display.
+         * The icon if the full image we want to display.
          */
         private Icon displayPhoto;
 
         /**
          * @param photo - The full size photo to show in the button.
          * @param thumb - The thumbnail to show in the button.
-         * @param desc - The descriptioon of the icon.
+         * @param desc  - The descriptioon of the icon.
          */
-        public ThumbnailAction(Icon photo, Icon thumb, String desc){
+        public ThumbnailAction(Icon photo, Icon thumb, String desc) {
             displayPhoto = photo;
 
             // The short description becomes the tooltip of a button.
