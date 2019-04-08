@@ -33,7 +33,7 @@ public class HttpRobot implements Closeable {
         webDriver = new ChromeDriver(ChromeDriverServiceSingleton.getInstance().getChromeDriverService(), chromeOptions);
     }
 
-    public String get(String url, long timeOutInSeconds, PageLoadReady pageLoadReady) {
+    public String get(String url, long timeOutInSeconds, PageLoadReady<WebDriver> pageLoadReady) {
         Preconditions.checkArgument(StringUtils.isNotBlank(url), "url不能为空");
         Preconditions.checkNotNull(pageLoadReady, "pageLoadReady不能为空");
 
@@ -48,7 +48,7 @@ public class HttpRobot implements Closeable {
     }
 
     public String get(String url, long timeOutInSeconds) {
-        return get(url, timeOutInSeconds, new DefaultPageLoadReady(timeOutInSeconds));
+        return get(url, timeOutInSeconds, new DefaultPageLoadReady<>(timeOutInSeconds));
     }
 
     public String get(String url) {

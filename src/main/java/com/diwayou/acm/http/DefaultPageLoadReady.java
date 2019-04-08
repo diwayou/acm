@@ -1,10 +1,8 @@
 package com.diwayou.acm.http;
 
-import org.openqa.selenium.WebDriver;
-
 import java.util.concurrent.TimeUnit;
 
-public class DefaultPageLoadReady implements PageLoadReady {
+public class DefaultPageLoadReady<T> implements PageLoadReady<T> {
     private long timeOutInSeconds;
 
     public DefaultPageLoadReady(long timeOutInSeconds) {
@@ -12,7 +10,7 @@ public class DefaultPageLoadReady implements PageLoadReady {
     }
 
     @Override
-    public Boolean apply(WebDriver webDriver) {
+    public Boolean apply(T webDriver) {
         try {
             TimeUnit.SECONDS.sleep(timeOutInSeconds);
         } catch (InterruptedException e) {

@@ -3,7 +3,7 @@ package com.diwayou.acm.http;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
-public class TgouPageLoadReady implements PageLoadReady {
+public class TgouPageLoadReady implements PageLoadReady<WebDriver> {
     @Override
     public Boolean apply(WebDriver webDriver) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
