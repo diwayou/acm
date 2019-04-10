@@ -1,6 +1,6 @@
-package com.diwayou.acm.http;
+package com.diwayou.web.http;
 
-import com.diwayou.acm.common.Pool;
+import com.diwayou.web.common.Pool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 public class HttpRobotPool extends Pool<HttpRobot> {

@@ -1,4 +1,4 @@
-package com.diwayou.acm.common;
+package com.diwayou.web.common;
 
 import java.util.function.Consumer;
 

@@ -1,4 +1,4 @@
-package com.diwayou.acm.common;
+package com.diwayou.web.common;
 
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;

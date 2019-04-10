@@ -1,7 +1,7 @@
-package com.diwayou.acm.swing;
+package com.diwayou.web.ui.swing;
 
-import com.diwayou.acm.http.ChromeInitUtil;
-import com.diwayou.acm.http.HttpRobot;
+import com.diwayou.web.http.ChromeInitUtil;
+import com.diwayou.web.http.HttpRobot;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

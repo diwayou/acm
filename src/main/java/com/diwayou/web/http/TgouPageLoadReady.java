@@ -1,4 +1,4 @@
-package com.diwayou.acm.http;
+package com.diwayou.web.http;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;

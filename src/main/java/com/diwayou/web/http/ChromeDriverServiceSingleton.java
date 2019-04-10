@@ -1,6 +1,6 @@
-package com.diwayou.acm.http;
+package com.diwayou.web.http;
 
-import com.diwayou.acm.common.RuntimeUtil;
+import com.diwayou.web.common.RuntimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.chrome.ChromeDriverService;
 

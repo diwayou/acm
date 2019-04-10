@@ -1,4 +1,4 @@
-package com.diwayou.acm.swing;
+package com.diwayou.web.ui.swing;
 
 public class RobotMainFrame {
 }

@@ -1,6 +1,6 @@
-package com.diwayou.acm.http;
+package com.diwayou.web.http;
 
-import com.diwayou.acm.common.Pool;
+import com.diwayou.web.common.Pool;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;

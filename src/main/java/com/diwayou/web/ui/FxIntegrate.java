@@ -1,8 +1,8 @@
-package com.diwayou.acm.swing;
+package com.diwayou.web.ui;
 
-import com.diwayou.acm.http.DocumentUtil;
-import com.diwayou.acm.http.FxWebDriverWait;
-import com.diwayou.acm.http.TgouFxPageLoadReady;
+import com.diwayou.web.http.DocumentUtil;
+import com.diwayou.web.http.FxWebDriverWait;
+import com.diwayou.web.http.TgouFxPageLoadReady;
 import com.sun.webkit.dom.HTMLDocumentImpl;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -80,6 +80,10 @@ public class FxIntegrate {
 
         });
 
+        //createFrame(p);
+    }
+
+    private static void createFrame(JFXPanel p) {
         JFrame f = new JFrame();
         f.getContentPane().add(p);
         f.pack();
