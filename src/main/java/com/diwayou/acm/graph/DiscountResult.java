@@ -23,6 +23,15 @@ public class DiscountResult {
      */
     private BigDecimal discount = BigDecimal.ZERO;
 
+    public DiscountResult() {
+    }
+
+    public DiscountResult(Long couponId, Set<Long> itemIds, BigDecimal discount) {
+        this.couponId = couponId;
+        this.itemIds = itemIds;
+        this.discount = discount;
+    }
+
     public Long getCouponId() {
         return couponId;
     }

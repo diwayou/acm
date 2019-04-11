@@ -1,12 +1,11 @@
 package com.diwayou.acm.graph;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -16,16 +15,16 @@ public class MaxDiscount {
 
     public static void main(String[] args) {
         Random random = new Random();
-        int itemSize = 15;
+        int itemSize = 30;
         int maxPrice = 100;
-        int couponSize = 7;
+        int couponSize = 6;
 
-        for (int i = 0; i < 1000; i++) {
-            List<DiscountResult> discountResults = getDiscountResults(random, itemSize, maxPrice, couponSize, true);
+        for (int i = 0; i < 10000; i++) {
+            getDiscountResults(random, itemSize, maxPrice, couponSize, true, i);
         }
     }
 
-    private static List<DiscountResult> getDiscountResults(Random random, int itemSize, int maxPrice, int couponSize, boolean log) {
+    private static void getDiscountResults(Random random, int itemSize, int maxPrice, int couponSize, boolean log, int round) {
         List<Item> items = Lists.newArrayListWithCapacity(itemSize);
         for (long i = 1; i <= itemSize; i++) {
             Item item = new Item(i, BigDecimal.valueOf(1 + random.nextInt(maxPrice)));
@@ -35,7 +34,7 @@ public class MaxDiscount {
 
         List<CouponItemRelation> couponItemRelations = Lists.newArrayListWithCapacity(couponSize);
         for (long i = 1; i <= couponSize; i++) {
-            int maximumValue = maxPrice / 2 + random.nextInt(maxPrice);
+            int maximumValue = maxPrice / 3 + random.nextInt(maxPrice);
             int discountValue = 1 + random.nextInt(maximumValue - 1);
 
             Collections.shuffle(items, random);
@@ -52,24 +51,59 @@ public class MaxDiscount {
             couponItemRelations.add(relation);
         }
 
-
-        long start = System.currentTimeMillis();
-        MaxDiscountCalculator calculator = new MaxDiscountCalculator(items, couponItemRelations, 20);
-        List<DiscountResult> discountResults = calculator.computeBestDiscount();
         if (log) {
+            items.sort(Comparator.comparing(Item::getItemId));
             items.forEach(System.out::println);
             couponItemRelations.forEach(System.out::println);
-            discountResults.forEach(System.out::println);
         }
 
-        long end = System.currentTimeMillis();
-        long cost = end - start;
-        if (cost > 800) {
-            System.out.println("计算消耗: " + cost);
-        } else {
-            System.out.println("计算消耗: " + cost);
+        BigDecimal prev = null;
+        List<Integer> breakList = List.of(1, 3);
+        for (int startBreak : breakList) {
+            Stopwatch stopwatch = Stopwatch.createUnstarted();
+            stopwatch.start();
+
+            MaxDiscountCalculator calculator = new MaxDiscountCalculator(items, couponItemRelations, startBreak);
+            List<DiscountResult> discountResults = calculator.computeBestDiscount();
+
+            stopwatch.stop();
+
+            if (log) {
+                discountResults.forEach(System.out::println);
+                BigDecimal discount = discountResults.stream()
+                        .map(DiscountResult::getDiscount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                System.out.println("Discount = " + discount);
+            }
+
+            long cost = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+            if (cost > 400) {
+                System.out.println(String.format("计算消耗超过: %d, break=%d", cost, startBreak));
+                break;
+            } else if (log) {
+                System.out.println("计算消耗: " + cost);
+            }
+
+
+            if (prev == null) {
+                prev = sum(discountResults);
+            } else {
+                BigDecimal cur = sum(discountResults);
+                // 因为startBreak是1的时候，算法很简单，所以很有可能算错，但是2也有可能错
+                if (!prev.equals(cur) && startBreak > 3) {
+                    System.out.println(String.format("不相等break=%d, prev=%f, cur=%f", startBreak, prev, cur));
+                    System.out.println();
+                }
+                prev = cur;
+            }
         }
 
-        return discountResults;
+        System.out.println("执行一次完成 " + round);
+    }
+
+    private static BigDecimal sum(List<DiscountResult> discountResults) {
+        return discountResults.stream()
+                .map(DiscountResult::getDiscount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
