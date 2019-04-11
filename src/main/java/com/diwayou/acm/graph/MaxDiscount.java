@@ -15,7 +15,7 @@ public class MaxDiscount {
 
     public static void main(String[] args) {
         Random random = new Random();
-        int itemSize = 30;
+        int itemSize = 20;
         int maxPrice = 100;
         int couponSize = 6;
 
@@ -51,10 +51,18 @@ public class MaxDiscount {
             couponItemRelations.add(relation);
         }
 
+        int sum = couponItemRelations.stream()
+                .map(CouponItemRelation::getDiscountValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .intValue();
+        int maxDiscount = sum / 2 + random.nextInt(sum / 2);
+
         if (log) {
             items.sort(Comparator.comparing(Item::getItemId));
             items.forEach(System.out::println);
             couponItemRelations.forEach(System.out::println);
+            System.out.println("discountSum = " + sum);
+            System.out.println("maxDiscount = " + maxDiscount);
         }
 
         BigDecimal prev = null;
@@ -63,7 +71,10 @@ public class MaxDiscount {
             Stopwatch stopwatch = Stopwatch.createUnstarted();
             stopwatch.start();
 
-            MaxDiscountCalculator calculator = new MaxDiscountCalculator(items, couponItemRelations, startBreak);
+            MaxDiscountCalculator calculator = new MaxDiscountCalculator(items,
+                    couponItemRelations,
+                    BigDecimal.valueOf(10000),
+                    startBreak);
             List<DiscountResult> discountResults = calculator.computeBestDiscount();
 
             stopwatch.stop();
