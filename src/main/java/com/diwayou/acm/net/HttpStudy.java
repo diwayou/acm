@@ -1,4 +1,4 @@
-package com.diwayou.acm.concurrent;
+package com.diwayou.acm.net;
 
 import java.net.URI;
 import java.net.http.HttpClient;

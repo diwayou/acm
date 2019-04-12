@@ -71,9 +71,9 @@ public class MaxDiscountCalculator {
     /**
      * 推荐使用该构造函数，因为会根据券和商品数量计算参数，不容易出现性能问题
      *
-     * @param items 商品列表
+     * @param items               商品列表
      * @param couponItemRelations 券与商品的关系
-     * @param maxDiscount 优惠最高额度
+     * @param maxDiscount         优惠最高额度
      */
     public MaxDiscountCalculator(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount) {
         this(items, couponItemRelations, maxDiscount, DEFAULT_SUBSET_TOO_MANY_BREAK);
@@ -83,10 +83,10 @@ public class MaxDiscountCalculator {
     /**
      * 不推荐使用该构造函数，除非对参数非常了解，而且对数据性能有自己的考量
      *
-     * @param items 商品列表
+     * @param items               商品列表
      * @param couponItemRelations 券与商品的关系
-     * @param maxDiscount 优惠最高额度
-     * @param subsetTooManyBreak 求券适用品满足条件的组合子集数量
+     * @param maxDiscount         优惠最高额度
+     * @param subsetTooManyBreak  求券适用品满足条件的组合子集数量
      */
     public MaxDiscountCalculator(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount, int subsetTooManyBreak) {
         Preconditions.checkArgument(subsetTooManyBreak > 0, "subsetTooManyBreak必须大于0");
@@ -152,14 +152,16 @@ public class MaxDiscountCalculator {
      * 根据用户已经选择的券计算优惠
      *
      * @param choseCoupons 上次用户已选择的券，这个使用方可以存储在缓存里，也可以让客户端传过来（但是有被篡改风险）
-     * @param couponId 用户该次选中的券
+     * @param couponId     用户该次选中的券
      * @return 优惠结果
      */
     public ChoseDiscountResult computeDiscount(List<ChoseCoupon> choseCoupons, Long couponId) {
         Preconditions.checkArgument(choseCoupons.size() < this.couponItemRelations.size());
 
         List<Item> remainItems = this.items.stream()
-                .filter(i -> !isUsed(choseCoupons, c -> c.getItemIdSet().contains(i.getItemId())))
+                .filter(i -> choseCoupons.stream()
+                        .map(ChoseCoupon::getItemIdSet)
+                        .noneMatch(s -> s.contains(i.getItemId())))
                 .collect(Collectors.toList());
 
         CouponItemRelation relation = couponItemRelationMap.get(couponId);
@@ -180,12 +182,15 @@ public class MaxDiscountCalculator {
         remainItems = remainItems.stream()
                 .filter(i -> !relation.getItemIds().contains(i.getItemId()))
                 .collect(toList());
+        // 如果没有剩余商品，直接返回结果
         if (remainItems.isEmpty()) {
             return new ChoseDiscountResult(choseCouponResult, Collections.emptyList());
         }
 
         List<CouponItemRelation> remainRelation = this.couponItemRelations.stream()
-                .filter(r -> !isUsed(choseCouponResult, c -> c.getCouponId().equals(r.getCouponId())))
+                .filter(r -> choseCouponResult.stream()
+                        .map(ChoseCoupon::getCouponId)
+                        .noneMatch(id -> r.getCouponId().equals(id)))
                 .collect(toList());
 
         List<Long> couponCanChose = Lists.newArrayList();
@@ -197,16 +202,6 @@ public class MaxDiscountCalculator {
         }
 
         return new ChoseDiscountResult(choseCouponResult, couponCanChose);
-    }
-
-    private <T> boolean isUsed(List<T> coll, Predicate<T> predicate) {
-        for (T t : coll) {
-            if (predicate.test(t)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 
 public class Robot {
     public static void main(String[] args) {
-        ChromeInitUtil.setDriverPath("E:\\chromedriver.exe");
+        ChromeInitUtil.setDriverPath("D:\\opensource\\chromedriver.exe");
 
         HttpRobot robot = new HttpRobot();
         String content = robot.get("https://m.51tiangou.com");
