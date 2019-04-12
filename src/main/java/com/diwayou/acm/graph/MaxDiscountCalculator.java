@@ -8,6 +8,7 @@ import com.google.common.collect.Sets;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -28,7 +29,7 @@ public class MaxDiscountCalculator {
     private List<CouponItemRelation> couponItemRelations;
 
     /**
-     * 最大优惠价值，例如订单不能减为负，够用就好
+     * 最大优惠价值，例如订单付款金额不能减为0或者负
      */
     private BigDecimal maxDiscount;
 
@@ -67,11 +68,26 @@ public class MaxDiscountCalculator {
      */
     private static final int FAST_CALCULATE = 1;
 
+    /**
+     * 推荐使用该构造函数，因为会根据券和商品数量计算参数，不容易出现性能问题
+     *
+     * @param items 商品列表
+     * @param couponItemRelations 券与商品的关系
+     * @param maxDiscount 优惠最高额度
+     */
     public MaxDiscountCalculator(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount) {
         this(items, couponItemRelations, maxDiscount, DEFAULT_SUBSET_TOO_MANY_BREAK);
         this.subsetTooManyBreak = calculateBestBreak();
     }
 
+    /**
+     * 不推荐使用该构造函数，除非对参数非常了解，而且对数据性能有自己的考量
+     *
+     * @param items 商品列表
+     * @param couponItemRelations 券与商品的关系
+     * @param maxDiscount 优惠最高额度
+     * @param subsetTooManyBreak 求券适用品满足条件的组合子集数量
+     */
     public MaxDiscountCalculator(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount, int subsetTooManyBreak) {
         Preconditions.checkArgument(subsetTooManyBreak > 0, "subsetTooManyBreak必须大于0");
         Preconditions.checkNotNull(maxDiscount, "最大优惠金额不能为空");
@@ -85,10 +101,14 @@ public class MaxDiscountCalculator {
         init();
     }
 
+    /**
+     * 计算最优的参数，都是本地构造数据测试的值
+     */
     private int calculateBestBreak() {
         int calculateResult = FAST_CALCULATE;
         // 都是测试经验值
         if ((couponItemRelations.size() <= 6 && items.size() <= 30) ||
+                (couponItemRelations.size() <= 9 && items.size() <= 8) ||
                 (couponItemRelations.size() <= 3 && items.size() <= 40)) {
             calculateResult = DEFAULT_SUBSET_TOO_MANY_BREAK;
         }
@@ -98,9 +118,13 @@ public class MaxDiscountCalculator {
 
     private void init() {
         // 商品价格从高到低排序
-        items.sort(Comparator.comparing(Item::getPrice).thenComparing(Item::getItemId).reversed());
+        items.sort(Comparator.comparing(Item::getPrice)
+                .thenComparing(Item::getItemId)
+                .reversed());
         // 优惠券面值从大到小排序
-        couponItemRelations.sort(Comparator.comparing(CouponItemRelation::getDiscountValue).reversed());
+        couponItemRelations.sort(Comparator.comparing(CouponItemRelation::getDiscountValue)
+                .reversed()
+                .thenComparing(CouponItemRelation::getCouponId));
 
         itemMap = Maps.newHashMapWithExpectedSize(items.size());
         for (Item item : items) {
@@ -113,6 +137,9 @@ public class MaxDiscountCalculator {
         }
     }
 
+    /**
+     * 尽量计算最优的优惠组合，会根据商品和券计算出的参数选择不同的计算方式
+     */
     public List<DiscountResult> computeBestDiscount() {
         if (this.subsetTooManyBreak == FAST_CALCULATE) {
             return fastCalculate();
@@ -122,7 +149,68 @@ public class MaxDiscountCalculator {
     }
 
     /**
-     * 使用动态规划计算尽量计算最优的优惠组合
+     * 根据用户已经选择的券计算优惠
+     *
+     * @param choseCoupons 上次用户已选择的券，这个使用方可以存储在缓存里，也可以让客户端传过来（但是有被篡改风险）
+     * @param couponId 用户该次选中的券
+     * @return 优惠结果
+     */
+    public ChoseDiscountResult computeDiscount(List<ChoseCoupon> choseCoupons, Long couponId) {
+        Preconditions.checkArgument(choseCoupons.size() < this.couponItemRelations.size());
+
+        List<Item> remainItems = this.items.stream()
+                .filter(i -> !isUsed(choseCoupons, c -> c.getItemIdSet().contains(i.getItemId())))
+                .collect(Collectors.toList());
+
+        CouponItemRelation relation = couponItemRelationMap.get(couponId);
+        DiscountResult discountResult = computeOneCouponDiscount(remainItems, relation);
+        if (!discountResult.canUse()) {
+            throw new RuntimeException("选择的优惠券不满足条件");
+        }
+
+        ChoseCoupon curChoseCoupon = new ChoseCoupon(couponId, discountResult.getItemIds());
+        List<ChoseCoupon> choseCouponResult = Lists.newArrayList(choseCoupons);
+        choseCouponResult.add(curChoseCoupon);
+
+        // 如果券都被选择了，直接返回结果
+        if (choseCouponResult.size() == this.couponItemRelations.size()) {
+            return new ChoseDiscountResult(choseCouponResult, Collections.emptyList());
+        }
+
+        remainItems = remainItems.stream()
+                .filter(i -> !relation.getItemIds().contains(i.getItemId()))
+                .collect(toList());
+        if (remainItems.isEmpty()) {
+            return new ChoseDiscountResult(choseCouponResult, Collections.emptyList());
+        }
+
+        List<CouponItemRelation> remainRelation = this.couponItemRelations.stream()
+                .filter(r -> !isUsed(choseCouponResult, c -> c.getCouponId().equals(r.getCouponId())))
+                .collect(toList());
+
+        List<Long> couponCanChose = Lists.newArrayList();
+        for (CouponItemRelation couponItemRelation : remainRelation) {
+            DiscountResult dr = computeOneCouponDiscount(remainItems, couponItemRelation);
+            if (dr.canUse()) {
+                couponCanChose.add(dr.getCouponId());
+            }
+        }
+
+        return new ChoseDiscountResult(choseCouponResult, couponCanChose);
+    }
+
+    private <T> boolean isUsed(List<T> coll, Predicate<T> predicate) {
+        for (T t : coll) {
+            if (predicate.test(t)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 使用动态规划尽量计算最优的优惠组合
      */
     private List<DiscountResult> dpCalculate() {
         // 只能大概评估下，这个数字太难预测了
@@ -176,7 +264,7 @@ public class MaxDiscountCalculator {
     /**
      * 根据传入的商品id计算该券是否能够使用
      *
-     * @param items  商品列表, 需要按照价格、商品id排序的
+     * @param items    商品列表, 需要按照价格、商品id排序的
      * @param relation 券商品关系
      * @return 该券是否满足优惠条件的结果
      */
@@ -196,7 +284,6 @@ public class MaxDiscountCalculator {
                         .map(Item::getItemId)
                         .collect(toList());
                 return new DiscountResult(relation.getCouponId(),
-                        // 如果已经满足了，过滤掉后边的商品
                         Sets.newHashSet(itemIds),
                         relation.getDiscountValue());
             }
@@ -237,7 +324,7 @@ public class MaxDiscountCalculator {
             long[] pItems = filter(itemIds, relation.getItemIds().size(), i -> relation.getItemIds().contains(i));
 
             Collection<DiscountResult> subsets = subsetDpRecords.computeIfAbsent(new SubsetDpRecord(pItems, couponId),
-                    k -> subsets(pItems, relation, this.subsetTooManyBreak));
+                    k -> subsets(pItems, relation, this.subsetTooManyBreak, remainDiscount));
 
             for (DiscountResult discountResult : subsets) {
                 List<DiscountResult> bestDiscountResults;
@@ -257,7 +344,6 @@ public class MaxDiscountCalculator {
                             .map(DiscountResult::getDiscount)
                             .reduce(BigDecimal.ZERO, BigDecimal::add);
                 }
-
 
                 if (discountResult.canUse()) {
                     sum = sum.add(discountResult.getDiscount());
@@ -282,19 +368,29 @@ public class MaxDiscountCalculator {
         return result;
     }
 
+    /**
+     * 计算只有一张券的时候优惠结果
+     *
+     * @param itemIds        商品id
+     * @param couponIds      券id，只有一张
+     * @param remainDiscount 剩余额度
+     * @return 优惠结果列表，实际只有1个值或者空
+     */
     private List<DiscountResult> computeBestDiscountOne(long[] itemIds, long[] couponIds, BigDecimal remainDiscount) {
+        Preconditions.checkArgument(couponIds.length == 1, "券id数组长度必须1");
+
         CouponItemRelation relation = couponItemRelationMap.get(couponIds[0]);
 
-        long[] pItems = filter(itemIds, relation.getItemIds().size(), i -> relation.getItemIds().contains(i));
+        long[] pItemIds = filter(itemIds, relation.getItemIds().size(), i -> relation.getItemIds().contains(i));
 
         BigDecimal sum = BigDecimal.ZERO;
 
         Set<Long> usedItemIdSet = Sets.newHashSet();
         DiscountResult discountResult = DiscountResult.empty;
-        for (int i = 0; i < pItems.length; i++) {
-            Item item = itemMap.get(pItems[i]);
+        for (long pItemId : pItemIds) {
+            Item item = itemMap.get(pItemId);
             sum = sum.add(item.getPrice());
-            usedItemIdSet.add(pItems[i]);
+            usedItemIdSet.add(pItemId);
 
             if (sum.compareTo(relation.getMaximumValue()) >= 0) {
                 discountResult = new DiscountResult(relation.getCouponId(),
@@ -348,12 +444,18 @@ public class MaxDiscountCalculator {
     /**
      * 求满足券条件的商品组合子集
      *
-     * @param itemIds  商品子集，该商品数量会<=relation中关联品的数量
-     * @param relation 券跟品的关系
-     * @param limit    最多计算几个结果
+     * @param itemIds        商品子集，该商品数量会<=relation中关联品的数量
+     * @param relation       券跟品的关系
+     * @param limit          最多计算几个结果
+     * @param remainDiscount 剩余额度
      * @return 所有满足该券的商品组合
      */
-    private Collection<DiscountResult> subsets(long[] itemIds, CouponItemRelation relation, int limit) {
+    private Collection<DiscountResult> subsets(long[] itemIds, CouponItemRelation relation, int limit, BigDecimal remainDiscount) {
+        // 如果剩余金额不足，直接不能使用该张券
+        if (remainDiscount.compareTo(relation.getDiscountValue()) <= 0) {
+            return Collections.singletonList(DiscountResult.empty);
+        }
+
         List<DiscountResult> result = Lists.newArrayList();
         subsetsHelperFast(result, Lists.newArrayListWithCapacity(itemIds.length), itemIds, 0, relation, relation.getMaximumValue(), limit);
 
@@ -400,58 +502,5 @@ public class MaxDiscountCalculator {
 
             list.remove(list.size() - 1);
         }
-    }
-
-    /**
-     * 求满足券条件的子集，该算法使用枚举，没有提前中断，所以会慢很多，而且结果集需要是Set，因为当把多余品过滤掉的时候有可能计算出来的结果重复
-     *
-     * @param result   满足条件的子集合
-     * @param list     当前计算的商品子集前缀
-     * @param itemIds  需要求子集的商品集合
-     * @param start    当前计算位置，可以理解为递归层次
-     * @param relation 需要计算条件的优惠券品关系
-     */
-    private void subsetsHelper(Set<DiscountResult> result, ArrayList<Long> list, long[] itemIds, int start, CouponItemRelation relation) {
-        if (result.size() > subsetTooManyBreak) {
-            return;
-        }
-
-        DiscountResult discountResult = calcDiscount(relation, list);
-        if (discountResult.canUse()) {
-            result.add(discountResult);
-        }
-
-        for (int i = start; i < itemIds.length; i++) {
-            list.add(itemIds[i]);
-
-            subsetsHelper(result, list, itemIds, i + 1, relation);
-
-            list.remove(list.size() - 1);
-        }
-    }
-
-    /**
-     * 计算该商品集合是否满足当前券
-     *
-     * @param relation 券跟商品的关系
-     * @param itemIds  当前需要计算的商品列表
-     * @return 是否满足券条件的结果
-     */
-    private DiscountResult calcDiscount(CouponItemRelation relation, List<Long> itemIds) {
-        BigDecimal sum = BigDecimal.ZERO;
-
-        for (int i = 0; i < itemIds.size(); i++) {
-            Item item = itemMap.get(itemIds.get(i));
-            sum = sum.add(item.getPrice());
-
-            if (sum.compareTo(relation.getMaximumValue()) >= 0) {
-                return new DiscountResult(relation.getCouponId(),
-                        // 如果已经满足了，过滤掉后边的商品
-                        Sets.newHashSet(itemIds.subList(0, i + 1)),
-                        relation.getDiscountValue());
-            }
-        }
-
-        return DiscountResult.empty;
     }
 }

@@ -15,9 +15,9 @@ public class MaxDiscount {
 
     public static void main(String[] args) {
         Random random = new Random();
-        int itemSize = 20;
+        int itemSize = 8;
         int maxPrice = 100;
-        int couponSize = 6;
+        int couponSize = 9;
 
         for (int i = 0; i < 10000; i++) {
             getDiscountResults(random, itemSize, maxPrice, couponSize, true, i);
@@ -39,7 +39,7 @@ public class MaxDiscount {
 
             Collections.shuffle(items, random);
 
-            Set<Long> itemIdSet = items.subList(0, 1 + random.nextInt(items.size() / 2)).stream()
+            Set<Long> itemIdSet = items.subList(0, 1 + random.nextInt(items.size())).stream()
                     .map(Item::getItemId)
                     .collect(Collectors.toSet());
 
@@ -73,7 +73,7 @@ public class MaxDiscount {
 
             MaxDiscountCalculator calculator = new MaxDiscountCalculator(items,
                     couponItemRelations,
-                    BigDecimal.valueOf(10000),
+                    BigDecimal.valueOf(maxDiscount),
                     startBreak);
             List<DiscountResult> discountResults = calculator.computeBestDiscount();
 
