@@ -1,4 +1,4 @@
-package com.diwayou.acm.graph;
+package com.diwayou.acm.coupon;
 
 import java.math.BigDecimal;
 
@@ -38,6 +38,25 @@ public class Item {
     public Item setPrice(BigDecimal price) {
         this.price = price;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (!itemId.equals(item.itemId)) return false;
+        return price.equals(item.price);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = itemId.hashCode();
+        result = 31 * result + price.hashCode();
+        return result;
     }
 
     @Override

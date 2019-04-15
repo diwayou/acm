@@ -1,4 +1,4 @@
-package com.diwayou.acm.graph;
+package com.diwayou.acm.coupon;
 
 import java.util.List;
 

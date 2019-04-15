@@ -1,5 +1,6 @@
-package com.diwayou.acm.graph;
+package com.diwayou.acm.coupon;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 
@@ -15,16 +16,20 @@ public class MaxDiscount {
 
     public static void main(String[] args) {
         Random random = new Random();
-        int itemSize = 8;
+        int couponSize = 12;
+        int itemSize = couponSize;
         int maxPrice = 100;
-        int couponSize = 9;
 
         for (int i = 0; i < 10000; i++) {
-            getDiscountResults(random, itemSize, maxPrice, couponSize, true, i);
+            getDiscountResults(random, itemSize, maxPrice, couponSize, false,true, i);
         }
     }
 
-    private static void getDiscountResults(Random random, int itemSize, int maxPrice, int couponSize, boolean log, int round) {
+    private static void getDiscountResults(Random random, int itemSize, int maxPrice, int couponSize, boolean intersect, boolean log, int round) {
+        if (!intersect) {
+            Preconditions.checkArgument(itemSize >= couponSize, "当品关系没有交集的时候，商品数量必须大于券数量!");
+        }
+
         List<Item> items = Lists.newArrayListWithCapacity(itemSize);
         for (long i = 1; i <= itemSize; i++) {
             Item item = new Item(i, BigDecimal.valueOf(1 + random.nextInt(maxPrice)));
@@ -33,22 +38,39 @@ public class MaxDiscount {
         }
 
         List<CouponItemRelation> couponItemRelations = Lists.newArrayListWithCapacity(couponSize);
+
+        int j = 0;
+        int stepSize = itemSize / couponSize;
         for (long i = 1; i <= couponSize; i++) {
             int maximumValue = maxPrice / 3 + random.nextInt(maxPrice);
             int discountValue = 1 + random.nextInt(maximumValue - 1);
 
-            Collections.shuffle(items, random);
+            if (intersect) {
+                Collections.shuffle(items, random);
 
-            Set<Long> itemIdSet = items.subList(0, 1 + random.nextInt(items.size())).stream()
-                    .map(Item::getItemId)
-                    .collect(Collectors.toSet());
+                Set<Long> itemIdSet = items.subList(0, 1 + random.nextInt(items.size())).stream()
+                        .map(Item::getItemId)
+                        .collect(Collectors.toSet());
 
-            CouponItemRelation relation = new CouponItemRelation(i,
-                    BigDecimal.valueOf(maximumValue),
-                    BigDecimal.valueOf(discountValue),
-                    itemIdSet);
+                CouponItemRelation relation = new CouponItemRelation(i,
+                        BigDecimal.valueOf(maximumValue),
+                        BigDecimal.valueOf(discountValue),
+                        itemIdSet);
 
-            couponItemRelations.add(relation);
+                couponItemRelations.add(relation);
+            } else {
+                Set<Long> itemIdSet = items.subList(j, j + stepSize).stream()
+                        .map(Item::getItemId)
+                        .collect(Collectors.toSet());
+
+                CouponItemRelation relation = new CouponItemRelation(i,
+                        BigDecimal.valueOf(maximumValue),
+                        BigDecimal.valueOf(discountValue),
+                        itemIdSet);
+
+                couponItemRelations.add(relation);
+                j += stepSize;
+            }
         }
 
         int sum = couponItemRelations.stream()
@@ -75,7 +97,13 @@ public class MaxDiscount {
                     couponItemRelations,
                     BigDecimal.valueOf(maxDiscount),
                     startBreak);
-            List<DiscountResult> discountResults = calculator.computeBestDiscount();
+
+            List<DiscountResult> discountResults = Collections.emptyList();
+            if (startBreak == Integer.MAX_VALUE) {
+                //discountResults = calculator.computeBestDiscountFast();
+            } else {
+                discountResults = calculator.computeBestDiscount(true);
+            }
 
             stopwatch.stop();
 

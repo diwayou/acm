@@ -1,4 +1,4 @@
-package com.diwayou.acm.graph;
+package com.diwayou.acm.coupon;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
  * 根据订单传入的商品列表和券跟订单中商品的适用关系计算一个最大优惠的订单商品分配组合
  * 一个商品最多使用一张券，有可能多个商品才能使用一张券
  */
-public class MaxDiscountCalculator {
+public class MaxDiscountCalculator1 {
 
     /**
      * 商品信息列表
@@ -75,9 +75,8 @@ public class MaxDiscountCalculator {
      * @param couponItemRelations 券与商品的关系
      * @param maxDiscount         优惠最高额度
      */
-    public MaxDiscountCalculator(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount) {
+    public MaxDiscountCalculator1(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount) {
         this(items, couponItemRelations, maxDiscount, DEFAULT_SUBSET_TOO_MANY_BREAK);
-        this.subsetTooManyBreak = calculateBestBreak();
     }
 
     /**
@@ -88,7 +87,7 @@ public class MaxDiscountCalculator {
      * @param maxDiscount         优惠最高额度
      * @param subsetTooManyBreak  求券适用品满足条件的组合子集数量
      */
-    public MaxDiscountCalculator(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount, int subsetTooManyBreak) {
+    public MaxDiscountCalculator1(List<Item> items, List<CouponItemRelation> couponItemRelations, BigDecimal maxDiscount, int subsetTooManyBreak) {
         Preconditions.checkArgument(subsetTooManyBreak > 0, "subsetTooManyBreak必须大于0");
         Preconditions.checkNotNull(maxDiscount, "最大优惠金额不能为空");
         Preconditions.checkArgument(BigDecimal.ZERO.compareTo(maxDiscount) < 0, "最大优惠金额必须>0");
@@ -139,8 +138,14 @@ public class MaxDiscountCalculator {
 
     /**
      * 尽量计算最优的优惠组合，会根据商品和券计算出的参数选择不同的计算方式
+     *
+     * @param force 是否强制使用构造函数的subsetTooManyBreak
      */
-    public List<DiscountResult> computeBestDiscount() {
+    public List<DiscountResult> computeBestDiscount(boolean force) {
+        if (!force) {
+            this.subsetTooManyBreak = calculateBestBreak();
+        }
+
         if (this.subsetTooManyBreak == FAST_CALCULATE) {
             return fastCalculate();
         }
@@ -285,6 +290,92 @@ public class MaxDiscountCalculator {
         }
 
         return DiscountResult.empty;
+    }
+
+    public List<DiscountResult> computeBestDiscountFast() {
+        return computeBestDiscount(this.items, this.couponItemRelations, this.maxDiscount);
+    }
+
+    private List<DiscountResult> computeBestDiscount(List<Item> items, List<CouponItemRelation> relations, BigDecimal remainDiscount) {
+        List<CouponSubsetInfo> subset = Lists.newLinkedList();
+        subset.add(CouponSubsetInfo.empty.setRemainItems(items));
+
+        for (CouponItemRelation relation : relations) {
+            List<CouponSubsetInfo> tmpResult = Lists.newLinkedList();
+            for (CouponSubsetInfo info : subset) {
+                // 可以包含0元单
+                if (remainDiscount.subtract(info.getDiscount()).subtract(relation.getDiscountValue()).compareTo(BigDecimal.ZERO) < 0) {
+                    continue;
+                }
+
+                List<CouponSubsetInfo> subsetInfos = calculateSubset(relation, info);
+
+                tmpResult.addAll(subsetInfos);
+            }
+
+            subset.addAll(tmpResult);
+        }
+
+        CouponSubsetInfo bestSubset = CouponSubsetInfo.empty;
+        for (CouponSubsetInfo info : subset) {
+            if (info.getDiscount().compareTo(bestSubset.getDiscount()) > 0) {
+                bestSubset = info;
+            }
+        }
+
+        return bestSubset.getDiscountResults();
+    }
+
+    private List<CouponSubsetInfo> calculateSubset(CouponItemRelation relation, CouponSubsetInfo info) {
+        List<ItemSubsetInfo> subset = Lists.newLinkedList();
+        subset.add(ItemSubsetInfo.empty);
+
+        List<CouponSubsetInfo> result = Lists.newLinkedList();
+
+        for (Item item : info.getRemainItems()) {
+            if (result.size() >= this.subsetTooManyBreak) {
+                break;
+            }
+            if (!relation.getItemIds().contains(item.getItemId())) {
+                continue;
+            }
+
+            List<ItemSubsetInfo> tmpResult = Lists.newLinkedList();
+            for (ItemSubsetInfo isi : subset) {
+                List<Item> tmp = Lists.newArrayListWithCapacity(isi.getItems().size() + 1);
+                tmp.addAll(isi.getItems());
+                tmp.add(item);
+
+                if (relation.getMaximumValue().subtract(isi.getPriceSum()).subtract(item.getPrice()).compareTo(BigDecimal.ZERO) <= 0) {
+                    DiscountResult dr = new DiscountResult(relation.getCouponId(), tmp.stream()
+                            .map(Item::getItemId)
+                            .collect(Collectors.toSet()),
+                            relation.getDiscountValue());
+
+                    List<DiscountResult> discountResults = Lists.newArrayListWithCapacity(info.getDiscountResults().size() + 1);
+                    discountResults.addAll(info.getDiscountResults());
+                    discountResults.add(dr);
+                    CouponSubsetInfo couponSubsetInfo = new CouponSubsetInfo(discountResults, info.getDiscount().add(relation.getDiscountValue()))
+                            // TODO 优化，如果商品不相交的，全部剔除，使用canUseItem剔除
+                            .setRemainItems(info.getRemainItems().stream()
+                                    .filter(i -> !dr.getItemIds().contains(i.getItemId()))
+                                    .collect(toList()));
+
+                    result.add(couponSubsetInfo);
+
+                    if (result.size() >= this.subsetTooManyBreak) {
+                        break;
+                    }
+                } else {
+
+                    tmpResult.add(new ItemSubsetInfo(tmp, isi.getPriceSum().add(item.getPrice())));
+                }
+            }
+
+            subset.addAll(tmpResult);
+        }
+
+        return result;
     }
 
     /**
