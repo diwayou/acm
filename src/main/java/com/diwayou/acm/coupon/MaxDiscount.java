@@ -16,12 +16,12 @@ public class MaxDiscount {
 
     public static void main(String[] args) {
         Random random = new Random();
-        int couponSize = 12;
-        int itemSize = couponSize;
+        int couponSize = 16;
+        int itemSize = couponSize * 10;
         int maxPrice = 100;
 
         for (int i = 0; i < 10000; i++) {
-            getDiscountResults(random, itemSize, maxPrice, couponSize, false,true, i);
+            getDiscountResults(random, itemSize, maxPrice, couponSize, true,true, i);
         }
     }
 
@@ -88,21 +88,20 @@ public class MaxDiscount {
         }
 
         BigDecimal prev = null;
-        List<Integer> breakList = List.of(1, 3);
+        List<Integer> breakList = Lists.newArrayList(1, 3);
         for (int startBreak : breakList) {
             Stopwatch stopwatch = Stopwatch.createUnstarted();
             stopwatch.start();
 
             MaxDiscountCalculator calculator = new MaxDiscountCalculator(items,
                     couponItemRelations,
-                    BigDecimal.valueOf(maxDiscount),
-                    startBreak);
+                    BigDecimal.valueOf(maxDiscount));
 
             List<DiscountResult> discountResults = Collections.emptyList();
             if (startBreak == Integer.MAX_VALUE) {
                 //discountResults = calculator.computeBestDiscountFast();
             } else {
-                discountResults = calculator.computeBestDiscount(true);
+                discountResults = calculator.computeBestDiscount();
             }
 
             stopwatch.stop();

@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * 根据订单传入的商品列表和券跟订单中商品的适用关系计算一个最大优惠的订单商品分配组合
@@ -29,7 +30,7 @@ public class MaxDiscountCalculator {
     private List<CouponItemRelation> couponItemRelations;
 
     /**
-     * 最大优惠价值，例如订单付款金额不能减为0或者负
+     * 最大优惠价值，例如订单付款金额不能减为负
      */
     private BigDecimal maxDiscount;
 
@@ -143,6 +144,13 @@ public class MaxDiscountCalculator {
 
     /**
      * 尽量计算最优的优惠组合，会根据商品和券计算出的参数选择不同的计算方式
+     */
+    public List<DiscountResult> computeBestDiscount() {
+        return computeBestDiscount(false);
+    }
+
+    /**
+     * 尽量计算最优的优惠组合，会根据商品和券计算出的参数选择不同的计算方式
      *
      * @param force 是否强制使用构造函数的subsetTooManyBreak
      */
@@ -222,7 +230,7 @@ public class MaxDiscountCalculator {
     private List<DiscountResult> dpCalculate() {
         // 只能大概评估下，这个数字太难预测了
         dpRecords = Maps.newHashMapWithExpectedSize(items.size() * couponItemRelations.size());
-        subsetDpRecords = Maps.newHashMapWithExpectedSize(items.size() * 2);
+        subsetDpRecords = Maps.newHashMapWithExpectedSize(items.size() * this.subsetTooManyBreak);
 
         long[] itemIds = new long[items.size()];
         for (int i = 0; i < items.size(); i++) {
@@ -245,14 +253,18 @@ public class MaxDiscountCalculator {
         List<DiscountResult> result = Lists.newArrayList();
         BigDecimal remain = this.maxDiscount;
         for (CouponItemRelation relation : couponItemRelations) {
+            if (remain.compareTo(BigDecimal.ZERO) <= 0) {
+                break;
+            }
+
             DiscountResult discountResult = computeOneCouponDiscount(items, relation);
             if (!discountResult.canUse()) {
                 continue;
             }
 
-            // 订单不能减为负值或者0，但是继续计算，一旦有更小面值的优惠券呢
+            // 订单不能减为负值，但是继续计算，一旦有更小面值的优惠券呢
             BigDecimal curRemain = remain.subtract(discountResult.getDiscount());
-            if (curRemain.compareTo(BigDecimal.ZERO) <= 0) {
+            if (curRemain.compareTo(BigDecimal.ZERO) < 0) {
                 continue;
             }
 
@@ -287,11 +299,11 @@ public class MaxDiscountCalculator {
             sum = sum.add(item.getPrice());
 
             if (sum.compareTo(relation.getMaximumValue()) >= 0) {
-                List<Long> itemIds = pItems.subList(0, i + 1).stream()
+                Set<Long> itemIds = pItems.subList(0, i + 1).stream()
                         .map(Item::getItemId)
-                        .collect(toList());
+                        .collect(toSet());
                 return new DiscountResult(relation.getCouponId(),
-                        Sets.newHashSet(itemIds),
+                        itemIds,
                         relation.getDiscountValue());
             }
         }
@@ -357,8 +369,8 @@ public class MaxDiscountCalculator {
                 }
 
                 if (sum.compareTo(maxDiscount) > 0 &&
-                        // 不能0元订单
-                        sum.compareTo(remainDiscount) < 0) {
+                        // 不能负金额订单
+                        sum.compareTo(remainDiscount) <= 0) {
                     List<DiscountResult> tmpResult = Lists.newArrayList(bestDiscountResults);
                     if (discountResult.canUse()) {
                         tmpResult.add(discountResult);
@@ -409,8 +421,8 @@ public class MaxDiscountCalculator {
         }
 
         List<DiscountResult> result = Collections.emptyList();
-        // 不能0元订单
-        if (discountResult.canUse() && remainDiscount.compareTo(discountResult.getDiscount()) > 0) {
+        // 不能负金额订单
+        if (discountResult.canUse() && remainDiscount.compareTo(discountResult.getDiscount()) >= 0) {
             result = Collections.singletonList(discountResult);
         }
 
@@ -459,8 +471,29 @@ public class MaxDiscountCalculator {
      */
     private Collection<DiscountResult> subsets(long[] itemIds, CouponItemRelation relation, int limit, BigDecimal remainDiscount) {
         // 如果剩余金额不足，直接不能使用该张券
-        if (remainDiscount.compareTo(relation.getDiscountValue()) <= 0) {
+        if (remainDiscount.compareTo(relation.getDiscountValue()) < 0) {
             return Collections.singletonList(DiscountResult.empty);
+        }
+
+        BigDecimal sum = BigDecimal.ZERO;
+        for (long itemId : itemIds) {
+            sum = sum.add(this.itemMap.get(itemId).getPrice());
+        }
+        // 优化整个适用商品总金额不满足情况，避免递归求子集
+        if (sum.compareTo(relation.getMaximumValue()) < 0) {
+            return Collections.singletonList(DiscountResult.empty);
+        } else if (sum.equals(relation.getMaximumValue())) {
+            // 优化整个适用商品总金额正好满足情况，避免递归求子集
+            Set<Long> itemIdSet = Sets.newHashSetWithExpectedSize(itemIds.length);
+            for (long itemId : itemIds) {
+                itemIdSet.add(itemId);
+            }
+
+            DiscountResult discountResult = new DiscountResult(relation.getCouponId(),
+                    itemIdSet,
+                    relation.getDiscountValue());
+
+            return Collections.singletonList(discountResult);
         }
 
         List<DiscountResult> result = Lists.newArrayList();
@@ -496,7 +529,7 @@ public class MaxDiscountCalculator {
             return;
         }
 
-        if (result.size() > limit) {
+        if (result.size() >= limit) {
             return;
         }
 
