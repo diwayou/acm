@@ -199,8 +199,9 @@ public class MaxDiscountCalculator {
             return new ChoseDiscountResult(choseCouponResult, Collections.emptyList());
         }
 
+        // 过滤到这次选择券所适用的品
         remainItems = remainItems.stream()
-                .filter(i -> !relation.getItemIds().contains(i.getItemId()))
+                .filter(i -> !discountResult.getItemIds().contains(i.getItemId()))
                 .collect(toList());
         // 如果没有剩余商品，直接返回结果
         if (remainItems.isEmpty()) {
@@ -330,7 +331,10 @@ public class MaxDiscountCalculator {
 
         // 优化只有一张券的情况
         if (couponIds.length == 1) {
-            return computeBestDiscountOne(itemIds, couponIds, remainDiscount);
+            List<DiscountResult> r =  computeBestDiscountOne(itemIds, couponIds, remainDiscount);
+            dpRecords.put(new DpRecord(itemIds, couponIds), r);
+
+            return r;
         }
 
         List<DiscountResult> result = Collections.emptyList();
@@ -400,6 +404,11 @@ public class MaxDiscountCalculator {
 
         CouponItemRelation relation = couponItemRelationMap.get(couponIds[0]);
 
+        // 不能为负金额订单
+        if (relation.getDiscountValue().compareTo(remainDiscount) > 0) {
+            return Collections.emptyList();
+        }
+
         long[] pItemIds = filter(itemIds, relation.getItemIds().size(), i -> relation.getItemIds().contains(i));
 
         BigDecimal sum = BigDecimal.ZERO;
@@ -422,11 +431,9 @@ public class MaxDiscountCalculator {
 
         List<DiscountResult> result = Collections.emptyList();
         // 不能负金额订单
-        if (discountResult.canUse() && remainDiscount.compareTo(discountResult.getDiscount()) >= 0) {
+        if (discountResult.canUse()) {
             result = Collections.singletonList(discountResult);
         }
-
-        dpRecords.put(new DpRecord(itemIds, couponIds), result);
 
         return result;
     }
@@ -493,7 +500,7 @@ public class MaxDiscountCalculator {
                     itemIdSet,
                     relation.getDiscountValue());
 
-            return Collections.singletonList(discountResult);
+            return Lists.newArrayList(discountResult, DiscountResult.empty);
         }
 
         List<DiscountResult> result = Lists.newArrayList();
