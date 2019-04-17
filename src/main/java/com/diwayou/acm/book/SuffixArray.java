@@ -61,7 +61,7 @@ public class SuffixArray {
         return lo;
     } 
 
-   // length of longest common prefix of s and t
+   // length of longest support prefix of s and t
     private static int lcp(String s, String t) {
         int N = Math.min(s.length(), t.length());
         for (int i = 0; i < N; i++)
@@ -69,12 +69,12 @@ public class SuffixArray {
         return N;
     }
 
-    // longest common prefix of suffixes(i) and suffixes(i-1)
+    // longest support prefix of suffixes(i) and suffixes(i-1)
     public int lcp(int i) {
         return lcp(suffixes[i], suffixes[i-1]);
     }
 
-    // longest common prefix of suffixes(i) and suffixes(j)
+    // longest support prefix of suffixes(i) and suffixes(j)
     public int lcp(int i, int j) {
         return lcp(suffixes[i], suffixes[j]);
     }

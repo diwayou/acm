@@ -1,4 +1,4 @@
-package com.diwayou.web.http;
+package com.diwayou.web.support;
 
 import org.w3c.dom.Document;
 
@@ -9,7 +9,12 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
 public class DocumentUtil {
+
     public static String toString(Document newDoc) throws Exception {
+        if (newDoc == null) {
+            return "";
+        }
+
         DOMSource domSource = new DOMSource(newDoc);
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         StringWriter sw = new StringWriter();

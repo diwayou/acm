@@ -1,8 +1,11 @@
-package com.diwayou.web.http;
+package com.diwayou.web.http.robot;
 
-import java.util.concurrent.TimeUnit;
+import com.diwayou.web.support.Sleeper;
+
+import java.time.Duration;
 
 public class DefaultPageLoadReady<T> implements PageLoadReady<T> {
+
     private long timeOutInSeconds;
 
     public DefaultPageLoadReady(long timeOutInSeconds) {
@@ -12,7 +15,7 @@ public class DefaultPageLoadReady<T> implements PageLoadReady<T> {
     @Override
     public Boolean apply(T webDriver) {
         try {
-            TimeUnit.SECONDS.sleep(timeOutInSeconds);
+            Sleeper.SYSTEM_SLEEPER.sleep(Duration.ofSeconds(timeOutInSeconds));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

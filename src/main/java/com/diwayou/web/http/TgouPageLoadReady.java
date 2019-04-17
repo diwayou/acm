@@ -1,15 +1,15 @@
 package com.diwayou.web.http;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import com.diwayou.web.http.robot.PageLoadReady;
+import com.diwayou.web.http.robot.RobotDriver;
 
-public class TgouPageLoadReady implements PageLoadReady<WebDriver> {
+public class TgouPageLoadReady implements PageLoadReady<RobotDriver> {
+
     @Override
-    public Boolean apply(WebDriver webDriver) {
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) webDriver;
-        String ready = (String) jsExecutor.executeScript("document.readyState");
+    public Boolean apply(RobotDriver driver) {
+        String ready = (String) driver.executeScript("document.readyState");
 
-        Boolean imageLoaded = (Boolean) jsExecutor.executeScript("$('a').length > 2");
+        Boolean imageLoaded = (Boolean) driver.executeScript("document.getElementsByTagName('a').length > 2;");
 
         return "complete".equalsIgnoreCase(ready) && imageLoaded;
     }

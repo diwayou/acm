@@ -1,14 +1,18 @@
 package com.diwayou.web.http;
 
+import com.diwayou.web.http.robot.HttpRobot;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public class Robot {
-    public static void main(String[] args) {
-        ChromeInitUtil.setDriverPath("D:\\opensource\\chromedriver.exe");
+    public static void main(String[] args) throws Exception {
+        try (HttpRobot robot = new HttpRobot()) {
+            getContent(robot);
+        }
+    }
 
-        HttpRobot robot = new HttpRobot();
-        String content = robot.get("https://m.51tiangou.com");
+    private static void getContent(HttpRobot robot) throws Exception {
+        String content = robot.get("https://m.51tiangou.com", 3);
         Document document = Jsoup.parse(content);
 
         document.select("img[src]").stream()

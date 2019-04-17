@@ -1,6 +1,7 @@
-package com.diwayou.web.http;
+package com.diwayou.web.http.robot;
 
-import com.diwayou.web.common.Pool;
+import com.diwayou.web.support.Pool;
+import javafx.application.Platform;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 public class HttpRobotPool extends Pool<HttpRobot> {
@@ -14,4 +15,9 @@ public class HttpRobotPool extends Pool<HttpRobot> {
         super(poolConfig, new HttpRobotFactory());
     }
 
+    @Override
+    public void close() {
+        super.close();
+        Platform.exit();
+    }
 }

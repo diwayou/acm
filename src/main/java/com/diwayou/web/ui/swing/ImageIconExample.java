@@ -1,7 +1,6 @@
 package com.diwayou.web.ui.swing;
 
-import com.diwayou.web.http.ChromeInitUtil;
-import com.diwayou.web.http.HttpRobot;
+import com.diwayou.web.http.robot.HttpRobot;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -106,8 +105,6 @@ public class ImageIconExample extends JFrame {
          */
         @Override
         protected Void doInBackground() throws Exception {
-            ChromeInitUtil.setDriverPath("D:\\opensource\\chromedriver.exe");
-
             HttpRobot robot = new HttpRobot();
             String content = robot.get("http://m.51tiangou.com");
             Document document = Jsoup.parse(content);
