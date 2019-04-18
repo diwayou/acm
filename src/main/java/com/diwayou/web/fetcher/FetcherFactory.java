@@ -2,16 +2,31 @@ package com.diwayou.web.fetcher;
 
 import com.diwayou.web.domain.FetcherType;
 
-public class FetcherFactory {
+public class FetcherFactory implements AutoCloseable {
 
-    public static Fetcher getFetcher(FetcherType type) {
+    private JavaHttpFetcher javaHttpFetcher;
+
+    private FxWebviewFetcher fxWebviewFetcher;
+
+    public FetcherFactory() {
+        this.javaHttpFetcher = new JavaHttpFetcher();
+        this.fxWebviewFetcher = new FxWebviewFetcher();
+    }
+
+    public Fetcher getFetcher(FetcherType type) {
         switch (type) {
             case JAVA_HTTP:
-                return new JavaHttpFetcher();
+                return javaHttpFetcher;
             case FX_WEBVIEW:
-                return new FxWebviewFetcher();
+                return fxWebviewFetcher;
             default:
                 throw new IllegalArgumentException("FetcherType不正确");
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.javaHttpFetcher.close();
+        this.fxWebviewFetcher.close();
     }
 }

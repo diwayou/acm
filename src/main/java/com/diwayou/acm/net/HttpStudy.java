@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 
 public class HttpStudy {
 
@@ -13,8 +14,8 @@ public class HttpStudy {
                 .build();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://www.csdn.net/"))
-                //.timeout(Duration.ofSeconds(2))
+                .uri(URI.create("http://sports.qq.com/nba/"))
+                .timeout(Duration.ofSeconds(3))
                 .build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())

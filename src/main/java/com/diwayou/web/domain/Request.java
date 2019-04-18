@@ -27,12 +27,12 @@ public class Request {
     /**
      * 当前抓取深度
      */
-    private short depth;
+    private int depth;
 
     /**
      * 抓取优先级
      */
-    private byte priority;
+    private int priority;
 
     /**
      * 扩展信息
@@ -79,20 +79,20 @@ public class Request {
         return this;
     }
 
-    public short getDepth() {
+    public int getDepth() {
         return depth;
     }
 
-    public Request setDepth(short depth) {
+    public Request setDepth(int depth) {
         this.depth = depth;
         return this;
     }
 
-    public byte getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public Request setPriority(byte priority) {
+    public Request setPriority(int priority) {
         this.priority = priority;
         return this;
     }
@@ -104,5 +104,18 @@ public class Request {
     public Request setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "url='" + url + '\'' +
+                ", fetcherType=" + fetcherType +
+                ", timeout=" + timeout +
+                ", parentUrl='" + parentUrl + '\'' +
+                ", depth=" + depth +
+                ", priority=" + priority +
+                ", attributes=" + attributes +
+                '}';
     }
 }

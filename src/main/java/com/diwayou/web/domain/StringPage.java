@@ -14,17 +14,17 @@ public class StringPage extends Page {
     }
 
     @Override
-    public String bodyAsString(int timeout) {
+    public String bodyAsString() {
         return body;
     }
 
     @Override
-    public InputStream bodyAsInputStream(int timeout) {
+    public InputStream bodyAsInputStream() {
         return new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
-    public boolean isLoadFinish() {
-        return true;
+    public int statusCode() {
+        return 200;
     }
 }

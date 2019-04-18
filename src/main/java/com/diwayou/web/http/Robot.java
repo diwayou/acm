@@ -12,12 +12,11 @@ public class Robot {
     }
 
     private static void getContent(HttpRobot robot) throws Exception {
-        String content = robot.get("https://m.51tiangou.com", 3);
+        String content = robot.get("http://sports.qq.com/nba/", 10);
         Document document = Jsoup.parse(content);
 
-        document.select("img[src]").stream()
-                .map(e -> e.attr("src"))
-                .filter(s -> !s.contains("log"))
+        document.select("a[href]").stream()
+                .map(e -> e.attr("href"))
                 .forEach(System.out::println);
     }
 }

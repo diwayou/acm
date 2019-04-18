@@ -1,0 +1,36 @@
+package com.diwayou.web.domain;
+
+import java.io.InputStream;
+
+public class EmptyPage extends Page {
+
+    private Exception exception;
+
+    public EmptyPage(Request request) {
+        super(request);
+    }
+
+    public EmptyPage(Request request, Exception exception) {
+        super(request);
+        this.exception = exception;
+    }
+
+    public Exception getException() {
+        return exception;
+    }
+
+    @Override
+    public String bodyAsString() {
+        return "";
+    }
+
+    @Override
+    public InputStream bodyAsInputStream() {
+        return InputStream.nullInputStream();
+    }
+
+    @Override
+    public int statusCode() {
+        return 0;
+    }
+}

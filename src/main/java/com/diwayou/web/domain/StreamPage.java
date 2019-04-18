@@ -4,43 +4,39 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class StreamPage extends Page {
 
-    private CompletableFuture<InputStream> bodyFuture;
+    private HttpResponse<InputStream> httpResponse;
 
-    public StreamPage(Request request, CompletableFuture<InputStream> bodyFuture) {
+    public StreamPage(Request request, HttpResponse<InputStream> httpResponse) {
         super(request);
-        this.bodyFuture = bodyFuture;
+        this.httpResponse = httpResponse;
     }
 
     @Override
-    public String bodyAsString(int timeout) {
+    public String bodyAsString() {
         try {
-            InputStream is = bodyFuture.get(timeout, TimeUnit.SECONDS);
-
-            return IOUtils.toString(is, StandardCharsets.UTF_8);
-        } catch (InterruptedException | ExecutionException | TimeoutException | IOException e) {
+            return IOUtils.toString(httpResponse.body(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
             throw new RuntimeException("拉取消息失败", e);
         }
     }
 
     @Override
-    public InputStream bodyAsInputStream(int timeout) {
-        try {
-            return bodyFuture.get(timeout, TimeUnit.SECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            throw new RuntimeException("拉取消息失败", e);
-        }
+    public InputStream bodyAsInputStream() {
+        return httpResponse.body();
     }
 
     @Override
-    public boolean isLoadFinish() {
-        return bodyFuture.isDone();
+    public int statusCode() {
+        return httpResponse.statusCode();
+    }
+
+    public HttpHeaders getHttpHeaders() {
+        return httpResponse.headers();
     }
 }

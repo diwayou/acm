@@ -32,4 +32,9 @@ public class FxWebviewFetcher implements Fetcher {
     public FetcherType getType() {
         return FetcherType.FX_WEBVIEW;
     }
+
+    @Override
+    public void close() {
+        this.pool.close();
+    }
 }

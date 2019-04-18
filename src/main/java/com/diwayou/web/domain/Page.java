@@ -15,9 +15,13 @@ public abstract class Page {
         return this;
     }
 
-    public abstract String bodyAsString(int timeout);
+    public Request getRequest() {
+        return request;
+    }
 
-    public abstract InputStream bodyAsInputStream(int timeout);
+    public abstract String bodyAsString();
 
-    public abstract boolean isLoadFinish();
+    public abstract InputStream bodyAsInputStream();
+
+    public abstract int statusCode();
 }

@@ -7,12 +7,10 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.html.HTMLDocument;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HttpRobot implements Closeable {
+public class HttpRobot implements AutoCloseable {
 
     private static final Logger log = Logger.getLogger(HttpRobot.class.getName());
 
@@ -65,7 +63,7 @@ public class HttpRobot implements Closeable {
     public void quit() {
         try {
             driver.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.log(Level.SEVERE, "", e);
         }
     }

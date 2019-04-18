@@ -4,9 +4,9 @@ import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 
-public interface Fetcher {
+public interface Fetcher extends AutoCloseable {
 
-    <T> Page<T> fetch(Request request);
+    Page fetch(Request request);
 
     FetcherType getType();
 }

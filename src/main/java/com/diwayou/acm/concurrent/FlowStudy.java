@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 
 public class FlowStudy {
     public static void main(String[] args) throws InterruptedException {
-        SubmissionPublisher<Integer> publisher = new SubmissionPublisher<>(ForkJoinPool.commonPool(), 10);
+        SubmissionPublisher<Integer> publisher = new SubmissionPublisher<>(ForkJoinPool.commonPool(), 1);
 
         List<String> subscribeNames = List.of("One", "Two", "Three", "Four");
 
@@ -18,7 +18,7 @@ public class FlowStudy {
         subscribeNames.forEach(name -> publisher.subscribe(new SimpleSubscribe(name, latch)));
 
         IntStream.rangeClosed(1, 20).forEach(i -> {
-                    int lag = publisher.submit(i);
+                    int lag = publisher.offer(i, (s, item) -> {System.out.println(((SimpleSubscribe)s).getName() + " --- " + item); return true;});
 
                     System.out.println(lag);
                 }
@@ -67,6 +67,10 @@ public class FlowStudy {
         public void onComplete() {
             System.out.println(String.format("name=%s onComplete", this.name));
             this.latch.countDown();
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }
