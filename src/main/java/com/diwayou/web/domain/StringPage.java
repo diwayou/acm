@@ -2,7 +2,9 @@ package com.diwayou.web.domain;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.http.HttpHeaders;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 
 public class StringPage extends Page {
 
@@ -26,5 +28,10 @@ public class StringPage extends Page {
     @Override
     public int statusCode() {
         return 200;
+    }
+
+    @Override
+    public HttpHeaders getHttpHeaders() {
+        return HttpHeaders.of(Collections.emptyMap(), (a, b) -> true);
     }
 }

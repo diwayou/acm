@@ -7,10 +7,11 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.html.HTMLDocument;
 
+import java.io.Closeable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HttpRobot implements AutoCloseable {
+public class HttpRobot implements Closeable {
 
     private static final Logger log = Logger.getLogger(HttpRobot.class.getName());
 
@@ -21,12 +22,7 @@ public class HttpRobot implements AutoCloseable {
     private Pool<HttpRobot> pool;
 
     public HttpRobot() {
-        this(null);
-    }
-
-    public HttpRobot(Pool<HttpRobot> pool) {
-        this.pool = pool;
-        driver = new FxRobotDriver();
+        this.driver = new FxRobotDriver();
     }
 
     public String get(String url, long timeOutInSeconds, PageLoadReady<RobotDriver> pageLoadReady) throws Exception {
@@ -54,6 +50,7 @@ public class HttpRobot implements AutoCloseable {
     @Override
     public void close() {
         if (pool != null) {
+            driver.get("about:blank");
             pool.returnResource(this);
         } else {
             quit();
@@ -66,5 +63,10 @@ public class HttpRobot implements AutoCloseable {
         } catch (Exception e) {
             log.log(Level.SEVERE, "", e);
         }
+    }
+
+    public HttpRobot setPool(Pool<HttpRobot> pool) {
+        this.pool = pool;
+        return this;
     }
 }

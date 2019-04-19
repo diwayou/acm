@@ -2,6 +2,7 @@ package com.diwayou.web.store;
 
 import com.google.common.collect.Sets;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class MemoryUrlStore implements UrlStore {
@@ -9,7 +10,7 @@ public class MemoryUrlStore implements UrlStore {
     private Set<String> urlSet;
 
     public MemoryUrlStore() {
-        this.urlSet = Sets.newHashSet();;
+        this.urlSet = Collections.synchronizedSet(Sets.newHashSet());
     }
 
     @Override

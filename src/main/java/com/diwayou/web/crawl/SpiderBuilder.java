@@ -1,32 +1,25 @@
 package com.diwayou.web.crawl;
 
-import com.diwayou.web.domain.Page;
-import com.diwayou.web.domain.Request;
-import com.diwayou.web.scheduler.Scheduler;
-import com.diwayou.web.store.UrlStore;
+import com.diwayou.web.fetcher.FetcherFactory;
 
-import java.util.List;
+import java.util.concurrent.Executor;
 
 public class SpiderBuilder {
 
-    private Scheduler<Request> requestScheduler;
+    private Executor requestExecutor;
 
-    private Scheduler<Page> pageScheduler;
-
-    private List<Request> seeds;
+    private Executor pageExecutor;
 
     private PageHandler pageHandler;
 
-    private UrlStore urlStore;
-
-    private int maxDepth = 3;
+    private FetcherFactory fetcherFactory;
 
     private SpiderBuilder() {
     }
 
-    public static SpiderBuilder newBuilder(List<Request> seeds, PageHandler pageHandler) {
+    public static SpiderBuilder newBuilder(FetcherFactory fetcherFactory, PageHandler pageHandler) {
         return new SpiderBuilder()
-                .setSeeds(seeds)
+                .setFetcherFactory(fetcherFactory)
                 .setPageHandler(pageHandler);
     }
 
@@ -34,30 +27,21 @@ public class SpiderBuilder {
         return new Spider(this);
     }
 
-    public Scheduler<Request> getRequestScheduler() {
-        return requestScheduler;
+    public Executor getRequestExecutor() {
+        return requestExecutor;
     }
 
-    public SpiderBuilder setRequestScheduler(Scheduler<Request> requestScheduler) {
-        this.requestScheduler = requestScheduler;
+    public SpiderBuilder setRequestExecutor(Executor requestExecutor) {
+        this.requestExecutor = requestExecutor;
         return this;
     }
 
-    public Scheduler<Page> getPageScheduler() {
-        return pageScheduler;
+    public Executor getPageExecutor() {
+        return pageExecutor;
     }
 
-    public SpiderBuilder setPageScheduler(Scheduler<Page> pageScheduler) {
-        this.pageScheduler = pageScheduler;
-        return this;
-    }
-
-    public List<Request> getSeeds() {
-        return seeds;
-    }
-
-    public SpiderBuilder setSeeds(List<Request> seeds) {
-        this.seeds = seeds;
+    public SpiderBuilder setPageExecutor(Executor pageExecutor) {
+        this.pageExecutor = pageExecutor;
         return this;
     }
 
@@ -70,21 +54,12 @@ public class SpiderBuilder {
         return this;
     }
 
-    public UrlStore getUrlStore() {
-        return urlStore;
+    public FetcherFactory getFetcherFactory() {
+        return fetcherFactory;
     }
 
-    public SpiderBuilder setUrlStore(UrlStore urlStore) {
-        this.urlStore = urlStore;
-        return this;
-    }
-
-    public int getMaxDepth() {
-        return maxDepth;
-    }
-
-    public SpiderBuilder setMaxDepth(int maxDepth) {
-        this.maxDepth = maxDepth;
+    public SpiderBuilder setFetcherFactory(FetcherFactory fetcherFactory) {
+        this.fetcherFactory = fetcherFactory;
         return this;
     }
 }

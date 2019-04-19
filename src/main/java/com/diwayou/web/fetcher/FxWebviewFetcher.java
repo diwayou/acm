@@ -1,11 +1,9 @@
 package com.diwayou.web.fetcher;
 
-import com.diwayou.web.domain.FetcherType;
-import com.diwayou.web.domain.Page;
-import com.diwayou.web.domain.Request;
-import com.diwayou.web.domain.StringPage;
+import com.diwayou.web.domain.*;
 import com.diwayou.web.http.robot.HttpRobot;
 import com.diwayou.web.http.robot.HttpRobotPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 public class FxWebviewFetcher implements Fetcher {
 
@@ -15,6 +13,14 @@ public class FxWebviewFetcher implements Fetcher {
         this.pool = new HttpRobotPool();
     }
 
+    public FxWebviewFetcher(int poolCapacity) {
+        GenericObjectPoolConfig<HttpRobot> config = new GenericObjectPoolConfig<>();
+        config.setMaxTotal(poolCapacity);
+        config.setMaxWaitMillis(10000);
+
+        this.pool = new HttpRobotPool(config);
+    }
+
     @Override
     public Page fetch(Request request) {
         try (HttpRobot robot = pool.getResource()) {
@@ -22,10 +28,8 @@ public class FxWebviewFetcher implements Fetcher {
 
             return new StringPage(request, body);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new EmptyPage(request, e);
         }
-
-        return null;
     }
 
     @Override

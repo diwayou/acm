@@ -2,9 +2,7 @@ package com.diwayou.web.support;
 
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
-import com.diwayou.web.domain.StreamPage;
-
-import java.net.http.HttpHeaders;
+import com.google.common.net.HttpHeaders;
 
 public class PageUtil {
 
@@ -13,13 +11,45 @@ public class PageUtil {
             return true;
         }
 
-        StreamPage streamPage = (StreamPage) page;
-        HttpHeaders headers = streamPage.getHttpHeaders();
-        String contentType = headers.firstValue("Content-Type").orElse(null);
+        String contentType = getContentType(page);
         if (contentType == null) {
             return false;
         }
 
         return contentType.contains("text") && contentType.contains("html");
+    }
+
+    public static boolean isImage(String contentType) {
+        if (contentType == null) {
+            return false;
+        }
+
+        return contentType.contains("image");
+    }
+
+    public static String getImageExt(String contentType) {
+        if (!isImage(contentType)) {
+            return null;
+        }
+
+        int idx = contentType.indexOf("/");
+
+        if (idx > 0) {
+            return contentType.substring(idx + 1);
+        }
+
+        return null;
+    }
+
+    public static String getContentType(Page page) {
+        return page.getHttpHeaders()
+                .firstValue(HttpHeaders.CONTENT_TYPE)
+                .orElse(null);
+    }
+
+    public static long getContentLength(Page page) {
+        return page.getHttpHeaders().
+                firstValueAsLong(HttpHeaders.CONTENT_LENGTH)
+                .orElse(0);
     }
 }

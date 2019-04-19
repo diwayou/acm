@@ -1,6 +1,8 @@
 package com.diwayou.web.domain;
 
 import java.io.InputStream;
+import java.net.http.HttpHeaders;
+import java.util.Collections;
 
 public class EmptyPage extends Page {
 
@@ -32,5 +34,10 @@ public class EmptyPage extends Page {
     @Override
     public int statusCode() {
         return 0;
+    }
+
+    @Override
+    public HttpHeaders getHttpHeaders() {
+        return HttpHeaders.of(Collections.emptyMap(), (a, b) -> true);
     }
 }

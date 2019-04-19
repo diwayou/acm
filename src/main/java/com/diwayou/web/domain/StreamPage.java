@@ -36,6 +36,7 @@ public class StreamPage extends Page {
         return httpResponse.statusCode();
     }
 
+    @Override
     public HttpHeaders getHttpHeaders() {
         return httpResponse.headers();
     }

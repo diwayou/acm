@@ -30,7 +30,7 @@ public class JavaHttpFetcher implements Fetcher {
                 .build();
 
 
-        HttpResponse<InputStream> response = null;
+        HttpResponse<InputStream> response;
         try {
             response = client.send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
         } catch (IOException | InterruptedException e) {

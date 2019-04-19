@@ -1,13 +1,22 @@
-package com.diwayou.web.crawl;
+package com.diwayou.web.app;
 
+import com.diwayou.web.crawl.PageHandler;
+import com.diwayou.web.crawl.Spider;
+import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.store.UrlStore;
+import com.diwayou.web.support.FilenameUtil;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
+import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,9 +26,10 @@ public class CrawlPageHandler implements PageHandler {
 
     private static final Logger log = Logger.getLogger(CrawlPageHandler.class.getName());
 
-    @Override
-    public boolean interest(Request request) {
-        return true;
+    private UrlStore urlStore;
+
+    public CrawlPageHandler(UrlStore urlStore) {
+        this.urlStore = urlStore;
     }
 
     @Override
@@ -30,8 +40,12 @@ public class CrawlPageHandler implements PageHandler {
         }
 
         if (!PageUtil.isHtml(page)) {
+            log.log(Level.INFO, "不是网页url=" + page.getRequest().getUrl());
+            storeImage(page);
             return;
         }
+
+        log.info("处理网页url=" + page.getRequest().getUrl());
 
         Document document = Jsoup.parse(page.bodyAsString());
 
@@ -40,6 +54,35 @@ public class CrawlPageHandler implements PageHandler {
 
         submit(document.select("img").stream()
                 .map(e -> e.attr("src")), page, spider);
+    }
+
+    private void storeImage(Page page) {
+        if (!page.getRequest().getFetcherType().equals(FetcherType.JAVA_HTTP)) {
+            return;
+        }
+
+        if (PageUtil.getContentLength(page) < 1024 * 30) {
+            return;
+        }
+
+        String ext = PageUtil.getImageExt(PageUtil.getContentType(page));
+        if (ext == null) {
+            return;
+        }
+
+        try {
+            String dirPrefix = "D:/tmp/image";
+
+            String name = FilenameUtil.genPathWithExt("", ext);
+            String dir = FilenameUtils.getPath(name);
+            if (!Files.exists(Path.of(dirPrefix, dir))) {
+                Files.createDirectories(Path.of(dirPrefix, dir));
+            }
+
+            Files.copy(page.bodyAsInputStream(), Path.of(dirPrefix, name));
+        } catch (IOException e) {
+            log.warning("保存图片失败!");
+        }
     }
 
     private void submit(Stream<String> urlStream, Page page, Spider spider) {
@@ -52,7 +95,10 @@ public class CrawlPageHandler implements PageHandler {
                     }
                 })
                 .filter(Objects::nonNull)
+                .filter(u -> !urlStore.contain(u))
+                .peek(u -> urlStore.add(u))
                 .map(u -> newRequest(u, page.getRequest()))
+                .filter(r -> r.getDepth() < 5)
                 .forEach(spider::submitRequest);
     }
 

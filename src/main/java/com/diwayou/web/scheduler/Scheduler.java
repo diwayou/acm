@@ -1,10 +1,8 @@
 package com.diwayou.web.scheduler;
 
-import java.util.concurrent.Flow;
+import java.io.Closeable;
 
-public interface Scheduler<T> extends AutoCloseable {
+public interface Scheduler<T> extends Closeable {
 
     boolean push(T t);
-
-    void subscriber(Flow.Subscriber<T> subscriber);
 }

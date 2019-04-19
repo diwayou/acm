@@ -16,6 +16,14 @@ public class HttpRobotPool extends Pool<HttpRobot> {
     }
 
     @Override
+    public HttpRobot getResource() {
+        HttpRobot robot = super.getResource();
+        robot.setPool(this);
+
+        return robot;
+    }
+
+    @Override
     public void close() {
         super.close();
         Platform.exit();

@@ -2,7 +2,9 @@ package com.diwayou.web.fetcher;
 
 import com.diwayou.web.domain.FetcherType;
 
-public class FetcherFactory implements AutoCloseable {
+import java.io.Closeable;
+
+public class FetcherFactory implements Closeable {
 
     private JavaHttpFetcher javaHttpFetcher;
 
@@ -11,6 +13,11 @@ public class FetcherFactory implements AutoCloseable {
     public FetcherFactory() {
         this.javaHttpFetcher = new JavaHttpFetcher();
         this.fxWebviewFetcher = new FxWebviewFetcher();
+    }
+
+    public FetcherFactory(int fxPoolCapacity) {
+        this.javaHttpFetcher = new JavaHttpFetcher();
+        this.fxWebviewFetcher = new FxWebviewFetcher(fxPoolCapacity);
     }
 
     public Fetcher getFetcher(FetcherType type) {
@@ -25,7 +32,7 @@ public class FetcherFactory implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         this.javaHttpFetcher.close();
         this.fxWebviewFetcher.close();
     }
