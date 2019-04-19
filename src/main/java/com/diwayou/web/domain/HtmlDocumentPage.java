@@ -1,28 +1,35 @@
 package com.diwayou.web.domain;
 
+import com.diwayou.web.support.DocumentUtil;
+import org.w3c.dom.html.HTMLDocument;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.http.HttpHeaders;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
-public class StringPage extends Page {
+public class HtmlDocumentPage extends Page {
 
-    private String body;
+    private HTMLDocument document;
 
-    public StringPage(Request request, String body) {
+    public HtmlDocumentPage(Request request, HTMLDocument body) {
         super(request);
-        this.body = body;
+        this.document = body;
     }
 
     @Override
     public String bodyAsString() {
-        return body;
+        try {
+            return DocumentUtil.toString(document);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @Override
     public InputStream bodyAsInputStream() {
-        return new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+        return new ByteArrayInputStream(bodyAsString().getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
@@ -33,5 +40,9 @@ public class StringPage extends Page {
     @Override
     public HttpHeaders getHttpHeaders() {
         return HttpHeaders.of(Collections.emptyMap(), (a, b) -> true);
+    }
+
+    public HTMLDocument getDocument() {
+        return document;
     }
 }

@@ -3,6 +3,7 @@ package com.diwayou.web.app;
 import com.diwayou.web.crawl.PageHandler;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.FetcherType;
+import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.store.UrlStore;
@@ -12,6 +13,9 @@ import com.diwayou.web.url.URLCanonicalizer;
 import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLImageElement;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -52,8 +56,23 @@ public class CrawlPageHandler implements PageHandler {
         submit(document.select("a[href]").stream()
                 .map(e -> e.attr("href")), page, spider);
 
-        submit(document.select("img").stream()
-                .map(e -> e.attr("src")), page, spider);
+        if (page.getRequest().getFetcherType().equals(FetcherType.JAVA_HTTP)) {
+            submit(document.select("img").stream()
+                    .map(e -> e.attr("src")), page, spider);
+        } else if (page.getRequest().getFetcherType().equals(FetcherType.FX_WEBVIEW)) {
+            HtmlDocumentPage htmlDocumentPage = (HtmlDocumentPage) page;
+            HTMLCollection htmlCollection = htmlDocumentPage.getDocument().getImages();
+
+            for (int i = 0; i < htmlCollection.getLength(); i++) {
+                Node node = htmlCollection.item(i);
+                String src = ((HTMLImageElement) node).getSrc();
+                if (src == null) {
+                    return;
+                }
+
+                spider.submitRequest(newRequest(src, page.getRequest()));
+            }
+        }
     }
 
     private void storeImage(Page page) {
@@ -61,7 +80,7 @@ public class CrawlPageHandler implements PageHandler {
             return;
         }
 
-        if (PageUtil.getContentLength(page) < 1024 * 30) {
+        if (PageUtil.getContentLength(page) < 1024 * 10) {
             return;
         }
 
@@ -98,7 +117,7 @@ public class CrawlPageHandler implements PageHandler {
                 .filter(u -> !urlStore.contain(u))
                 .peek(u -> urlStore.add(u))
                 .map(u -> newRequest(u, page.getRequest()))
-                .filter(r -> r.getDepth() < 5)
+                .filter(r -> r.getDepth() < 2)
                 .forEach(spider::submitRequest);
     }
 

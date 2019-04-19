@@ -1,7 +1,6 @@
 package com.diwayou.web.http.robot;
 
 import com.diwayou.web.http.driver.FxRobotDriver;
-import com.diwayou.web.support.DocumentUtil;
 import com.diwayou.web.support.Pool;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +24,7 @@ public class HttpRobot implements Closeable {
         this.driver = new FxRobotDriver();
     }
 
-    public String get(String url, long timeOutInSeconds, PageLoadReady<RobotDriver> pageLoadReady) throws Exception {
+    public HTMLDocument get(String url, long timeOutInSeconds, PageLoadReady<RobotDriver> pageLoadReady) throws Exception {
         Preconditions.checkArgument(StringUtils.isNotBlank(url), "url不能为空");
         Preconditions.checkNotNull(pageLoadReady, "pageLoadReady不能为空");
 
@@ -34,16 +33,14 @@ public class HttpRobot implements Closeable {
         RobotDriverWait driverWait = new RobotDriverWait(driver, timeOutInSeconds);
         driverWait.until(pageLoadReady);
 
-        HTMLDocument document = driver.getDocument();
-
-        return DocumentUtil.toString(document);
+        return driver.getDocument();
     }
 
-    public String get(String url, long timeOutInSeconds) throws Exception {
+    public HTMLDocument get(String url, long timeOutInSeconds) throws Exception {
         return get(url, timeOutInSeconds, new DefaultPageLoadReady<>(timeOutInSeconds));
     }
 
-    public String get(String url) throws Exception {
+    public HTMLDocument get(String url) throws Exception {
         return get(url, DEFAULT_TIMEOUT);
     }
 

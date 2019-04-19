@@ -4,6 +4,7 @@ import com.diwayou.web.domain.*;
 import com.diwayou.web.http.robot.HttpRobot;
 import com.diwayou.web.http.robot.HttpRobotPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.w3c.dom.html.HTMLDocument;
 
 public class FxWebviewFetcher implements Fetcher {
 
@@ -24,9 +25,9 @@ public class FxWebviewFetcher implements Fetcher {
     @Override
     public Page fetch(Request request) {
         try (HttpRobot robot = pool.getResource()) {
-            String body = robot.get(request.getUrl(), request.getTimeout());
+            HTMLDocument body = robot.get(request.getUrl(), request.getTimeout());
 
-            return new StringPage(request, body);
+            return new HtmlDocumentPage(request, body);
         } catch (Exception e) {
             return new EmptyPage(request, e);
         }

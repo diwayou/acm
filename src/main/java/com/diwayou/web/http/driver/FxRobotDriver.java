@@ -1,6 +1,8 @@
 package com.diwayou.web.http.driver;
 
 import com.diwayou.web.http.robot.RobotDriver;
+import com.sun.webkit.LoadListenerClient;
+import com.sun.webkit.WebPage;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -8,6 +10,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.w3c.dom.html.HTMLDocument;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -29,6 +32,7 @@ public class FxRobotDriver implements RobotDriver {
             p.setScene(s);
 
             engine.set(v.getEngine());
+
             return null;
         });
     }
@@ -51,5 +55,27 @@ public class FxRobotDriver implements RobotDriver {
     @Override
     public HTMLDocument getDocument() {
         return AppThread.exec(() -> (HTMLDocument)engine.get().getDocument());
+    }
+
+    @Override
+    public void addResourceLoadListener(LoadListenerClient listener) {
+        Exception e = AppThread.exec(() -> {
+            WebEngine webEngine = engine.get();
+            try {
+                Field f = webEngine.getClass().getDeclaredField("page");
+                f.setAccessible(true);
+
+                WebPage page = (WebPage) f.get(webEngine);
+                page.addLoadListenerClient(listener);
+            } catch (NoSuchFieldException | IllegalAccessException ex) {
+                return ex;
+            }
+
+            return null;
+        });
+
+        if (e != null) {
+            throw new RuntimeException("", e);
+        }
     }
 }
