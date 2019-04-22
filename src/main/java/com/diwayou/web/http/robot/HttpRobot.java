@@ -55,10 +55,7 @@ public class HttpRobot implements Closeable {
         RobotDriverWait driverWait = new RobotDriverWait(driver, timeOutInSeconds);
         driverWait.until(pageLoadReady);
 
-        Set<String> curRequestUrls = requestUrls;
-        requestUrls = null;
-
-        return new DocumentInfo(driver.getDocument(), curRequestUrls);
+        return new DocumentInfo(driver.getDocument(), requestUrls);
     }
 
     public DocumentInfo get(String url, long timeOutInSeconds) throws Exception {
@@ -69,10 +66,28 @@ public class HttpRobot implements Closeable {
         return get(url, DEFAULT_TIMEOUT);
     }
 
+    public Object executeScript(String script, long timeOutInSeconds, PageLoadReady<RobotDriver> pageLoadReady) {
+        Object result = driver.executeScript(script);
+
+        RobotDriverWait driverWait = new RobotDriverWait(driver, timeOutInSeconds);
+        driverWait.until(pageLoadReady);
+
+        return result;
+    }
+
+    public Object executeScript(String script, long timeOutInSeconds) {
+        return executeScript(script, timeOutInSeconds, new DefaultPageLoadReady<>(timeOutInSeconds));
+    }
+
+    public Object executeScript(String script) {
+        return executeScript(script, DEFAULT_TIMEOUT);
+    }
+
     @Override
     public void close() {
         if (pool != null) {
             driver.get("about:blank");
+            requestUrls = null;
             pool.returnResource(this);
         } else {
             quit();

@@ -6,9 +6,11 @@ import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.crawl.SpiderBuilder;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.domain.Script;
 import com.diwayou.web.fetcher.FetcherFactory;
 import com.diwayou.web.store.MemoryUrlStore;
 import com.diwayou.web.store.UrlStore;
+import com.google.common.collect.Lists;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -26,7 +28,13 @@ public class App {
 
         Request request = new Request("https://detail.tmall.com/item.htm?id=43165859354")
                 .setFetcherType(FetcherType.FX_WEBVIEW)
-                .setTimeout(10);
+                .setTimeout(5)
+                .setScripts(Lists.newArrayList(
+                        new Script("window.scroll(0, 500000000)", 1),
+                        new Script("window.scroll(0, 1000)", 1),
+                        new Script("window.scroll(0, 2000)", 1),
+                        new Script("window.scroll(0, 3000)", 5)
+                ));
         spider.submitRequest(request);
 
         spider.waitUntilStop();

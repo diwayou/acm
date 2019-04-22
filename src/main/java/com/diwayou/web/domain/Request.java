@@ -1,5 +1,6 @@
 package com.diwayou.web.domain;
 
+import java.util.List;
 import java.util.Map;
 
 public class Request {
@@ -38,6 +39,8 @@ public class Request {
      * 扩展信息
      */
     private Map<String, String> attributes;
+
+    private List<Script> scripts;
 
     public Request(String url) {
         this.url = url;
@@ -103,6 +106,15 @@ public class Request {
 
     public Request setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
+        return this;
+    }
+
+    public List<Script> getScripts() {
+        return scripts;
+    }
+
+    public Request setScripts(List<Script> scripts) {
+        this.scripts = scripts;
         return this;
     }
 

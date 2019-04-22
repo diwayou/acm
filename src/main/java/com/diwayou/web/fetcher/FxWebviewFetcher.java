@@ -6,6 +6,8 @@ import com.diwayou.web.http.robot.HttpRobot;
 import com.diwayou.web.http.robot.HttpRobotPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
+import java.util.List;
+
 public class FxWebviewFetcher implements Fetcher {
 
     private HttpRobotPool pool;
@@ -27,9 +29,19 @@ public class FxWebviewFetcher implements Fetcher {
         try (HttpRobot robot = pool.getResource()) {
             DocumentInfo body = robot.get(request.getUrl(), request.getTimeout());
 
+            if (request.getScripts() != null && request.getScripts() != null) {
+                exeScript(robot, request.getScripts());
+            }
+
             return new HtmlDocumentPage(request, body.getHtmlDocument(), body.getResourceUrls());
         } catch (Exception e) {
             return new EmptyPage(request, e);
+        }
+    }
+
+    private void exeScript(HttpRobot robot, List<Script> scripts) {
+        for (Script script : scripts) {
+            robot.executeScript(script.getSrc(), script.getTimeout());
         }
     }
 

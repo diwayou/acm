@@ -71,7 +71,7 @@ public class CrawlPageHandler implements PageHandler {
             return;
         }
 
-        if (PageUtil.getContentLength(page) < 1024 * 2) {
+        if (PageUtil.getContentLength(page) < 1024 * 20) {
             return;
         }
 
