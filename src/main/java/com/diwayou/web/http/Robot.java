@@ -14,7 +14,7 @@ public class Robot {
     }
 
     private static void getContent(HttpRobot robot) throws Exception {
-        HTMLDocument content = robot.get("http://sports.qq.com/nba/", 10);
+        HTMLDocument content = robot.get("http://sports.qq.com/nba/", 10).getHtmlDocument();
         Document document = Jsoup.parse(DocumentUtil.toString(content));
 
         document.select("a[href]").stream()

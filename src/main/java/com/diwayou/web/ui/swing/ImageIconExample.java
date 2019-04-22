@@ -108,7 +108,7 @@ public class ImageIconExample extends JFrame {
         @Override
         protected Void doInBackground() throws Exception {
             HttpRobot robot = new HttpRobot();
-            HTMLDocument htmlDocument = robot.get("http://m.51tiangou.com");
+            HTMLDocument htmlDocument = robot.get("http://m.51tiangou.com").getHtmlDocument();
             String content = DocumentUtil.toString(htmlDocument);
             Document document = Jsoup.parse(content);
 

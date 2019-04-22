@@ -13,15 +13,13 @@ import com.diwayou.web.url.URLCanonicalizer;
 import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.html.HTMLCollection;
-import org.w3c.dom.html.HTMLImageElement;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -60,17 +58,10 @@ public class CrawlPageHandler implements PageHandler {
             submit(document.select("img").stream()
                     .map(e -> e.attr("src")), page, spider);
         } else if (page.getRequest().getFetcherType().equals(FetcherType.FX_WEBVIEW)) {
-            HtmlDocumentPage htmlDocumentPage = (HtmlDocumentPage) page;
-            HTMLCollection htmlCollection = htmlDocumentPage.getDocument().getImages();
+            Set<String> resourceUrls = ((HtmlDocumentPage)page).getResourceUrls();
 
-            for (int i = 0; i < htmlCollection.getLength(); i++) {
-                Node node = htmlCollection.item(i);
-                String src = ((HTMLImageElement) node).getSrc();
-                if (src == null) {
-                    return;
-                }
-
-                spider.submitRequest(newRequest(src, page.getRequest()));
+            for (String resourceUrl : resourceUrls) {
+                spider.submitRequest(newRequest(resourceUrl.replaceAll("[\\d]+x[\\d]+", "430x430"), page.getRequest()));
             }
         }
     }
@@ -80,7 +71,7 @@ public class CrawlPageHandler implements PageHandler {
             return;
         }
 
-        if (PageUtil.getContentLength(page) < 1024 * 10) {
+        if (PageUtil.getContentLength(page) < 1024 * 2) {
             return;
         }
 

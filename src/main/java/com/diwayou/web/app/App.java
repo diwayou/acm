@@ -24,9 +24,9 @@ public class App {
                 .setPageExecutor(pageExecutor)
                 .build();
 
-        Request request = new Request("https://detail.tmall.com/item.htm?id=44274748177")
+        Request request = new Request("https://detail.tmall.com/item.htm?id=43165859354")
                 .setFetcherType(FetcherType.FX_WEBVIEW)
-                .setTimeout(5);
+                .setTimeout(10);
         spider.submitRequest(request);
 
         spider.waitUntilStop();

@@ -1,10 +1,10 @@
 package com.diwayou.web.fetcher;
 
 import com.diwayou.web.domain.*;
+import com.diwayou.web.http.robot.DocumentInfo;
 import com.diwayou.web.http.robot.HttpRobot;
 import com.diwayou.web.http.robot.HttpRobotPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.w3c.dom.html.HTMLDocument;
 
 public class FxWebviewFetcher implements Fetcher {
 
@@ -25,9 +25,9 @@ public class FxWebviewFetcher implements Fetcher {
     @Override
     public Page fetch(Request request) {
         try (HttpRobot robot = pool.getResource()) {
-            HTMLDocument body = robot.get(request.getUrl(), request.getTimeout());
+            DocumentInfo body = robot.get(request.getUrl(), request.getTimeout());
 
-            return new HtmlDocumentPage(request, body);
+            return new HtmlDocumentPage(request, body.getHtmlDocument(), body.getResourceUrls());
         } catch (Exception e) {
             return new EmptyPage(request, e);
         }

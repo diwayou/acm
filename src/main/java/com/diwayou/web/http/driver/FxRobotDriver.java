@@ -22,19 +22,38 @@ public class FxRobotDriver implements RobotDriver {
 
     private AtomicReference<WebEngine> engine = new AtomicReference<>();
 
+    private AtomicReference<WebPage> page = new AtomicReference<>();
+
     public FxRobotDriver() {
         // 启用CORS
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
 
-        AppThread.exec(() -> {
+        ReflectiveOperationException re = AppThread.exec(() -> {
             WebView v = new WebView();
             Scene s = new Scene(v);
             p.setScene(s);
 
-            engine.set(v.getEngine());
+            WebEngine webEngine = v.getEngine();
+            engine.set(webEngine);
 
-            return null;
+            Field f;
+            ReflectiveOperationException exception = null;
+            try {
+                f = webEngine.getClass().getDeclaredField("page");
+                f.setAccessible(true);
+                WebPage webPage = (WebPage) f.get(webEngine);
+
+                page.set(webPage);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                exception = e;
+            }
+
+            return exception;
         });
+
+        if (re != null) {
+            throw new RuntimeException(re);
+        }
     }
 
     @Override
@@ -59,23 +78,9 @@ public class FxRobotDriver implements RobotDriver {
 
     @Override
     public void addResourceLoadListener(LoadListenerClient listener) {
-        Exception e = AppThread.exec(() -> {
-            WebEngine webEngine = engine.get();
-            try {
-                Field f = webEngine.getClass().getDeclaredField("page");
-                f.setAccessible(true);
-
-                WebPage page = (WebPage) f.get(webEngine);
-                page.addLoadListenerClient(listener);
-            } catch (NoSuchFieldException | IllegalAccessException ex) {
-                return ex;
-            }
-
+        AppThread.exec(() -> {
+            page.get().addLoadListenerClient(listener);
             return null;
         });
-
-        if (e != null) {
-            throw new RuntimeException("", e);
-        }
     }
 }
