@@ -1,12 +1,12 @@
 package com.diwayou.web.domain;
 
+import com.diwayou.web.support.PageUtil;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 
 public class StreamPage extends Page {
 
@@ -20,7 +20,7 @@ public class StreamPage extends Page {
     @Override
     public String bodyAsString() {
         try {
-            return IOUtils.toString(httpResponse.body(), StandardCharsets.UTF_8);
+            return IOUtils.toString(httpResponse.body(), PageUtil.getCharset(this));
         } catch (IOException e) {
             throw new RuntimeException("拉取消息失败", e);
         }

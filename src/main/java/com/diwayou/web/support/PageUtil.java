@@ -4,6 +4,9 @@ import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.google.common.net.HttpHeaders;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 public class PageUtil {
 
     public static boolean isHtml(Page page) {
@@ -25,6 +28,21 @@ public class PageUtil {
         }
 
         return contentType.contains("image");
+    }
+
+    public static Charset getCharset(Page page) {
+        String contentType = getContentType(page);
+        if (contentType == null) {
+            return StandardCharsets.UTF_8;
+        }
+
+        int idx = contentType.indexOf("=");
+
+        if (idx > 0) {
+            return Charset.forName(contentType.substring(idx + 1));
+        }
+
+        return StandardCharsets.UTF_8;
     }
 
     public static String getImageExt(String contentType) {
