@@ -1,4 +1,4 @@
-package com.diwayou.acm.net.pcap;
+package com.diwayou.net.pcap;
 
 import com.sun.jna.Platform;
 import org.pcap4j.core.*;

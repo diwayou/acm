@@ -1,4 +1,4 @@
-package com.diwayou.acm.net.udp;
+package com.diwayou.net.udp;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
