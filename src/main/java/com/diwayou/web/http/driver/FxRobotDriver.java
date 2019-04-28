@@ -18,20 +18,22 @@ public class FxRobotDriver implements RobotDriver {
 
     private static final Logger log = Logger.getLogger(FxRobotDriver.class.getName());
 
-    private JFXPanel p = new JFXPanel();
+    private JFXPanel panel = new JFXPanel();
 
     private AtomicReference<WebEngine> engine = new AtomicReference<>();
 
     private AtomicReference<WebPage> page = new AtomicReference<>();
 
-    public FxRobotDriver() {
+    static {
         // 启用CORS
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+    }
 
+    public FxRobotDriver() {
         ReflectiveOperationException re = AppThread.exec(() -> {
             WebView v = new WebView();
             Scene s = new Scene(v);
-            p.setScene(s);
+            panel.setScene(s);
 
             WebEngine webEngine = v.getEngine();
             engine.set(webEngine);
@@ -54,6 +56,10 @@ public class FxRobotDriver implements RobotDriver {
         if (re != null) {
             throw new RuntimeException(re);
         }
+    }
+
+    public JFXPanel getPanel() {
+        return panel;
     }
 
     @Override
