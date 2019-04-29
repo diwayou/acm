@@ -3,7 +3,7 @@ package com.diwayou.acm.book;
 /*************************************************************************
  *  Compilation:  javac SET.java
  *  Execution:    java SET
- *  
+ *
  *  Set implementation using Java's TreeSet library.
  *  Does not allow duplicates.
  *
@@ -28,21 +28,20 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 
-
 /**
- *  The <tt>SET</tt> class represents an ordered set. It assumes that
- *  the elements are <tt>Comparable</tt>.
- *  It supports the usual <em>add</em>, <em>contains</em>, and <em>delete</em>
- *  methods. It also provides ordered methods for finding the <em>minimum</em>,
- *  <em>maximum</em>, <em>floor</em>, and <em>ceiling</em>.
- *  <p>
- *  This implementation uses a balanced binary search tree.
- *  The <em>add</em>, <em>contains</em>, <em>delete</em>, <em>minimum</em>,
- *  <em>maximum</em>, <em>ceiling</em>, and <em>floor</em> methods take
- *  logarithmic time.
- *  <p>
- *  For additional documentation, see <a href="/algs4/45applications">Section 4.5</a> of
- *  <i>Algorithms in Java, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The <tt>SET</tt> class represents an ordered set. It assumes that
+ * the elements are <tt>Comparable</tt>.
+ * It supports the usual <em>add</em>, <em>contains</em>, and <em>delete</em>
+ * methods. It also provides ordered methods for finding the <em>minimum</em>,
+ * <em>maximum</em>, <em>floor</em>, and <em>ceiling</em>.
+ * <p>
+ * This implementation uses a balanced binary search tree.
+ * The <em>add</em>, <em>contains</em>, <em>delete</em>, <em>minimum</em>,
+ * <em>maximum</em>, <em>ceiling</em>, and <em>floor</em> methods take
+ * logarithmic time.
+ * <p>
+ * For additional documentation, see <a href="/algs4/45applications">Section 4.5</a> of
+ * <i>Algorithms in Java, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 
 public class SET<Key extends Comparable<Key>> implements Iterable<Key> {
@@ -61,7 +60,7 @@ public class SET<Key extends Comparable<Key>> implements Iterable<Key> {
     public boolean isEmpty() {
         return set.isEmpty();
     }
- 
+
     /**
      * Add the key to this set.
      */
@@ -138,8 +137,12 @@ public class SET<Key extends Comparable<Key>> implements Iterable<Key> {
      */
     public SET<Key> union(SET<Key> that) {
         SET<Key> c = new SET<Key>();
-        for (Key x : this) { c.add(x); }
-        for (Key x : that) { c.add(x); }
+        for (Key x : this) {
+            c.add(x);
+        }
+        for (Key x : that) {
+            c.add(x);
+        }
         return c;
     }
 
@@ -152,8 +155,7 @@ public class SET<Key extends Comparable<Key>> implements Iterable<Key> {
             for (Key x : this) {
                 if (that.contains(x)) c.add(x);
             }
-        }
-        else {
+        } else {
             for (Key x : that) {
                 if (this.contains(x)) c.add(x);
             }
@@ -173,16 +175,15 @@ public class SET<Key extends Comparable<Key>> implements Iterable<Key> {
         try {
             for (Key k : this)
                 if (!that.contains(k)) return false;
-        }
-        catch (ClassCastException exception) {
+        } catch (ClassCastException exception) {
             return false;
         }
         return true;
     }
 
-   /***********************************************************************
-    * Test routine.
-    **********************************************************************/
+    /***********************************************************************
+     * Test routine.
+     **********************************************************************/
     public static void main(String[] args) {
         SET<String> set = new SET<String>();
 

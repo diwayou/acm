@@ -74,12 +74,15 @@ public class FxRobotDriver implements RobotDriver {
 
     @Override
     public void get(String url) {
-        AppThread.exec(() -> {engine.get().load(url); return null;});
+        AppThread.exec(() -> {
+            engine.get().load(url);
+            return null;
+        });
     }
 
     @Override
     public HTMLDocument getDocument() {
-        return AppThread.exec(() -> (HTMLDocument)engine.get().getDocument());
+        return AppThread.exec(() -> (HTMLDocument) engine.get().getDocument());
     }
 
     @Override

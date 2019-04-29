@@ -14,7 +14,7 @@ public class FilenameUtil {
      * 例如prefix="image" file="/tmp/abc.png"，返回结果是panorama/2018/09/30/B8E36A0B-1798-4B63-9D0E-BE483DB5AEDB.png
      *
      * @param prefix 业务前缀
-     * @param name 文件名
+     * @param name   文件名
      * @return 图片的路径
      */
     public static String genPath(String prefix, String name) {

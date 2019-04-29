@@ -20,13 +20,13 @@ import com.diwayou.acm.util.StdOut;
  *   10z     = [ 60.0 40.0 70.0 50.0 ]
  *    |x|    = 5.477225575051661
  *   <x, y>  = 25.0
- * 
+ *
  *
  *  Note that Vector is also the name of an unrelated Java library class.
  *
  *************************************************************************/
 
-public class Vector { 
+public class Vector {
 
     private int N;               // length of the vector
     private double[] data;       // array of vector's components
@@ -136,12 +136,10 @@ public class Vector {
     }
 
 
-
-
     // test client
     public static void main(String[] args) {
-        double[] xdata = { 1.0, 2.0, 3.0, 4.0 };
-        double[] ydata = { 5.0, 2.0, 4.0, 1.0 };
+        double[] xdata = {1.0, 2.0, 3.0, 4.0};
+        double[] ydata = {5.0, 2.0, 4.0, 1.0};
         Vector x = new Vector(xdata);
         Vector y = new Vector(ydata);
 

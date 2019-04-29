@@ -19,10 +19,10 @@ package com.diwayou.acm.leetcode.tree;// Given a binary tree, determine if it is
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode(int x) { val = x; }
  * }
  */
 public class ValidateBinarySearchTree {
@@ -37,17 +37,17 @@ public class ValidateBinarySearchTree {
     }
 
     public boolean isValidBST(TreeNode root) {
-        if(root == null) {
+        if (root == null) {
             return true;
         }
-        
+
         return validBSTRecursive(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
-    
+
     public boolean validBSTRecursive(TreeNode root, long minValue, long maxValue) {
-        if(root == null) {
+        if (root == null) {
             return true;
-        } else if(root.val >= maxValue || root.val <= minValue) {
+        } else if (root.val >= maxValue || root.val <= minValue) {
             return false;
         } else {
             return validBSTRecursive(root.left, minValue, root.val) && validBSTRecursive(root.right, root.val, maxValue);

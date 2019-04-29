@@ -32,11 +32,11 @@ public class DoublingTest {
     }
 
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
         for (int N = 250; true; N += N) {
             double time = timeTrial(N);
             StdOut.printf("%7d %5.1f\n", N, time);
-        } 
-    } 
+        }
+    }
 } 
 

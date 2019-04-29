@@ -59,7 +59,7 @@ public class Friends {
         //store number of test cases
         int testCases = Integer.parseInt(line);
 
-        for(int i = 0; i < testCases; i++) {
+        for (int i = 0; i < testCases; i++) {
 
             //determine number of people and pairs of people (N and M)
             String[] info = br.readLine().split(" ");
@@ -69,7 +69,7 @@ public class Friends {
             startUnion(numberOfPeople, people, relationships);
 
             //iterate through all relationships
-            for(int j = 0; j < numberOfRelationship ; j++) {
+            for (int j = 0; j < numberOfRelationship; j++) {
 
                 //split current line to determine person and friend
                 String[] currentLine = br.readLine().split(" ");
@@ -83,7 +83,7 @@ public class Friends {
             int maxGroup = 1;
 
             //iterate through relationships to find the largest group
-            for(int j = 0; j <= numberOfPeople; j++) {
+            for (int j = 0; j <= numberOfPeople; j++) {
 
                 //update max as needed
                 maxGroup = relationships[j] > maxGroup ? relationships[j] : maxGroup;
@@ -99,7 +99,7 @@ public class Friends {
 
     public static void startUnion(int numberOfPeople, int[] people, int[] relationships) {
 
-        for(int i = 0; i <= numberOfPeople; i++) {
+        for (int i = 0; i <= numberOfPeople; i++) {
 
             //initialize each individual person
             people[i] = i;
@@ -117,7 +117,7 @@ public class Friends {
         person = find(person);
         friend = find(friend);
 
-        if(person != friend) {
+        if (person != friend) {
 
             //add connection between person and friend
             join(person, friend);
@@ -129,7 +129,7 @@ public class Friends {
     public static int find(int person) {
 
         //traverse parents of tree if possible
-        if(people[person] != person) {
+        if (people[person] != person) {
 
             people[person] = find(people[person]);
 
@@ -142,14 +142,12 @@ public class Friends {
     public static void join(int person, int friend) {
 
         //find larger group of the two and make sure both person and friend point to it
-        if(relationships[person] > relationships[friend]) {
+        if (relationships[person] > relationships[friend]) {
 
             relationships[person] += relationships[friend];
             people[friend] = person;
 
-        }
-
-        else {
+        } else {
 
             relationships[friend] += relationships[person];
             people[person] = friend;

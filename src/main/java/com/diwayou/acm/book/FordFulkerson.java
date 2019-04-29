@@ -16,7 +16,7 @@ public class FordFulkerson {
     private boolean[] marked;     // marked[v] = true iff s->v path in residual graph
     private FlowEdge[] edgeTo;    // edgeTo[v] = last edge on shortest residual s->v path
     private double value;         // current value of max flow
-  
+
     // max flow in flow network G from s to t
     public FordFulkerson(FlowNetwork G, int s, int t) {
         value = excess(G, t);
@@ -35,7 +35,7 @@ public class FordFulkerson {
 
             // augment flow
             for (int v = t; v != s; v = edgeTo[v].other(v)) {
-                edgeTo[v].addResidualFlowTo(v, bottle); 
+                edgeTo[v].addResidualFlowTo(v, bottle);
             }
 
             value += bottle;
@@ -46,12 +46,12 @@ public class FordFulkerson {
     }
 
     // return value of max flow
-    public double value()  {
+    public double value() {
         return value;
     }
 
     // is v in the s side of the min s-t cut?
-    public boolean inCut(int v)  {
+    public boolean inCut(int v) {
         return marked[v];
     }
 
@@ -87,13 +87,12 @@ public class FordFulkerson {
     }
 
 
-
     // return excess flow at vertex v
     private double excess(FlowNetwork G, int v) {
         double excess = 0.0;
         for (FlowEdge e : G.adj(v)) {
             if (v == e.from()) excess -= e.flow();
-            else               excess += e.flow();
+            else excess += e.flow();
         }
         return excess;
     }
@@ -132,7 +131,6 @@ public class FordFulkerson {
         }
         return true;
     }
-
 
 
     // check optimality conditions
@@ -179,7 +177,7 @@ public class FordFulkerson {
         // create flow network with V vertices and E edges
         int V = Integer.parseInt(args[0]);
         int E = Integer.parseInt(args[1]);
-        int s = 0, t = V-1;
+        int s = 0, t = V - 1;
         FlowNetwork G = new FlowNetwork(V, E);
         StdOut.println(G);
 
@@ -200,7 +198,7 @@ public class FordFulkerson {
         }
         StdOut.println();
 
-        StdOut.println("Max flow value = " +  maxflow.value());
+        StdOut.println("Max flow value = " + maxflow.value());
     }
 
 }

@@ -21,18 +21,18 @@ import java.util.List;
 public class BinaryWatch {
     public List<String> readBinaryWatch(int num) {
         ArrayList<String> allTimes = new ArrayList<String>();
-        
+
         //iterate through all possible time combinations
-        for(int i = 0; i < 12; i++) {
-            for(int j = 0; j < 60; j++) {
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 60; j++) {
                 //if the current number and n have the same number of bits the time is possible
-                if(Integer.bitCount(i * 64 + j) == num) {
+                if (Integer.bitCount(i * 64 + j) == num) {
                     //add the current time to all times arraylist
                     allTimes.add(String.format("%d:%02d", i, j));
                 }
             }
         }
-        
+
         return allTimes;
     }
 }

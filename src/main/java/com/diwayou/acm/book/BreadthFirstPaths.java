@@ -145,12 +145,10 @@ public class BreadthFirstPaths {
                 StdOut.printf("%d to %d (%d):  ", s, v, bfs.distTo(v));
                 for (int x : bfs.pathTo(v)) {
                     if (x == s) StdOut.print(x);
-                    else        StdOut.print("-" + x);
+                    else StdOut.print("-" + x);
                 }
                 StdOut.println();
-            }
-
-            else {
+            } else {
                 StdOut.printf("%d to %d (-):  not connected\n", s, v);
             }
 

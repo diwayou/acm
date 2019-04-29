@@ -28,9 +28,9 @@ public class DirectedCycle {
     private Stack<Integer> cycle;    // directed cycle (or null if no such cycle)
 
     public DirectedCycle(Digraph G) {
-        marked  = new boolean[G.V()];
+        marked = new boolean[G.V()];
         onStack = new boolean[G.V()];
-        edgeTo  = new int[G.V()];
+        edgeTo = new int[G.V()];
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
 
@@ -48,7 +48,7 @@ public class DirectedCycle {
             // short circuit if directed cycle found
             if (cycle != null) return;
 
-            //found new vertex, so recur
+                //found new vertex, so recur
             else if (!marked[w]) {
                 edgeTo[w] = v;
                 dfs(G, w);
@@ -68,8 +68,13 @@ public class DirectedCycle {
         onStack[v] = false;
     }
 
-    public boolean hasCycle()        { return cycle != null;   }
-    public Iterable<Integer> cycle() { return cycle;           }
+    public boolean hasCycle() {
+        return cycle != null;
+    }
+
+    public Iterable<Integer> cycle() {
+        return cycle;
+    }
 
 
     // certify that digraph is either acyclic or has a directed cycle
@@ -103,9 +108,7 @@ public class DirectedCycle {
                 StdOut.print(v + " ");
             }
             StdOut.println();
-        }
-
-        else {
+        } else {
             StdOut.println("No cycle");
         }
     }

@@ -29,7 +29,7 @@ public class AssignmentProblem {
     private int[] xy;           // xy[i] = j means i-j is a match
     private int[] yx;           // yx[j] = i means i-j is a match
 
- 
+
     public AssignmentProblem(double[][] weight) {
         N = weight.length;
         this.weight = new double[N][N];
@@ -61,18 +61,18 @@ public class AssignmentProblem {
     private void augment() {
 
         // build residual graph
-        EdgeWeightedDigraph G = new EdgeWeightedDigraph(2*N+2);
-        int s = 2*N, t = 2*N+1;
+        EdgeWeightedDigraph G = new EdgeWeightedDigraph(2 * N + 2);
+        int s = 2 * N, t = 2 * N + 1;
         for (int i = 0; i < N; i++) {
             if (xy[i] == UNMATCHED) G.addEdge(new DirectedEdge(s, i, 0.0));
         }
         for (int j = 0; j < N; j++) {
-            if (yx[j] == UNMATCHED) G.addEdge(new DirectedEdge(N+j, t, py[j]));
+            if (yx[j] == UNMATCHED) G.addEdge(new DirectedEdge(N + j, t, py[j]));
         }
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (xy[i] == j) G.addEdge(new DirectedEdge(N+j, i, 0.0));
-                else            G.addEdge(new DirectedEdge(i, N+j, reduced(i, j)));
+                if (xy[i] == j) G.addEdge(new DirectedEdge(N + j, i, 0.0));
+                else G.addEdge(new DirectedEdge(i, N + j, reduced(i, j)));
             }
         }
 
@@ -90,7 +90,7 @@ public class AssignmentProblem {
 
         // update dual variables
         for (int i = 0; i < N; i++) px[i] += spt.distTo(i);
-        for (int j = 0; j < N; j++) py[j] += spt.distTo(N+j);
+        for (int j = 0; j < N; j++) py[j] += spt.distTo(N + j);
     }
 
     // reduced cost of i-j

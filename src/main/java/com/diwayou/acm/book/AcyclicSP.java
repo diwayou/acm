@@ -50,7 +50,7 @@ public class AcyclicSP {
         if (distTo[w] > distTo[v] + e.weight()) {
             distTo[w] = distTo[v] + e.weight();
             edgeTo[w] = e;
-        }       
+        }
     }
 
     // return length of the shortest path from s to v, infinity if no such path
@@ -74,7 +74,6 @@ public class AcyclicSP {
     }
 
 
-
     public static void main(String[] args) {
         In in = new In(args[0]);
         int s = Integer.parseInt(args[1]);
@@ -89,8 +88,7 @@ public class AcyclicSP {
                     StdOut.print(e + "   ");
                 }
                 StdOut.println();
-            }
-            else {
+            } else {
                 StdOut.printf("%d to %d         no path\n", s, v);
             }
         }

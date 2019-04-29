@@ -18,7 +18,7 @@ import com.diwayou.acm.util.StdRandom;
  *
  *************************************************************************/
 
-public class RandomSeq { 
+public class RandomSeq {
     public static void main(String[] args) {
 
         // command-line arguments

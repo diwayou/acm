@@ -5,17 +5,17 @@ package com.diwayou.acm.leetcode.bitmanipulation;// Write a function that takes 
 public class NumberOfOneBits {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
-        if(n == 0) {
+        if (n == 0) {
             return 0;
         }
-        
+
         int count = 0;
-        
-        while(n != 0) {
+
+        while (n != 0) {
             count += (n) & 1;
             n >>>= 1;
         }
-        
+
         return count;
     }
 }

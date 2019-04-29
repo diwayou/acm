@@ -29,7 +29,7 @@ package com.diwayou.acm.book; /*************************************************
  *  1: 220 203 200 194 189 164 150 130 107 72 
  *  2: 141 110 108 86 79 51 42 18 14 
  *  ...
- *  
+ *
  *************************************************************************/
 
 
@@ -37,21 +37,21 @@ import com.diwayou.acm.util.In;
 import com.diwayou.acm.util.StdOut;
 
 /**
- *  The <tt>Graph</tt> class represents an undirected graph of vertices
- *  named 0 through V-1.
- *  It supports the following operations: add an edge to the graph,
- *  iterate over all of the neighbors adjacent to a vertex.
- *  Parallel edges and self-loops are permitted.
- *  <p>
- *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/51undirected">Section 5.1</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The <tt>Graph</tt> class represents an undirected graph of vertices
+ * named 0 through V-1.
+ * It supports the following operations: add an edge to the graph,
+ * iterate over all of the neighbors adjacent to a vertex.
+ * Parallel edges and self-loops are permitted.
+ * <p>
+ * For additional documentation, see <a href="http://algs4.cs.princeton.edu/51undirected">Section 5.1</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 public class Graph {
     private final int V;
     private int E;
     private Bag<Integer>[] adj;
-    
-   /**
+
+    /**
      * Create an empty graph with V vertices.
      */
     public Graph(int V) {
@@ -64,7 +64,7 @@ public class Graph {
         }
     }
 
-   /**
+    /**
      * Create a random graph with V vertices and E edges.
      * Expected running time is proportional to V + E.
      */
@@ -78,7 +78,7 @@ public class Graph {
         }
     }
 
-   /**  
+    /**
      * Create a digraph from input stream.
      */
     public Graph(In in) {
@@ -91,7 +91,7 @@ public class Graph {
         }
     }
 
-   /**
+    /**
      * Copy constructor.
      */
     public Graph(Graph G) {
@@ -109,18 +109,22 @@ public class Graph {
         }
     }
 
-   /**
+    /**
      * Return the number of vertices in the graph.
      */
-    public int V() { return V; }
+    public int V() {
+        return V;
+    }
 
-   /**
+    /**
      * Return the number of edges in the graph.
      */
-    public int E() { return E; }
+    public int E() {
+        return E;
+    }
 
 
-   /**
+    /**
      * Add the edge v-w to graph.
      */
     public void addEdge(int v, int w) {
@@ -130,7 +134,7 @@ public class Graph {
     }
 
 
-   /**
+    /**
      * Return the list of neighbors of vertex v as in Iterable.
      */
     public Iterable<Integer> adj(int v) {
@@ -138,7 +142,7 @@ public class Graph {
     }
 
 
-   /**
+    /**
      * Return a string representation of the graph.
      */
     public String toString() {
@@ -156,7 +160,7 @@ public class Graph {
     }
 
 
-   /**
+    /**
      * Test client.
      */
     public static void main(String[] args) {

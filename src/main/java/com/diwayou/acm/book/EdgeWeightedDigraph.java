@@ -11,23 +11,22 @@ import com.diwayou.acm.util.In;
 import com.diwayou.acm.util.StdOut;
 
 /**
- *  The <tt>EdgeWeightedDigraph</tt> class represents an directed graph of vertices
- *  named 0 through V-1, where each edge has a real-valued weight.
- *  It supports the following operations: add an edge to the graph,
- *  iterate over all of edges leaving a vertex.
- *  Parallel edges and self-loops are permitted.
- *  <p>
- *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/44sp">Section 4.4</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The <tt>EdgeWeightedDigraph</tt> class represents an directed graph of vertices
+ * named 0 through V-1, where each edge has a real-valued weight.
+ * It supports the following operations: add an edge to the graph,
+ * iterate over all of edges leaving a vertex.
+ * Parallel edges and self-loops are permitted.
+ * <p>
+ * For additional documentation, see <a href="http://algs4.cs.princeton.edu/44sp">Section 4.4</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
-
 
 
 public class EdgeWeightedDigraph {
     private final int V;
     private int E;
     private Bag<DirectedEdge>[] adj;
-    
+
     /**
      * Create an empty edge-weighted digraph with V vertices.
      */
@@ -40,7 +39,7 @@ public class EdgeWeightedDigraph {
             adj[v] = new Bag<DirectedEdge>();
     }
 
-   /**
+    /**
      * Create a edge-weighted digraph with V vertices and E edges.
      */
     public EdgeWeightedDigraph(int V, int E) {
@@ -69,7 +68,7 @@ public class EdgeWeightedDigraph {
         }
     }
 
-   /**
+    /**
      * Copy constructor.
      */
     public EdgeWeightedDigraph(EdgeWeightedDigraph G) {
@@ -87,14 +86,14 @@ public class EdgeWeightedDigraph {
         }
     }
 
-   /**
+    /**
      * Return the number of vertices in this digraph.
      */
     public int V() {
         return V;
     }
 
-   /**
+    /**
      * Return the number of edges in this digraph.
      */
     public int E() {
@@ -102,7 +101,7 @@ public class EdgeWeightedDigraph {
     }
 
 
-   /**
+    /**
      * Add the edge e to this digraph.
      */
     public void addEdge(DirectedEdge e) {
@@ -112,7 +111,7 @@ public class EdgeWeightedDigraph {
     }
 
 
-   /**
+    /**
      * Return the edges leaving vertex v as an Iterable.
      * To iterate over the edges leaving vertex v, use foreach notation:
      * <tt>for (DirectedEdge e : graph.adj(v))</tt>.
@@ -121,7 +120,7 @@ public class EdgeWeightedDigraph {
         return adj[v];
     }
 
-   /**
+    /**
      * Return all edges in this graph as an Iterable.
      * To iterate over the edges, use foreach notation:
      * <tt>for (DirectedEdge e : graph.edges())</tt>.
@@ -134,9 +133,9 @@ public class EdgeWeightedDigraph {
             }
         }
         return list;
-    } 
+    }
 
-   /**
+    /**
      * Return number of edges leaving v.
      */
     public int outdegree(int v) {
@@ -144,8 +143,7 @@ public class EdgeWeightedDigraph {
     }
 
 
-
-   /**
+    /**
      * Return a string representation of this graph.
      */
     public String toString() {

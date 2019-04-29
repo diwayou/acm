@@ -66,7 +66,7 @@ public class DijkstraSP {
             distTo[w] = distTo[v] + e.weight();
             edgeTo[w] = e;
             if (pq.contains(w)) pq.change(w, distTo[w]);
-            else                pq.insert(w, distTo[w]);
+            else pq.insert(w, distTo[w]);
         }
     }
 
@@ -162,8 +162,7 @@ public class DijkstraSP {
                     }
                 }
                 StdOut.println();
-            }
-            else {
+            } else {
                 StdOut.printf("%d to %d         no path\n", s, t);
             }
         }

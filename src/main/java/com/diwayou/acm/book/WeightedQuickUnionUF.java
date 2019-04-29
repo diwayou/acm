@@ -40,21 +40,26 @@ public class WeightedQuickUnionUF {
         return p;
     }
 
-   // Are objects p and q in the same set?
+    // Are objects p and q in the same set?
     public boolean connected(int p, int q) {
         return find(p) == find(q);
     }
 
-  
-   // Replace sets containing p and q with their union.
+
+    // Replace sets containing p and q with their union.
     public void union(int p, int q) {
         int i = find(p);
         int j = find(q);
         if (i == j) return;
 
         // make smaller root point to larger one
-        if   (sz[i] < sz[j]) { id[i] = j; sz[j] += sz[i]; }
-        else                 { id[j] = i; sz[i] += sz[j]; }
+        if (sz[i] < sz[j]) {
+            id[i] = j;
+            sz[j] += sz[i];
+        } else {
+            id[j] = i;
+            sz[i] += sz[j];
+        }
         count--;
     }
 
@@ -64,7 +69,7 @@ public class WeightedQuickUnionUF {
         WeightedQuickUnionUF uf = new WeightedQuickUnionUF(N);
 
         // read in a sequence of pairs of integers (each in the range 0 to N-1),
-         // calling find() for each pair: If the members of the pair are not already
+        // calling find() for each pair: If the members of the pair are not already
         // call union() and print the pair.
         while (!StdIn.isEmpty()) {
             int p = StdIn.readInt();

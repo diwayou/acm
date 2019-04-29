@@ -22,18 +22,18 @@ package com.diwayou.web.exception;
  */
 public class TimeoutException extends RuntimeException {
 
-  public TimeoutException() {
-  }
+    public TimeoutException() {
+    }
 
-  public TimeoutException(String message) {
-    super(message);
-  }
+    public TimeoutException(String message) {
+        super(message);
+    }
 
-  public TimeoutException(Throwable cause) {
-    super(cause);
-  }
+    public TimeoutException(Throwable cause) {
+        super(cause);
+    }
 
-  public TimeoutException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    public TimeoutException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

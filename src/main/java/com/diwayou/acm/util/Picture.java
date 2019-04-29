@@ -30,19 +30,19 @@ import java.net.URL;
 
 
 /**
- *  This class provides methods for manipulating individual pixels of
- *  an image. The original image can be read from a file in JPEG, GIF,
- *  or PNG format, or the user can create a blank image of a given size.
- *  This class includes methods for displaying the image in a window on
- *  the screen or saving to a file.
- *  <p>
- *  By default, pixel (x, y) is column x, row y, where (0, 0) is upper left.
- *  The method setOriginLowerLeft() change the origin to the lower left.
- *  <p>
- *  For additional documentation, see
- *  <a href="http://introcs.cs.princeton.edu/31datatype">Section 3.1</a> of
- *  <i>Introduction to Programming in Java: An Interdisciplinary Approach</i>
- *  by Robert Sedgewick and Kevin Wayne.
+ * This class provides methods for manipulating individual pixels of
+ * an image. The original image can be read from a file in JPEG, GIF,
+ * or PNG format, or the user can create a blank image of a given size.
+ * This class includes methods for displaying the image in a window on
+ * the screen or saving to a file.
+ * <p>
+ * By default, pixel (x, y) is column x, row y, where (0, 0) is upper left.
+ * The method setOriginLowerLeft() change the origin to the lower left.
+ * <p>
+ * For additional documentation, see
+ * <a href="http://introcs.cs.princeton.edu/31datatype">Section 3.1</a> of
+ * <i>Introduction to Programming in Java: An Interdisciplinary Approach</i>
+ * by Robert Sedgewick and Kevin Wayne.
  */
 public final class Picture implements ActionListener {
     private BufferedImage image;               // the rasterized image
@@ -51,7 +51,7 @@ public final class Picture implements ActionListener {
     private boolean isOriginUpperLeft = true;  // location of origin
     private int width, height;                 // width and height
 
-   /**
+    /**
      * Create a blank w-by-h picture, where each pixel is black.
      */
     public Picture(int w, int h) {
@@ -62,7 +62,7 @@ public final class Picture implements ActionListener {
         filename = w + "-by-" + h;
     }
 
-   /**
+    /**
      * Create a picture by reading in a .png, .gif, or .jpg from
      * the given filename or URL name.
      */
@@ -78,24 +78,26 @@ public final class Picture implements ActionListener {
             // now try to read from file in same directory as this .class file
             else {
                 URL url = getClass().getResource(filename);
-                if (url == null) { url = new URL(filename); }
+                if (url == null) {
+                    url = new URL(filename);
+                }
                 image = ImageIO.read(url);
             }
-            width  = image.getWidth(null);
+            width = image.getWidth(null);
             height = image.getHeight(null);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             // e.printStackTrace();
             throw new RuntimeException("Could not open file: " + filename);
         }
     }
 
-   /**
+    /**
      * Create a picture by reading in a .png, .gif, or .jpg from a File.
      */
     public Picture(File file) {
-        try { image = ImageIO.read(file); }
-        catch (IOException e) {
+        try {
+            image = ImageIO.read(file);
+        } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Could not open file: " + file);
         }
@@ -104,31 +106,33 @@ public final class Picture implements ActionListener {
         }
     }
 
-   /**
+    /**
      * Return a JLabel containing this Picture, for embedding in a JPanel,
      * JFrame or other GUI widget.
      */
     public JLabel getJLabel() {
-        if (image == null) { return null; }         // no image available
+        if (image == null) {
+            return null;
+        }         // no image available
         ImageIcon icon = new ImageIcon(image);
         return new JLabel(icon);
     }
 
-   /**
+    /**
      * Set the origin to be the upper left pixel.
      */
     public void setOriginUpperLeft() {
         isOriginUpperLeft = true;
     }
 
-   /**
+    /**
      * Set the origin to be the lower left pixel.
      */
     public void setOriginLowerLeft() {
         isOriginUpperLeft = false;
     }
 
-   /**
+    /**
      * Display the picture in a window on the screen.
      */
     public void show() {
@@ -143,10 +147,9 @@ public final class Picture implements ActionListener {
             JMenuItem menuItem1 = new JMenuItem(" Save...   ");
             menuItem1.addActionListener(this);
             menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
             menu.add(menuItem1);
             frame.setJMenuBar(menuBar);
-
 
 
             frame.setContentPane(getJLabel());
@@ -162,38 +165,40 @@ public final class Picture implements ActionListener {
         frame.repaint();
     }
 
-   /**
+    /**
      * Return the height of the picture in pixels.
      */
     public int height() {
         return height;
     }
 
-   /**
+    /**
      * Return the width of the picture in pixels.
      */
     public int width() {
         return width;
     }
 
-   /**
+    /**
      * Return the color of pixel (i, j).
      */
     public Color get(int i, int j) {
         if (isOriginUpperLeft) return new Color(image.getRGB(i, j));
-        else                   return new Color(image.getRGB(i, height - j - 1));
+        else return new Color(image.getRGB(i, height - j - 1));
     }
 
-   /**
+    /**
      * Set the color of pixel (i, j) to c.
      */
     public void set(int i, int j, Color c) {
-        if (c == null) { throw new RuntimeException("can't set Color to null"); }
+        if (c == null) {
+            throw new RuntimeException("can't set Color to null");
+        }
         if (isOriginUpperLeft) image.setRGB(i, j, c.getRGB());
-        else                   image.setRGB(i, height - j - 1, c.getRGB());
+        else image.setRGB(i, height - j - 1, c.getRGB());
     }
 
-   /**
+    /**
      * Is this Picture equal to obj?
      */
     public boolean equals(Object obj) {
@@ -201,7 +206,7 @@ public final class Picture implements ActionListener {
         if (obj == null) return false;
         if (obj.getClass() != this.getClass()) return false;
         Picture that = (Picture) obj;
-        if (this.width()  != that.width())  return false;
+        if (this.width() != that.width()) return false;
         if (this.height() != that.height()) return false;
         for (int x = 0; x < width(); x++)
             for (int y = 0; y < height(); y++)
@@ -210,7 +215,7 @@ public final class Picture implements ActionListener {
     }
 
 
-   /**
+    /**
      * Save the picture to a file in a standard image format.
      * The filetype must be .png or .jpg.
      */
@@ -218,29 +223,33 @@ public final class Picture implements ActionListener {
         save(new File(name));
     }
 
-   /**
+    /**
      * Save the picture to a file in a standard image format.
      */
     public void save(File file) {
         this.filename = file.getName();
-        if (frame != null) { frame.setTitle(filename); }
+        if (frame != null) {
+            frame.setTitle(filename);
+        }
         String suffix = filename.substring(filename.lastIndexOf('.') + 1);
         suffix = suffix.toLowerCase();
         if (suffix.equals("jpg") || suffix.equals("png")) {
-            try { ImageIO.write(image, suffix, file); }
-            catch (IOException e) { e.printStackTrace(); }
-        }
-        else {
+            try {
+                ImageIO.write(image, suffix, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
             System.out.println("Error: filename must end in .jpg or .png");
         }
     }
 
-   /**
+    /**
      * Opens a save dialog box when the user selects "Save As" from the menu.
      */
     public void actionPerformed(ActionEvent e) {
         FileDialog chooser = new FileDialog(frame,
-                             "Use a .png or .jpg extension", FileDialog.SAVE);
+                "Use a .png or .jpg extension", FileDialog.SAVE);
         chooser.setVisible(true);
         if (chooser.getFile() != null) {
             save(chooser.getDirectory() + File.separator + chooser.getFile());
@@ -248,7 +257,7 @@ public final class Picture implements ActionListener {
     }
 
 
-   /**
+    /**
      * Test client. Reads a picture specified by the command-line argument,
      * and shows it in a window on the screen.
      */

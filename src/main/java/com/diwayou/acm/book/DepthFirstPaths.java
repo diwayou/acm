@@ -80,12 +80,10 @@ public class DepthFirstPaths {
                 StdOut.printf("%d to %d:  ", s, v);
                 for (int x : dfs.pathTo(v)) {
                     if (x == s) StdOut.print(x);
-                    else        StdOut.print("-" + x);
+                    else StdOut.print("-" + x);
                 }
                 StdOut.println();
-            }
-
-            else {
+            } else {
                 StdOut.printf("%d to %d:  not connected\n", s, v);
             }
 

@@ -12,7 +12,7 @@ import com.diwayou.acm.util.StdRandom;
  *                http://algs4.cs.princeton.edu/23quicksort/words3.txt
  *
  *  Sorts a sequence of strings from standard input using quicksort.
- *   
+ *
  *  % more tiny.txt
  *  S O R T E X A M P L E
  *
@@ -21,7 +21,7 @@ import com.diwayou.acm.util.StdRandom;
  *
  *  % more words3.txt
  *  bed bug dad yes zoo ... all bad yet
- *       
+ *
  *  % java Quick < words3.txt
  *  all bad bed bug dad ... yes yet zoo    [ one string per line ]
  *
@@ -36,11 +36,11 @@ public class Quick {
     }
 
     // quicksort the subarray from a[lo] to a[hi]
-    private static void sort(Comparable[] a, int lo, int hi) { 
+    private static void sort(Comparable[] a, int lo, int hi) {
         if (hi <= lo) return;
         int j = partition(a, lo, hi);
-        sort(a, lo, j-1);
-        sort(a, j+1, hi);
+        sort(a, lo, j - 1);
+        sort(a, j + 1, hi);
         assert isSorted(a, lo, hi);
     }
 
@@ -50,7 +50,7 @@ public class Quick {
         int i = lo;
         int j = hi + 1;
         Comparable v = a[lo];
-        while (true) { 
+        while (true) {
 
             // find item on lo to swap
             while (less(a[++i], v))
@@ -73,11 +73,11 @@ public class Quick {
         return j;
     }
 
-   /***********************************************************************
-    *  Rearranges the elements in a so that a[k] is the kth smallest element,
-    *  and a[0] through a[k-1] are less than or equal to a[k], and
-    *  a[k+1] through a[n-1] are greater than or equal to a[k].
-    ***********************************************************************/
+    /***********************************************************************
+     *  Rearranges the elements in a so that a[k] is the kth smallest element,
+     *  and a[0] through a[k-1] are less than or equal to a[k], and
+     *  a[k+1] through a[n-1] are greater than or equal to a[k].
+     ***********************************************************************/
     public static Comparable select(Comparable[] a, int k) {
         if (k < 0 || k >= a.length) {
             throw new RuntimeException("Selected element out of bounds");
@@ -86,7 +86,7 @@ public class Quick {
         int lo = 0, hi = a.length - 1;
         while (hi > lo) {
             int i = partition(a, lo, hi);
-            if      (i > k) hi = i - 1;
+            if (i > k) hi = i - 1;
             else if (i < k) lo = i + 1;
             else return a[i];
         }
@@ -94,16 +94,15 @@ public class Quick {
     }
 
 
+    /***********************************************************************
+     *  Helper sorting functions
+     ***********************************************************************/
 
-   /***********************************************************************
-    *  Helper sorting functions
-    ***********************************************************************/
-    
     // is v < w ?
     private static boolean less(Comparable v, Comparable w) {
         return (v.compareTo(w) < 0);
     }
-        
+
     // exchange a[i] and a[j]
     private static void exch(Object[] a, int i, int j) {
         Object swap = a[i];
@@ -112,16 +111,16 @@ public class Quick {
     }
 
 
-   /***********************************************************************
-    *  Check if array is sorted - useful for debugging
-    ***********************************************************************/
+    /***********************************************************************
+     *  Check if array is sorted - useful for debugging
+     ***********************************************************************/
     private static boolean isSorted(Comparable[] a) {
         return isSorted(a, 0, a.length - 1);
     }
 
     private static boolean isSorted(Comparable[] a, int lo, int hi) {
         for (int i = lo + 1; i <= hi; i++)
-            if (less(a[i], a[i-1])) return false;
+            if (less(a[i], a[i - 1])) return false;
         return true;
     }
 

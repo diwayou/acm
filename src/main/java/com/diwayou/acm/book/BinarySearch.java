@@ -19,7 +19,7 @@ package com.diwayou.acm.book; /*************************************************
  *  140925
  *  161828
  *  [3,675,966 total values]
- *  
+ *
  *************************************************************************/
 
 import com.diwayou.acm.util.In;
@@ -37,7 +37,7 @@ public class BinarySearch {
         while (lo <= hi) {
             // Key is in a[lo..hi] or not present.
             int mid = lo + (hi - lo) / 2;
-            if      (key < a[mid]) hi = mid - 1;
+            if (key < a[mid]) hi = mid - 1;
             else if (key > a[mid]) lo = mid + 1;
             else return mid;
         }

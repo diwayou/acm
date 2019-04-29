@@ -84,7 +84,7 @@ public class LazyPrimMST {
         for (Edge e : G.adj(v))
             if (!marked[e.other(v)]) pq.insert(e);
     }
-        
+
     // return edges in MST as an Iterable
     public Iterable<Edge> edges() {
         return mst;
@@ -155,8 +155,8 @@ public class LazyPrimMST {
 
         return true;
     }
-    
-    
+
+
     public static void main(String[] args) {
         In in = new In(args[0]);
         EdgeWeightedGraph G = new EdgeWeightedGraph(in);

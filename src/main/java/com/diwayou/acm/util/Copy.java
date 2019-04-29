@@ -4,7 +4,7 @@ package com.diwayou.acm.util;
  *  Compilation:  javac Copy.java
  *  Execution:    java Copy < file
  *  Dependencies: BinaryStdIn.java BinaryStdOut.java
- *  
+ *
  *  Reads in a binary file from standard input and writes it to standard output.
  *
  *  % java Copy < mandrill.jpg > copy.jpg

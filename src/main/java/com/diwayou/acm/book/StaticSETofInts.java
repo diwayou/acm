@@ -1,6 +1,6 @@
 package com.diwayou.acm.book; /*************************************************************************
  *  Compilation:  javac StaticSetOfInts.java
- *  
+ *
  *  Data type to store a set of integers.
  *
  *************************************************************************/
@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 public class StaticSETofInts {
     private int[] a;
+
     public StaticSETofInts(int[] keys) {
         // defensive copy
         a = new int[keys.length];
@@ -31,7 +32,7 @@ public class StaticSETofInts {
         while (lo <= hi) {
             // Key is in a[lo..hi] or not present.
             int mid = lo + (hi - lo) / 2;
-            if      (key < a[mid]) hi = mid - 1;
+            if (key < a[mid]) hi = mid - 1;
             else if (key > a[mid]) lo = mid + 1;
             else return mid;
         }

@@ -14,7 +14,7 @@ import com.diwayou.acm.util.StdOut;
  *  Read in a blacklist of words from a file. Then read in a list of
  *  words from standard input and print out all those words that
  *  are not in the first file.
- * 
+ *
  *  % more tinyTale.txt 
  *  it was the best of times it was the worst of times 
  *  it was the age of wisdom it was the age of foolishness 
@@ -24,7 +24,7 @@ import com.diwayou.acm.util.StdOut;
  *
  *  % more list.txt 
  *  was it the of 
- * 
+ *
  *  % java BlackFilter list.txt < tinyTale.txt 
  *  best times worst times 
  *  age wisdom age foolishness 
@@ -34,7 +34,7 @@ import com.diwayou.acm.util.StdOut;
  *
  *************************************************************************/
 
-public class BlackFilter {  
+public class BlackFilter {
     public static void main(String[] args) {
         SET<String> set = new SET<String>();
 

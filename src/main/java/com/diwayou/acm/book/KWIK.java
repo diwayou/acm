@@ -38,9 +38,9 @@ import com.diwayou.acm.util.StdOut;
  *
  *************************************************************************/
 
-public class KWIK { 
+public class KWIK {
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
         In in = new In(args[0]);
         int context = Integer.parseInt(args[1]);
 
@@ -56,10 +56,10 @@ public class KWIK {
             String query = StdIn.readLine();
             for (int i = sa.rank(query); i < N && sa.select(i).startsWith(query); i++) {
                 int from = Math.max(0, sa.index(i) - context);
-                int to   = Math.min(N-1, from + query.length() + 2*context);
+                int to = Math.min(N - 1, from + query.length() + 2 * context);
                 StdOut.println(text.substring(from, to));
             }
             StdOut.println();
         }
-    } 
+    }
 } 

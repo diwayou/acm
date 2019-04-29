@@ -8,7 +8,7 @@ import com.diwayou.acm.util.StdOut;
  *  Execution:    java AcyclicP V E
  *  Dependencies: EdgeWeightedDigraph.java DirectedEdge.java Topological.java
  *  Data files:   http://algs4.cs.princeton.edu/44sp/tinyEWDAG.txt
- *  
+ *
  *  Computes longeset paths in an edge-weighted acyclic digraph.
  *
  *  Remark: should probably check that graph is a DAG before running
@@ -49,7 +49,7 @@ public class AcyclicLP {
         if (distTo[w] < distTo[v] + e.weight()) {
             distTo[w] = distTo[v] + e.weight();
             edgeTo[w] = e;
-        }       
+        }
     }
 
     // return length of the longest path from s to v, -infinity if no such path
@@ -73,7 +73,6 @@ public class AcyclicLP {
     }
 
 
-
     public static void main(String[] args) {
         In in = new In(args[0]);
         int s = Integer.parseInt(args[1]);
@@ -88,8 +87,7 @@ public class AcyclicLP {
                     StdOut.print(e + "   ");
                 }
                 StdOut.println();
-            }
-            else {
+            } else {
                 StdOut.printf("%d to %d         no path\n", s, v);
             }
         }

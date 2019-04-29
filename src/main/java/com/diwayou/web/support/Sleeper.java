@@ -24,13 +24,13 @@ import java.time.Duration;
  */
 public interface Sleeper {
 
-  Sleeper SYSTEM_SLEEPER = duration -> Thread.sleep(duration.toMillis());
+    Sleeper SYSTEM_SLEEPER = duration -> Thread.sleep(duration.toMillis());
 
-  /**
-   * Sleeps for the specified duration of time.
-   *
-   * @param duration How long to sleep.
-   * @throws InterruptedException If the thread is interrupted while sleeping.
-   */
-  void sleep(Duration duration) throws InterruptedException;
+    /**
+     * Sleeps for the specified duration of time.
+     *
+     * @param duration How long to sleep.
+     * @throws InterruptedException If the thread is interrupted while sleeping.
+     */
+    void sleep(Duration duration) throws InterruptedException;
 }

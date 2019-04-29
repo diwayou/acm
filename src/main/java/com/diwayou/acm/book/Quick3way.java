@@ -9,18 +9,18 @@ import com.diwayou.acm.util.StdOut;
  *  Dependencies: StdOut.java StdIn.java
  *  Data files:   http://algs4.cs.princeton.edu/23quicksort/tiny.txt
  *                http://algs4.cs.princeton.edu/23quicksort/words3.txt
- *   
+ *
  *  Sorts a sequence of strings from standard input using 3-way quicksort.
- *   
+ *
  *  % more tiny.txt
  *  S O R T E X A M P L E
  *
  *  % java Quick3way < tiny.txt
  *  S O R T E X A M P L E A               [ one string per line ]
- *    
+ *
  *  % more words3.txt
  *  bed bug dad yes zoo ... all bad yet
- *  
+ *
  *  % java Quick3way < words3.txt
  *  all bad bed bug dad ... yes yet zoo    [ one string per line ]
  *
@@ -35,30 +35,29 @@ public class Quick3way {
     }
 
     // quicksort the subarray a[lo .. hi] using 3-way partitioning
-    private static void sort(Comparable[] a, int lo, int hi) { 
+    private static void sort(Comparable[] a, int lo, int hi) {
         if (hi <= lo) return;
         int lt = lo, gt = hi;
         Comparable v = a[lo];
         int i = lo;
         while (i <= gt) {
             int cmp = a[i].compareTo(v);
-            if      (cmp < 0) exch(a, lt++, i++);
+            if (cmp < 0) exch(a, lt++, i++);
             else if (cmp > 0) exch(a, i, gt--);
-            else              i++;
+            else i++;
         }
 
         // a[lo..lt-1] < v = a[lt..gt] < a[gt+1..hi]. 
-        sort(a, lo, lt-1);
-        sort(a, gt+1, hi);
+        sort(a, lo, lt - 1);
+        sort(a, gt + 1, hi);
         assert isSorted(a, lo, hi);
     }
 
 
+    /***********************************************************************
+     *  Helper sorting functions
+     ***********************************************************************/
 
-   /***********************************************************************
-    *  Helper sorting functions
-    ***********************************************************************/
-    
     // is v < w ?
     private static boolean less(Comparable v, Comparable w) {
         return (v.compareTo(w) < 0);
@@ -68,7 +67,7 @@ public class Quick3way {
     private static boolean eq(Comparable v, Comparable w) {
         return (v.compareTo(w) == 0);
     }
-        
+
     // exchange a[i] and a[j]
     private static void exch(Object[] a, int i, int j) {
         Object swap = a[i];
@@ -77,19 +76,18 @@ public class Quick3way {
     }
 
 
-   /***********************************************************************
-    *  Check if array is sorted - useful for debugging
-    ***********************************************************************/
+    /***********************************************************************
+     *  Check if array is sorted - useful for debugging
+     ***********************************************************************/
     private static boolean isSorted(Comparable[] a) {
         return isSorted(a, 0, a.length - 1);
     }
 
     private static boolean isSorted(Comparable[] a, int lo, int hi) {
         for (int i = lo + 1; i <= hi; i++)
-            if (less(a[i], a[i-1])) return false;
+            if (less(a[i], a[i - 1])) return false;
         return true;
     }
-
 
 
     // print array to standard output

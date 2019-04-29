@@ -19,13 +19,15 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
     public IndexMinPQ(int NMAX) {
         keys = (Key[]) new Comparable[NMAX + 1];    // make this of length NMAX??
-        pq   = new int[NMAX + 1];
-        qp   = new int[NMAX + 1];                   // make this of length NMAX??
+        pq = new int[NMAX + 1];
+        qp = new int[NMAX + 1];                   // make this of length NMAX??
         for (int i = 0; i <= NMAX; i++) qp[i] = -1;
     }
 
     // is the priority queue empty?
-    public boolean isEmpty() { return N == 0; }
+    public boolean isEmpty() {
+        return N == 0;
+    }
 
     // is k an index on the priority queue?
     public boolean contains(int k) {
@@ -48,27 +50,27 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
     }
 
     // return the index associated with a minimal key
-    public int min() { 
+    public int min() {
         if (N == 0) throw new RuntimeException("Priority queue underflow");
-        return pq[1];        
+        return pq[1];
     }
 
     // return a minimal key
-    public Key minKey() { 
+    public Key minKey() {
         if (N == 0) throw new RuntimeException("Priority queue underflow");
-        return keys[pq[1]];        
+        return keys[pq[1]];
     }
 
     // delete a minimal key and returns its associated index
-    public int delMin() { 
+    public int delMin() {
         if (N == 0) throw new RuntimeException("Priority queue underflow");
-        int min = pq[1];        
-        exch(1, N--); 
+        int min = pq[1];
+        exch(1, N--);
         sink(1);
         qp[min] = -1;            // delete
-        keys[pq[N+1]] = null;    // to help with garbage collection
-        pq[N+1] = -1;            // not needed
-        return min; 
+        keys[pq[N + 1]] = null;    // to help with garbage collection
+        pq[N + 1] = -1;            // not needed
+        return min;
     }
 
 /*
@@ -110,33 +112,36 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
     }
 
 
-   /**************************************************************
-    * General helper functions
-    **************************************************************/
+    /**************************************************************
+     * General helper functions
+     **************************************************************/
     private boolean greater(int i, int j) {
         return keys[pq[i]].compareTo(keys[pq[j]]) > 0;
     }
 
     private void exch(int i, int j) {
-        int swap = pq[i]; pq[i] = pq[j]; pq[j] = swap;
-        qp[pq[i]] = i; qp[pq[j]] = j;
+        int swap = pq[i];
+        pq[i] = pq[j];
+        pq[j] = swap;
+        qp[pq[i]] = i;
+        qp[pq[j]] = j;
     }
 
 
-   /**************************************************************
-    * Heap helper functions
-    **************************************************************/
-    private void swim(int k)  {
-        while (k > 1 && greater(k/2, k)) {
-            exch(k, k/2);
-            k = k/2;
+    /**************************************************************
+     * Heap helper functions
+     **************************************************************/
+    private void swim(int k) {
+        while (k > 1 && greater(k / 2, k)) {
+            exch(k, k / 2);
+            k = k / 2;
         }
     }
 
     private void sink(int k) {
-        while (2*k <= N) {
-            int j = 2*k;
-            if (j < N && greater(j, j+1)) j++;
+        while (2 * k <= N) {
+            int j = 2 * k;
+            if (j < N && greater(j, j + 1)) j++;
             if (!greater(k, j)) break;
             exch(k, j);
             k = j;
@@ -144,17 +149,19 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
     }
 
 
-   /***********************************************************************
-    * Iterators
-    **********************************************************************/
+    /***********************************************************************
+     * Iterators
+     **********************************************************************/
 
-   /**
+    /**
      * Return an iterator that iterates over all of the elements on the
      * priority queue in ascending order.
      * <p>
      * The iterator doesn't implement <tt>remove()</tt> since it's optional.
      */
-    public Iterator<Integer> iterator() { return new HeapIterator(); }
+    public Iterator<Integer> iterator() {
+        return new HeapIterator();
+    }
 
     private class HeapIterator implements Iterator<Integer> {
         // create a new pq
@@ -168,8 +175,13 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
                 copy.insert(pq[i], keys[pq[i]]);
         }
 
-        public boolean hasNext()  { return !copy.isEmpty();                     }
-        public void remove()      { throw new UnsupportedOperationException();  }
+        public boolean hasNext() {
+            return !copy.isEmpty();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
 
         public Integer next() {
             if (!hasNext()) throw new NoSuchElementException();
@@ -180,7 +192,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
     public static void main(String[] args) {
         // insert a bunch of strings
-        String[] strings = { "it", "was", "the", "best", "of", "times", "it", "was", "the", "worst" };
+        String[] strings = {"it", "was", "the", "best", "of", "times", "it", "was", "the", "worst"};
 
         IndexMinPQ<String> pq = new IndexMinPQ<String>(strings.length);
         for (int i = 0; i < strings.length; i++) {

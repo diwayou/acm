@@ -18,7 +18,7 @@ import com.diwayou.acm.util.Out;
  *  % more in2.txt 
  *  a tiny
  *  test.
- * 
+ *
  *  % java Cat in1.txt in2.txt out.txt
  *
  *  % more out.txt
@@ -28,9 +28,9 @@ import com.diwayou.acm.util.Out;
  *
  *************************************************************************/
 
-public class Cat { 
+public class Cat {
 
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
         Out out = new Out(args[args.length - 1]);
         for (int i = 0; i < args.length - 1; i++) {
             In in = new In(args[i]);

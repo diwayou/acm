@@ -18,9 +18,9 @@ package com.diwayou.acm.uva;// Google is one of the most famous Internet search 
 // 	(1 ≤ Vi ≤ 100)
 
 // Output
-	// For each test case, output several lines which are the URLs of the web pages which are possible to be
-	// chosen. The order of the URLs is the same as the input. Please look at the sample output for further
-	// information of output format.
+// For each test case, output several lines which are the URLs of the web pages which are possible to be
+// chosen. The order of the URLs is the same as the input. Please look at the sample output for further
+// information of output format.
 
 // Sample Input
 // 2
@@ -73,18 +73,18 @@ public class GoogleIsFeelingLucky {
         int max = Integer.MIN_VALUE;
         int caseCount = 1;
 
-        for(int i = 0; i < testCases * 10; i++) {
+        for (int i = 0; i < testCases * 10; i++) {
 
             String website = sc.next();
             int relevance = sc.nextInt();
 
-            if(i % 10 == 0 && i != 0) {
+            if (i % 10 == 0 && i != 0) {
 
                 List<String> allCandidates = map.get(max);
                 System.out.println("Case #" + caseCount + ":");
                 caseCount++;
 
-                for(String s : allCandidates) {
+                for (String s : allCandidates) {
 
                     System.out.println(s);
 
@@ -95,13 +95,13 @@ public class GoogleIsFeelingLucky {
 
             }
 
-            if(map.containsKey(relevance)) {
+            if (map.containsKey(relevance)) {
 
                 map.get(relevance).add(website);
 
             }
 
-            if(!map.containsKey(relevance)) {
+            if (!map.containsKey(relevance)) {
 
                 List<String> list = new ArrayList<String>();
                 map.put(relevance, list);
@@ -109,7 +109,7 @@ public class GoogleIsFeelingLucky {
 
             }
 
-            if(relevance > max) {
+            if (relevance > max) {
 
                 max = relevance;
 
@@ -119,7 +119,7 @@ public class GoogleIsFeelingLucky {
 
         System.out.println("Case #" + caseCount + ":");
 
-        for(String s : map.get(max)) {
+        for (String s : map.get(max)) {
 
             System.out.println(s);
 

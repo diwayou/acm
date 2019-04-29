@@ -16,7 +16,8 @@ public class Loop {
     private static final String SNAPLEN_KEY = Loop.class.getName() + ".snaplen";
     private static final int SNAPLEN = Integer.getInteger(SNAPLEN_KEY, 65536); // [bytes]
 
-    private Loop() {}
+    private Loop() {
+    }
 
     public static void main(String[] args) throws PcapNativeException, NotOpenException {
         String filter = "tcp port 443 and host 127.0.0.1";

@@ -31,7 +31,7 @@ import com.diwayou.acm.util.StdOut;
 
 import java.io.File;
 
-public class FileIndex { 
+public class FileIndex {
 
     public static void main(String[] args) {
 

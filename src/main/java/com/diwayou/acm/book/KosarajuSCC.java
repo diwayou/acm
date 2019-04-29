@@ -50,7 +50,7 @@ public class KosarajuSCC {
     }
 
     // DFS on graph G
-    private void dfs(Digraph G, int v) { 
+    private void dfs(Digraph G, int v) {
         marked[v] = true;
         id[v] = count;
         for (int w : G.adj(v)) {
@@ -59,7 +59,9 @@ public class KosarajuSCC {
     }
 
     // return the number of strongly connected components
-    public int count() { return count; }
+    public int count() {
+        return count;
+    }
 
     // are v and w strongly connected?
     public boolean stronglyConnected(int v, int w) {

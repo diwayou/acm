@@ -1,7 +1,7 @@
 package com.diwayou.acm.book; /*************************************************************************
  *  Compilation:  javac Interval1D.java
  *  Execution:    java Interval1D
- *  
+ *
  *  1-dimensional interval data type.
  *
  *************************************************************************/
@@ -12,19 +12,18 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Interval1D {
-    public static final Comparator<Interval1D> LEFT_ENDPOINT_ORDER  = new LeftComparator();
+    public static final Comparator<Interval1D> LEFT_ENDPOINT_ORDER = new LeftComparator();
     public static final Comparator<Interval1D> RIGHT_ENDPOINT_ORDER = new RightComparator();
-    public static final Comparator<Interval1D> LENGTH_ORDER         = new LengthComparator();
+    public static final Comparator<Interval1D> LENGTH_ORDER = new LengthComparator();
 
     private final double left;
     private final double right;
 
     public Interval1D(double left, double right) {
         if (left <= right) {
-            this.left  = left;
+            this.left = left;
             this.right = right;
-        }
-        else throw new RuntimeException("Illegal interval");
+        } else throw new RuntimeException("Illegal interval");
     }
 
     // does this interval intersect that one?
@@ -50,25 +49,24 @@ public class Interval1D {
     }
 
 
-
     private static class LeftComparator implements Comparator<Interval1D> {
         public int compare(Interval1D a, Interval1D b) {
-            if      (a.left  < b.left)  return -1;
-            else if (a.left  > b.left)  return +1;
+            if (a.left < b.left) return -1;
+            else if (a.left > b.left) return +1;
             else if (a.right < b.right) return -1;
             else if (a.right > b.right) return +1;
-            else                        return  0;
+            else return 0;
         }
     }
 
     // ascending order of right endpoint, breaking ties by left endpoint
     private static class RightComparator implements Comparator<Interval1D> {
         public int compare(Interval1D a, Interval1D b) {
-            if      (a.right < b.right) return -1;
+            if (a.right < b.right) return -1;
             else if (a.right > b.right) return +1;
-            else if (a.left  < b.left)  return -1;
-            else if (a.left  > b.left)  return +1;
-            else                        return  0;
+            else if (a.left < b.left) return -1;
+            else if (a.left > b.left) return +1;
+            else return 0;
         }
     }
 
@@ -77,13 +75,11 @@ public class Interval1D {
         public int compare(Interval1D a, Interval1D b) {
             double alen = a.length();
             double blen = b.length();
-            if      (alen < blen) return -1;
+            if (alen < blen) return -1;
             else if (alen > blen) return +1;
-            else                  return  0;
+            else return 0;
         }
     }
-
-
 
 
     // test client
@@ -98,7 +94,7 @@ public class Interval1D {
         for (int i = 0; i < intervals.length; i++)
             StdOut.println(intervals[i]);
         StdOut.println();
-        
+
         StdOut.println("Sort by left endpoint");
         Arrays.sort(intervals, Interval1D.LEFT_ENDPOINT_ORDER);
         for (int i = 0; i < intervals.length; i++)

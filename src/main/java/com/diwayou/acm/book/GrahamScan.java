@@ -2,7 +2,7 @@ package com.diwayou.acm.book; /*************************************************
  *  Compilation:  javac GrahamaScan.java
  *  Execution:    java GrahamScan < input.txt
  *  Dependencies: Point2D.java
- * 
+ *
  *  Create points from standard input and compute the convex hull using
  *  Graham scan algorithm.
  *
@@ -47,7 +47,7 @@ public class GrahamScan {
         int k2;
         for (k2 = k1 + 1; k2 < N; k2++)
             if (Point2D.ccw(points[0], points[k1], points[k2]) != 0) break;
-        hull.push(points[k2-1]);    // points[k2-1] is second extreme point
+        hull.push(points[k2 - 1]);    // points[k2-1] is second extreme point
 
         // Graham scan; note that points[N-1] is extreme point different from points[0]
         for (int i = k2; i < N; i++) {
@@ -81,7 +81,7 @@ public class GrahamScan {
         }
 
         for (int i = 0; i < N; i++) {
-            if (Point2D.ccw(points[i], points[(i+1) % N], points[(i+2) % N]) <= 0) {
+            if (Point2D.ccw(points[i], points[(i + 1) % N], points[(i + 2) % N]) <= 0) {
                 return false;
             }
         }

@@ -55,8 +55,7 @@ public class Arbitrage {
                 stake *= Math.exp(-e.weight());
                 StdOut.printf("= %10.5f %s\n", stake, name[e.to()]);
             }
-        }
-        else {
+        } else {
             StdOut.println("No arbitrage opportunity");
         }
     }

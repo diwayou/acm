@@ -19,12 +19,12 @@ public class LZW {
     private static final int L = 4096;       // number of codewords = 2^W
     private static final int W = 12;         // codeword width
 
-    public static void compress() { 
+    public static void compress() {
         String input = BinaryStdIn.readString();
         TST<Integer> st = new TST<Integer>();
         for (int i = 0; i < R; i++)
             st.put("" + (char) i, i);
-        int code = R+1;  // R is codeword for EOF
+        int code = R + 1;  // R is codeword for EOF
 
         while (input.length() > 0) {
             String s = st.longestPrefixOf(input);  // Find max prefix match s.
@@ -36,7 +36,7 @@ public class LZW {
         }
         BinaryStdOut.write(R, W);
         BinaryStdOut.close();
-    } 
+    }
 
 
     public static void expand() {
@@ -64,9 +64,8 @@ public class LZW {
     }
 
 
-
     public static void main(String[] args) {
-        if      (args[0].equals("-")) compress();
+        if (args[0].equals("-")) compress();
         else if (args[0].equals("+")) expand();
         else throw new RuntimeException("Illegal command line argument");
     }

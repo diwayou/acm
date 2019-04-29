@@ -29,8 +29,8 @@ public class BipartiteMatching {
         // are named 0 to N-1 and on the other side are N to 2N-1.
         int N = Integer.parseInt(args[0]);
         int E = Integer.parseInt(args[1]);
-        int s = 2*N, t = 2*N + 1;
-        FlowNetwork G = new FlowNetwork(2*N + 2);
+        int s = 2 * N, t = 2 * N + 1;
+        FlowNetwork G = new FlowNetwork(2 * N + 2);
         for (int i = 0; i < E; i++) {
             int v = StdRandom.uniform(N);
             int w = StdRandom.uniform(N) + N;
@@ -38,7 +38,7 @@ public class BipartiteMatching {
             StdOut.println(v + "-" + w);
         }
         for (int i = 0; i < N; i++) {
-            G.addEdge(new FlowEdge(s,     i, 1.0));
+            G.addEdge(new FlowEdge(s, i, 1.0));
             G.addEdge(new FlowEdge(i + N, t, 1.0));
         }
 

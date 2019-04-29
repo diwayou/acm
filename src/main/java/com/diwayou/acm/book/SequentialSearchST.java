@@ -8,7 +8,7 @@ import com.diwayou.acm.util.StdOut;
  *  Execution:    java SequentialSearchST
  *  Dependencies: StdIn.java StdOut.java
  *  Data files:   http://algs4.cs.princeton.edu/31elementary/tinyST.txt  
- *  
+ *
  *  Symbol table implementation with sequential search in an
  *  unordered linked list of key-value pairs.
  *
@@ -39,18 +39,22 @@ public class SequentialSearchST<Key, Value> {
         private Value val;
         private Node next;
 
-        public Node(Key key, Value val, Node next)  {
-            this.key  = key;
-            this.val  = val;
+        public Node(Key key, Value val, Node next) {
+            this.key = key;
+            this.val = val;
             this.next = next;
         }
     }
 
     // return number of key-value pairs
-    public int size() { return N; }
+    public int size() {
+        return N;
+    }
 
     // is the symbol table empty?
-    public boolean isEmpty() { return size() == 0; }
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 
     // does this symbol table contain the given key?
     public boolean contains(Key key) {
@@ -67,9 +71,15 @@ public class SequentialSearchST<Key, Value> {
 
     // add a key-value pair, replacing old key-value pair if key is already present
     public void put(Key key, Value val) {
-        if (val == null) { delete(key); return; }
+        if (val == null) {
+            delete(key);
+            return;
+        }
         for (Node x = first; x != null; x = x.next)
-            if (key.equals(x.key)) { x.val = val; return; }
+            if (key.equals(x.key)) {
+                x.val = val;
+                return;
+            }
         first = new Node(key, val, first);
         N++;
     }
@@ -83,14 +93,17 @@ public class SequentialSearchST<Key, Value> {
     // warning: function call stack too large if table is large
     private Node delete(Node x, Key key) {
         if (x == null) return null;
-        if (key.equals(x.key)) { N--; return x.next; }
+        if (key.equals(x.key)) {
+            N--;
+            return x.next;
+        }
         x.next = delete(x.next, key);
         return x;
     }
 
 
     // return all keys as an Iterable
-    public Iterable<Key> keys()  {
+    public Iterable<Key> keys() {
         Queue<Key> queue = new Queue<Key>();
         for (Node x = first; x != null; x = x.next)
             queue.enqueue(x.key);
@@ -98,11 +111,9 @@ public class SequentialSearchST<Key, Value> {
     }
 
 
-
-
-   /***********************************************************************
-    * Test client
-    **********************************************************************/
+    /***********************************************************************
+     * Test client
+     **********************************************************************/
     public static void main(String[] args) {
         SequentialSearchST<String, Integer> st = new SequentialSearchST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {

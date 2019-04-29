@@ -21,7 +21,7 @@ import com.diwayou.acm.util.BinaryStdOut;
 
 public class Genome {
 
-    public static void compress() { 
+    public static void compress() {
         Alphabet DNA = new Alphabet("ACTG");
         String s = BinaryStdIn.readString();
         int N = s.length();
@@ -33,7 +33,7 @@ public class Genome {
             BinaryStdOut.write(d, 2);
         }
         BinaryStdOut.close();
-    } 
+    }
 
     public static void expand() {
         Alphabet DNA = new Alphabet("ACTG");
@@ -48,7 +48,7 @@ public class Genome {
 
 
     public static void main(String[] args) {
-        if      (args[0].equals("-")) compress();
+        if (args[0].equals("-")) compress();
         else if (args[0].equals("+")) expand();
         else throw new RuntimeException("Illegal command line argument");
     }

@@ -81,7 +81,7 @@ public class PrimMST {
                 distTo[w] = e.weight();
                 edgeTo[w] = e;
                 if (pq.contains(w)) pq.change(w, distTo[w]);
-                else                pq.insert(w, distTo[w]);
+                else pq.insert(w, distTo[w]);
             }
         }
     }

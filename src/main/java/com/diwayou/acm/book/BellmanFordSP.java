@@ -40,8 +40,8 @@ public class BellmanFordSP {
     private Iterable<DirectedEdge> cycle;  // negative cycle (or null if no such cycle)
 
     public BellmanFordSP(EdgeWeightedDigraph G, int s) {
-        distTo  = new double[G.V()];
-        edgeTo  = new DirectedEdge[G.V()];
+        distTo = new double[G.V()];
+        edgeTo = new DirectedEdge[G.V()];
         onQueue = new boolean[G.V()];
         for (int v = 0; v < G.V(); v++)
             distTo[v] = Double.POSITIVE_INFINITY;
@@ -186,7 +186,6 @@ public class BellmanFordSP {
     }
 
 
-
     public static void main(String[] args) {
         In in = new In(args[0]);
         int s = Integer.parseInt(args[1]);
@@ -209,8 +208,7 @@ public class BellmanFordSP {
                         StdOut.print(e + "   ");
                     }
                     StdOut.println();
-                }
-                else {
+                } else {
                     StdOut.printf("%d to %d           no path\n", s, v);
                 }
             }

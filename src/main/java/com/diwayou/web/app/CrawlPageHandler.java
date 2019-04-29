@@ -58,7 +58,7 @@ public class CrawlPageHandler implements PageHandler {
             submit(document.select("img").stream()
                     .map(e -> e.attr("src")), page, spider);
         } else if (page.getRequest().getFetcherType().equals(FetcherType.FX_WEBVIEW)) {
-            Set<String> resourceUrls = ((HtmlDocumentPage)page).getResourceUrls();
+            Set<String> resourceUrls = ((HtmlDocumentPage) page).getResourceUrls();
 
             for (String resourceUrl : resourceUrls) {
                 spider.submitRequest(newRequest(resourceUrl.replaceAll("[\\d]+x[\\d]+", "430x430"), page.getRequest()));

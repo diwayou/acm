@@ -78,11 +78,11 @@ class CoinChangePrintResult {
     }
 
     public static void main(String[] args) {
-        int[] coins = new int[] {1, 2, 5, 10, 20, 50, 100};
+        int[] coins = new int[]{1, 2, 5, 10, 20, 50, 100};
         System.out.println(coinChange(coins, 238));
         System.out.println(coinChange(coins, 533));
 
-        coins = new int[] {2};
+        coins = new int[]{2};
         System.out.println(coinChange(coins, 3));
     }
 }

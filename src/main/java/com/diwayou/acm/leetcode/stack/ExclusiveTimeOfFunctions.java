@@ -11,9 +11,9 @@ package com.diwayou.acm.leetcode.stack;//Given the running logs of n functions t
 //n = 2
 //logs = 
 //["0:start:0",
- //"1:start:2",
- //"1:end:5",
- //"0:end:6"]
+//"1:start:2",
+//"1:end:5",
+//"0:end:6"]
 //Output:[3, 4]
 //Explanation:
 //Function 0 starts at time 0, then it executes 2 units of time and reaches the end of time 1. 
@@ -32,7 +32,7 @@ import java.util.Stack;
 
 class ExclusiveTimeOfFunctions {
     public int[] exclusiveTime(int n, List<String> logs) {
-        Stack<Integer> stack = new Stack <Integer>();
+        Stack<Integer> stack = new Stack<Integer>();
         int[] result = new int[n];
         String[] current = logs.get(0).split(":");
         stack.push(Integer.parseInt(current[0]));

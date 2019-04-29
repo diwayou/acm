@@ -8,7 +8,7 @@ import com.diwayou.acm.util.StdOut;
  *  Compilation:  javac SymbolDigraph.java
  *  Execution:    java SymbolDigraph
  *  Dependencies: ST.java Digraph.java In.java
- *  
+ *
  *  %  java SymbolDigraph routes.txt " "
  *  JFK
  *     MCO
@@ -78,7 +78,7 @@ public class SymbolDigraph {
 
 
     public static void main(String[] args) {
-        String filename  = args[0];
+        String filename = args[0];
         String delimiter = args[1];
         SymbolDigraph sg = new SymbolDigraph(filename, delimiter);
         Digraph G = sg.G();

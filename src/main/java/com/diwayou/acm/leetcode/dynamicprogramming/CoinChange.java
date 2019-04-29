@@ -52,11 +52,11 @@ class CoinChange {
     }
 
     public static void main(String[] args) {
-        int[] coins = new int[] {1, 2, 5};
+        int[] coins = new int[]{1, 2, 5};
         System.out.println(coinChange(coins, 11));
         System.out.println(coinChange(coins, 15));
 
-        coins = new int[] {2};
+        coins = new int[]{2};
         System.out.println(coinChange(coins, 3));
     }
 }

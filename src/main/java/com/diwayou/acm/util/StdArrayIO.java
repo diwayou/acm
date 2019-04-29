@@ -28,7 +28,7 @@ package com.diwayou.acm.util;
  *  % cat tinyDouble1D.txt tinyDouble2D.txt tinyBoolean2D.txt | java StdArrayIO
  *  4
  *    0.00000   0.24600   0.22200  -0.03200 
- *  
+ *
  *  4 3
  *    0.00000   0.27000   0.00000 
  *    0.24600   0.22400  -0.03600 
@@ -45,14 +45,14 @@ package com.diwayou.acm.util;
 
 
 /**
- *  <i>Standard array IO</i>. This class provides methods for reading
- *  in 1D and 2D arrays from standard input and printing out to 
- *  standard output.
- *  <p>
- *  For additional documentation, see
- *  <a href="http://introcs.cs.princeton.edu/22libary">Section 2.2</a> of
- *  <i>Introduction to Programming in Java: An Interdisciplinary Approach</i>
- *  by Robert Sedgewick and Kevin Wayne.
+ * <i>Standard array IO</i>. This class provides methods for reading
+ * in 1D and 2D arrays from standard input and printing out to
+ * standard output.
+ * <p>
+ * For additional documentation, see
+ * <a href="http://introcs.cs.princeton.edu/22libary">Section 2.2</a> of
+ * <i>Introduction to Programming in Java: An Interdisciplinary Approach</i>
+ * by Robert Sedgewick and Kevin Wayne.
  */
 public class StdArrayIO {
 
@@ -80,7 +80,7 @@ public class StdArrayIO {
         StdOut.println();
     }
 
-        
+
     /**
      * Read in and return an M-by-N array of doubles from standard input.
      */
@@ -136,7 +136,7 @@ public class StdArrayIO {
         StdOut.println();
     }
 
-        
+
     /**
      * Read in and return an M-by-N array of ints from standard input.
      */
@@ -188,7 +188,7 @@ public class StdArrayIO {
         StdOut.println(N);
         for (int i = 0; i < N; i++) {
             if (a[i]) StdOut.print("1 ");
-            else      StdOut.print("0 ");
+            else StdOut.print("0 ");
         }
         StdOut.println();
     }
@@ -208,7 +208,7 @@ public class StdArrayIO {
         return a;
     }
 
-   /**
+    /**
      * Print the  M-by-N array of booleans to standard output.
      */
     public static void print(boolean[][] a) {
@@ -218,14 +218,14 @@ public class StdArrayIO {
         for (int i = 0; i < M; i++) {
             for (int j = 0; j < N; j++) {
                 if (a[i][j]) StdOut.print("1 ");
-                else         StdOut.print("0 ");
+                else StdOut.print("0 ");
             }
             StdOut.println();
         }
     }
 
 
-   /**
+    /**
      * Test client.
      */
     public static void main(String[] args) {

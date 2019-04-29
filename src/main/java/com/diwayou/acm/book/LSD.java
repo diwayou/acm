@@ -30,17 +30,17 @@ public class LSD {
         int R = 256;   // extend ASCII alphabet size
         String[] aux = new String[N];
 
-        for (int d = W-1; d >= 0; d--) {
+        for (int d = W - 1; d >= 0; d--) {
             // sort by key-indexed counting on dth character
 
             // compute frequency counts
-            int[] count = new int[R+1];
+            int[] count = new int[R + 1];
             for (int i = 0; i < N; i++)
                 count[a[i].charAt(d) + 1]++;
 
             // compute cumulates
             for (int r = 0; r < R; r++)
-                count[r+1] += count[r];
+                count[r + 1] += count[r];
 
             // move data
             for (int i = 0; i < N; i++)

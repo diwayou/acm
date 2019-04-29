@@ -17,17 +17,17 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *  The <tt>Queue</tt> class represents a first-in-first-out (FIFO)
- *  queue of generic items.
- *  It supports the usual <em>enqueue</em> and <em>dequeue</em>
- *  operations, along with methods for peeking at the top item,
- *  testing if the queue is empty, and iterating through
- *  the items in FIFO order.
- *  <p>
- *  All queue operations except iteration are constant time.
- *  <p>
- *  For additional documentation, see <a href="http://algs4.cs.princeton.edu/13stacks">Section 1.3</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The <tt>Queue</tt> class represents a first-in-first-out (FIFO)
+ * queue of generic items.
+ * It supports the usual <em>enqueue</em> and <em>dequeue</em>
+ * operations, along with methods for peeking at the top item,
+ * testing if the queue is empty, and iterating through
+ * the items in FIFO order.
+ * <p>
+ * All queue operations except iteration are constant time.
+ * <p>
+ * For additional documentation, see <a href="http://algs4.cs.princeton.edu/13stacks">Section 1.3</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 public class Queue<Item> implements Iterable<Item> {
     private int N;         // number of elements on queue
@@ -40,29 +40,29 @@ public class Queue<Item> implements Iterable<Item> {
         private Node next;
     }
 
-   /**
+    /**
      * Create an empty queue.
      */
     public Queue() {
         first = null;
-        last  = null;
+        last = null;
     }
 
-   /**
+    /**
      * Is the queue empty?
      */
     public boolean isEmpty() {
         return first == null;
     }
 
-   /**
+    /**
      * Return the number of items in the queue.
      */
     public int size() {
-        return N;     
+        return N;
     }
 
-   /**
+    /**
      * Return the item least recently added to the queue.
      * Throw an exception if the queue is empty.
      */
@@ -71,18 +71,23 @@ public class Queue<Item> implements Iterable<Item> {
         return first.item;
     }
 
-   /**
+    /**
      * Add the item to the queue.
      */
     public void enqueue(Item item) {
         Node x = new Node();
         x.item = item;
-        if (isEmpty()) { first = x;     last = x; }
-        else           { last.next = x; last = x; }
+        if (isEmpty()) {
+            first = x;
+            last = x;
+        } else {
+            last.next = x;
+            last = x;
+        }
         N++;
     }
 
-   /**
+    /**
      * Remove and return the item on the queue least recently added.
      * Throw an exception if the queue is empty.
      */
@@ -95,7 +100,7 @@ public class Queue<Item> implements Iterable<Item> {
         return item;
     }
 
-   /**
+    /**
      * Return string representation.
      */
     public String toString() {
@@ -103,33 +108,38 @@ public class Queue<Item> implements Iterable<Item> {
         for (Item item : this)
             s.append(item + " ");
         return s.toString();
-    } 
- 
+    }
 
-   /**
+
+    /**
      * Return an iterator that iterates over the items on the queue in FIFO order.
      */
-    public Iterator<Item> iterator()  {
-        return new ListIterator();  
+    public Iterator<Item> iterator() {
+        return new ListIterator();
     }
 
     // an iterator, doesn't implement remove() since it's optional
     private class ListIterator implements Iterator<Item> {
         private Node current = first;
 
-        public boolean hasNext()  { return current != null;                     }
-        public void remove()      { throw new UnsupportedOperationException();  }
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
             Item item = current.item;
-            current = current.next; 
+            current = current.next;
             return item;
         }
     }
 
 
-   /**
+    /**
      * A test client.
      */
     public static void main(String[] args) {

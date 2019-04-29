@@ -23,13 +23,11 @@ import java.util.Map;
  *
  * @author hankcs
  */
-public class DemoWord2Vec
-{
+public class DemoWord2Vec {
     private static final String TRAIN_FILE_NAME = MSR.TRAIN_PATH;
     private static final String MODEL_FILE_NAME = "data/test/word2vec.txt";
 
-    public static void main(String[] args) throws IOException
-    {
+    public static void main(String[] args) throws IOException {
         WordVectorModel wordVectorModel = trainOrLoadModel();
         printNearest("上海", wordVectorModel);
         printNearest("美丽", wordVectorModel);
@@ -40,18 +38,17 @@ public class DemoWord2Vec
         // 文档向量
         DocVectorModel docVectorModel = new DocVectorModel(wordVectorModel);
         String[] documents = new String[]{
-            "山东苹果丰收",
-            "农民在江苏种水稻",
-            "奥运会女排夺冠",
-            "世界锦标赛胜出",
-            "中国足球失败",
+                "山东苹果丰收",
+                "农民在江苏种水稻",
+                "奥运会女排夺冠",
+                "世界锦标赛胜出",
+                "中国足球失败",
         };
 
         System.out.println(docVectorModel.similarity(documents[0], documents[1]));
         System.out.println(docVectorModel.similarity(documents[0], documents[4]));
 
-        for (int i = 0; i < documents.length; i++)
-        {
+        for (int i = 0; i < documents.length; i++) {
             docVectorModel.addDocument(i, documents[i]);
         }
 
@@ -61,35 +58,27 @@ public class DemoWord2Vec
         printNearestDocument("要不做饭吧", documents, docVectorModel);
     }
 
-    static void printNearest(String word, WordVectorModel model)
-    {
+    static void printNearest(String word, WordVectorModel model) {
         System.out.printf("\n                                                Word     Cosine\n------------------------------------------------------------------------\n");
-        for (Map.Entry<String, Float> entry : model.nearest(word))
-        {
+        for (Map.Entry<String, Float> entry : model.nearest(word)) {
             System.out.printf("%50s\t\t%f\n", entry.getKey(), entry.getValue());
         }
     }
 
-    static void printNearestDocument(String document, String[] documents, DocVectorModel model)
-    {
+    static void printNearestDocument(String document, String[] documents, DocVectorModel model) {
         printHeader(document);
-        for (Map.Entry<Integer, Float> entry : model.nearest(document))
-        {
+        for (Map.Entry<Integer, Float> entry : model.nearest(document)) {
             System.out.printf("%50s\t\t%f\n", documents[entry.getKey()], entry.getValue());
         }
     }
 
-    private static void printHeader(String query)
-    {
+    private static void printHeader(String query) {
         System.out.printf("\n%50s          Cosine\n------------------------------------------------------------------------\n", query);
     }
 
-    static WordVectorModel trainOrLoadModel() throws IOException
-    {
-        if (!IOUtil.isFileExisted(MODEL_FILE_NAME))
-        {
-            if (!IOUtil.isFileExisted(TRAIN_FILE_NAME))
-            {
+    static WordVectorModel trainOrLoadModel() throws IOException {
+        if (!IOUtil.isFileExisted(MODEL_FILE_NAME)) {
+            if (!IOUtil.isFileExisted(TRAIN_FILE_NAME)) {
                 System.err.println("语料不存在，请阅读文档了解语料获取与格式：https://github.com/hankcs/HanLP/wiki/word2vec");
                 System.exit(1);
             }
@@ -100,8 +89,7 @@ public class DemoWord2Vec
         return loadModel();
     }
 
-    static WordVectorModel loadModel() throws IOException
-    {
+    static WordVectorModel loadModel() throws IOException {
         return new WordVectorModel(MODEL_FILE_NAME);
     }
 }

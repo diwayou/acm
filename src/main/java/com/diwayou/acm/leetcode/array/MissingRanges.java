@@ -8,19 +8,19 @@ import java.util.List;
 public class MissingRanges {
     public List<String> findMissingRanges(int[] nums, int lower, int upper) {
         ArrayList<String> result = new ArrayList<String>();
-        for(int i = 0; i <= nums.length; i++) {
-            long start = i == 0 ? lower : (long)nums[i - 1] + 1;
-            long end = i == nums.length ? upper : (long)nums[i] - 1;
+        for (int i = 0; i <= nums.length; i++) {
+            long start = i == 0 ? lower : (long) nums[i - 1] + 1;
+            long end = i == nums.length ? upper : (long) nums[i] - 1;
             addMissing(result, start, end);
         }
-        
+
         return result;
     }
-    
+
     void addMissing(ArrayList<String> result, long start, long end) {
-        if(start > end) {
+        if (start > end) {
             return;
-        } else if(start == end) {
+        } else if (start == end) {
             result.add(start + "");
         } else {
             result.add(start + "->" + end);

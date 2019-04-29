@@ -10,11 +10,11 @@ import com.diwayou.acm.util.StdOut;
  *  Dependencies: SET In.java StdIn.java StdOut.java
  *  Data files:   http://algs4.cs.princeton.edu/35applications/tinyTale.txt
  *                http://algs4.cs.princeton.edu/35applications/list.txt
- * 
+ *
  *  Read in a whitelist of words from a file. Then read in a list of
  *  words from standard input and print out all those words that
  *  are in the first file.
- * 
+ *
  *  % more tinyTale.txt 
  *  it was the best of times it was the worst of times 
  *  it was the age of wisdom it was the age of foolishness 
@@ -24,7 +24,7 @@ import com.diwayou.acm.util.StdOut;
  *
  *  % more list.txt 
  *  was it the of 
- * 
+ *
  *  % java WhiteFilter list.txt < tinyTale.txt 
  *  it was the of it was the of
  *  it was the of it was the of
@@ -34,7 +34,7 @@ import com.diwayou.acm.util.StdOut;
  *
  *************************************************************************/
 
-public class WhiteFilter {  
+public class WhiteFilter {
     public static void main(String[] args) {
         SET<String> set = new SET<String>();
 

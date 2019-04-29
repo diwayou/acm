@@ -55,24 +55,24 @@ public class RabinKarp {
 
         // precompute R^(M-1) % Q for use in removing leading digit
         RM = 1;
-        for (int i = 1; i <= M-1; i++)
-           RM = (R * RM) % Q;
+        for (int i = 1; i <= M - 1; i++)
+            RM = (R * RM) % Q;
         patHash = hash(pat, M);
-    } 
+    }
 
     // Compute hash for key[0..M-1]. 
-    private long hash(String key, int M) { 
-        long h = 0; 
-        for (int j = 0; j < M; j++) 
-            h = (R * h + key.charAt(j)) % Q; 
-        return h; 
-    } 
+    private long hash(String key, int M) {
+        long h = 0;
+        for (int j = 0; j < M; j++)
+            h = (R * h + key.charAt(j)) % Q;
+        return h;
+    }
 
     // Las Vegas version: does pat[] match txt[i..i-M+1] ?
     private boolean check(String txt, int i) {
-        for (int j = 0; j < M; j++) 
-            if (pat.charAt(j) != txt.charAt(i + j)) 
-                return false; 
+        for (int j = 0; j < M; j++)
+            if (pat.charAt(j) != txt.charAt(i + j))
+                return false;
         return true;
     }
 
@@ -83,9 +83,9 @@ public class RabinKarp {
 
     // check for exact match
     public int search(String txt) {
-        int N = txt.length(); 
+        int N = txt.length();
         if (N < M) return N;
-        long txtHash = hash(txt, M); 
+        long txtHash = hash(txt, M);
 
         // check for match at offset 0
         if ((patHash == txtHash) && check(txt, 0))
@@ -94,8 +94,8 @@ public class RabinKarp {
         // check for hash match; if hash match, check for exact match
         for (int i = M; i < N; i++) {
             // Remove leading digit, add trailing digit, check for match. 
-            txtHash = (txtHash + Q - RM*txt.charAt(i-M) % Q) % Q; 
-            txtHash = (txtHash*R + txt.charAt(i)) % Q; 
+            txtHash = (txtHash + Q - RM * txt.charAt(i - M) % Q) % Q;
+            txtHash = (txtHash * R + txt.charAt(i)) % Q;
 
             // match
             int offset = i - M + 1;
@@ -119,7 +119,7 @@ public class RabinKarp {
         String pat = args[0];
         String txt = args[1];
         char[] pattern = pat.toCharArray();
-        char[] text    = txt.toCharArray();
+        char[] text = txt.toCharArray();
 
         RabinKarp searcher = new RabinKarp(pat);
         int offset = searcher.search(txt);

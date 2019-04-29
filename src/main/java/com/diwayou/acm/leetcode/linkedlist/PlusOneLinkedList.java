@@ -14,9 +14,9 @@ package com.diwayou.acm.leetcode.linkedlist;// Given a non-negative integer repr
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
+ * int val;
+ * ListNode next;
+ * ListNode(int x) { val = x; }
  * }
  */
 public class PlusOneLinkedList {
@@ -30,30 +30,30 @@ public class PlusOneLinkedList {
     }
 
     public ListNode plusOne(ListNode head) {
-        if(plusOneRecursive(head) == 0) {
+        if (plusOneRecursive(head) == 0) {
             return head;
         } else {
             ListNode newHead = new ListNode(1);
             newHead.next = head;
-            
+
             return newHead;
         }
     }
-    
+
     private int plusOneRecursive(ListNode head) {
-        if(head == null) {
+        if (head == null) {
             return 1;
         }
-        
+
         int carry = plusOneRecursive(head.next);
-        
-        if(carry == 0) {
+
+        if (carry == 0) {
             return 0;
         }
-        
+
         int value = head.val + 1;
         head.val = value % 10;
 
-        return value/10;
+        return value / 10;
     }
 }

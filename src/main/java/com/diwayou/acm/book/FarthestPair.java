@@ -7,7 +7,7 @@ import com.diwayou.acm.util.StdOut;
  *  Compilation:  javac FarthestPair.java
  *  Execution:    java FarthestPair < input.txt
  *  Dependencies: GrahamScan.java Point2D.java
- *  
+ *
  *  Given a set of N points in the plane, find the farthest pair
  *  (equivalently, compute the diameter of the set of points).
  *
@@ -35,7 +35,7 @@ public class FarthestPair {
             M++;
 
         // the hull, in counterclockwise order
-        Point2D[] hull = new Point2D[M+1];
+        Point2D[] hull = new Point2D[M + 1];
         int m = 1;
         for (Point2D p : graham.hull()) {
             hull[m++] = p;
@@ -54,7 +54,7 @@ public class FarthestPair {
 
         // k = farthest vertex from edge from hull[1] to hull[M]
         int k = 2;
-        while (Point2D.area2(hull[M], hull[k+1], hull[1]) > Point2D.area2(hull[M], hull[k], hull[1])) {
+        while (Point2D.area2(hull[M], hull[k + 1], hull[1]) > Point2D.area2(hull[M], hull[k], hull[1])) {
             k++;
         }
 
@@ -66,7 +66,7 @@ public class FarthestPair {
                 best2 = hull[j];
                 bestDistance = hull[i].distanceTo(hull[j]);
             }
-            while ((j < M) && Point2D.area2(hull[i], hull[j+1], hull[i+1]) > Point2D.area2(hull[i], hull[j], hull[i+1])) {
+            while ((j < M) && Point2D.area2(hull[i], hull[j + 1], hull[i + 1]) > Point2D.area2(hull[i], hull[j], hull[i + 1])) {
                 j++;
                 // StdOut.println(hull[i] + " and " + hull[j] + " are antipodal");
                 double distance = hull[i].distanceTo(hull[j]);
@@ -79,9 +79,17 @@ public class FarthestPair {
         }
     }
 
-    public Point2D either()    { return best1;        }
-    public Point2D other()     { return best2;        }
-    public double distance()   { return bestDistance; }
+    public Point2D either() {
+        return best1;
+    }
+
+    public Point2D other() {
+        return best2;
+    }
+
+    public double distance() {
+        return bestDistance;
+    }
 
 
     public static void main(String[] args) {

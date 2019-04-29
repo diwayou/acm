@@ -3,7 +3,7 @@ package com.diwayou.acm.book; /*************************************************
  *  Execution:    java PictureDump width height < file
  *  Dependencies: BinaryStdIn.java Picture.java
  *  Data file:    http://introcs.cs.princeton.edu/stdlib/abra.txt
- *  
+ *
  *  Reads in a binary file and writes out the bits as w-by-h picture,
  *  with the 1 bits in black and the 0 bits in white.
  *
@@ -34,7 +34,7 @@ public class PictureDump {
                     count++;
                     boolean bit = BinaryStdIn.readBoolean();
                     if (bit) pic.set(j, i, Color.BLACK);
-                    else     pic.set(j, i, Color.WHITE);
+                    else pic.set(j, i, Color.WHITE);
                 }
             }
         }

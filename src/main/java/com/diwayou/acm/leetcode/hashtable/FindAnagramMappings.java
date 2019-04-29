@@ -16,15 +16,15 @@ class FindAnagramMappings {
     public int[] anagramMappings(int[] A, int[] B) {
         int[] mapping = new int[A.length];
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-        
-        for(int i = 0; i < B.length; i++) {
+
+        for (int i = 0; i < B.length; i++) {
             map.put(B[i], i);
         }
-        
-        for(int i = 0; i < A.length; i++) {
+
+        for (int i = 0; i < A.length; i++) {
             mapping[i] = map.get(A[i]);
         }
-        
+
         return mapping;
     }
 }

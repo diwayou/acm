@@ -7,7 +7,7 @@ import com.diwayou.acm.util.StdRandom;
 /*************************************************************************
  *  Compilation:  javac Interval2D.java
  *  Execution:    java Interval2D
- *  
+ *
  *  2-dimensional interval data type.
  *
  *************************************************************************/
@@ -30,14 +30,14 @@ public class Interval2D {
 
     // does this interval contain x?
     public boolean contains(Point2D p) {
-        return x.contains(p.x())  && y.contains(p.y());
+        return x.contains(p.x()) && y.contains(p.y());
     }
 
     // area of this interval
     public double area() {
         return x.length() * y.length();
     }
-        
+
     public String toString() {
         return x + " x " + y;
     }
@@ -65,7 +65,7 @@ public class Interval2D {
             Point2D p = new Point2D(x, y);
 
             if (box.contains(p)) counter.increment();
-            else                 p.draw();
+            else p.draw();
         }
 
         StdOut.println(counter);

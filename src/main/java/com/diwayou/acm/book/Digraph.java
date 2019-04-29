@@ -22,7 +22,7 @@ package com.diwayou.acm.book; /*************************************************
  *  10: 12 
  *  11: 4 12 
  *  12: 9 
- *  
+ *
  *************************************************************************/
 
 
@@ -30,23 +30,23 @@ import com.diwayou.acm.util.In;
 import com.diwayou.acm.util.StdOut;
 
 /**
- *  The <tt>Digraph</tt> class represents an directed graph of vertices
- *  named 0 through V-1.
- *  It supports the following operations: add an edge to the graph,
- *  iterate over all of the neighbors incident to a vertex.
- *  Parallel edges and self-loops are permitted.
- *  <p>
- *  For additional documentation,
- *  see <a href="http://algs4.cs.princeton.edu/52directed">Section 5.2</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The <tt>Digraph</tt> class represents an directed graph of vertices
+ * named 0 through V-1.
+ * It supports the following operations: add an edge to the graph,
+ * iterate over all of the neighbors incident to a vertex.
+ * Parallel edges and self-loops are permitted.
+ * <p>
+ * For additional documentation,
+ * see <a href="http://algs4.cs.princeton.edu/52directed">Section 5.2</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 
 public class Digraph {
     private final int V;
     private int E;
     private Bag<Integer>[] adj;
-    
-   /**
+
+    /**
      * Create an empty digraph with V vertices.
      */
     public Digraph(int V) {
@@ -59,20 +59,20 @@ public class Digraph {
         }
     }
 
-   /**
+    /**
      * Create a digraph from input stream.
-     */  
+     */
     public Digraph(In in) {
-        this(in.readInt()); 
+        this(in.readInt());
         int E = in.readInt();
         for (int i = 0; i < E; i++) {
             int v = in.readInt();
             int w = in.readInt();
-            addEdge(v, w); 
+            addEdge(v, w);
         }
     }
 
-   /**
+    /**
      * Copy constructor.
      */
     public Digraph(Digraph G) {
@@ -89,22 +89,22 @@ public class Digraph {
             }
         }
     }
-        
-   /**
+
+    /**
      * Return the number of vertices in the digraph.
      */
     public int V() {
         return V;
     }
 
-   /**
+    /**
      * Return the number of edges in the digraph.
      */
     public int E() {
         return E;
     }
 
-   /**
+    /**
      * Add the directed edge v-w to the digraph.
      */
     public void addEdge(int v, int w) {
@@ -112,14 +112,14 @@ public class Digraph {
         E++;
     }
 
-   /**
+    /**
      * Return the list of neighbors of vertex v as in Iterable.
      */
     public Iterable<Integer> adj(int v) {
         return adj[v];
     }
 
-   /**
+    /**
      * Return the reverse of the digraph.
      */
     public Digraph reverse() {
@@ -132,7 +132,7 @@ public class Digraph {
         return R;
     }
 
-   /**
+    /**
      * Return a string representation of the digraph.
      */
     public String toString() {
@@ -149,7 +149,7 @@ public class Digraph {
         return s.toString();
     }
 
-   /**
+    /**
      * Test client.
      */
     public static void main(String[] args) {

@@ -16,7 +16,7 @@ public class RangeExample {
                 Range.closed(new Date(3000), new Date(4000)),
                 Range.closed(new Date(1500), new Date(2000)),
                 Range.closed(new Date(3000), new Date(5000))
-                );
+        );
 
         for (Range<Date> range : ranges) {
             System.out.println(range);

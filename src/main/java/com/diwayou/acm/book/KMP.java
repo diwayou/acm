@@ -47,15 +47,15 @@ public class KMP {
 
         // build DFA from pattern
         int M = pat.length();
-        dfa = new int[R][M]; 
-        dfa[pat.charAt(0)][0] = 1; 
+        dfa = new int[R][M];
+        dfa[pat.charAt(0)][0] = 1;
         for (int X = 0, j = 1; j < M; j++) {
-            for (int c = 0; c < R; c++) 
+            for (int c = 0; c < R; c++)
                 dfa[c][j] = dfa[c][X];     // Copy mismatch cases. 
-            dfa[pat.charAt(j)][j] = j+1;   // Set match case. 
+            dfa[pat.charAt(j)][j] = j + 1;   // Set match case.
             X = dfa[pat.charAt(j)][X];     // Update restart state. 
-        } 
-    } 
+        }
+    }
 
     // create the DFA from a character array over R-character alphabet
     public KMP(char[] pattern, int R) {
@@ -66,15 +66,15 @@ public class KMP {
 
         // build DFA from pattern
         int M = pattern.length;
-        dfa = new int[R][M]; 
-        dfa[pattern[0]][0] = 1; 
+        dfa = new int[R][M];
+        dfa[pattern[0]][0] = 1;
         for (int X = 0, j = 1; j < M; j++) {
-            for (int c = 0; c < R; c++) 
+            for (int c = 0; c < R; c++)
                 dfa[c][j] = dfa[c][X];     // Copy mismatch cases. 
-            dfa[pattern[j]][j] = j+1;      // Set match case. 
+            dfa[pattern[j]][j] = j + 1;      // Set match case.
             X = dfa[pattern[j]][X];        // Update restart state. 
-        } 
-    } 
+        }
+    }
 
     // return offset of first match; N if no match
     public int search(String txt) {
@@ -110,7 +110,7 @@ public class KMP {
         String pat = args[0];
         String txt = args[1];
         char[] pattern = pat.toCharArray();
-        char[] text    = txt.toCharArray();
+        char[] text = txt.toCharArray();
 
         KMP kmp1 = new KMP(pat);
         int offset1 = kmp1.search(txt);

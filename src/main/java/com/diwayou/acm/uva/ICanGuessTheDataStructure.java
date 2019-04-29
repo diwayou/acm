@@ -13,12 +13,12 @@ package com.diwayou.acm.uva;// There is a bag-like data structure, supporting tw
 
 // Output:
 // 	For each test case, output one of the following:
-	// 	stack It’s definitely a stack.
-	// 	queue It’s definitely a queue.
-	// 	priority queue It’s definitely a priority queue.
-	// 	impossible It can’t be a stack, a queue or a priority queue.
-	// 	not sure It can be more than one of the three data structures mentioned
-	// 	above.
+// 	stack It’s definitely a stack.
+// 	queue It’s definitely a queue.
+// 	priority queue It’s definitely a priority queue.
+// 	impossible It can’t be a stack, a queue or a priority queue.
+// 	not sure It can be more than one of the three data structures mentioned
+// 	above.
 
 // Sample Input
 // 6

@@ -8,7 +8,7 @@ import com.diwayou.acm.util.StdOut;
  *  Execution:    java HexDump < file
  *  Dependencies: BinaryStdIn.java
  *  Data file:    http://introcs.cs.princeton.edu/stdlib/abra.txt
- *  
+ *
  *  Reads in a binary file and writes out the bytes in hex, 16 per line.
  *
  *  % more abra.txt
@@ -36,7 +36,10 @@ public class HexDump {
 
         int i;
         for (i = 0; !BinaryStdIn.isEmpty(); i++) {
-            if (BYTES_PER_LINE == 0) { BinaryStdIn.readChar(); continue; }
+            if (BYTES_PER_LINE == 0) {
+                BinaryStdIn.readChar();
+                continue;
+            }
             if (i == 0) StdOut.printf("");
             else if (i % BYTES_PER_LINE == 0) StdOut.printf("\n", i);
             else StdOut.print(" ");
@@ -44,6 +47,6 @@ public class HexDump {
             StdOut.printf("%02x", c & 0xff);
         }
         if (BYTES_PER_LINE != 0) StdOut.println();
-        StdOut.println((i*8) + " bits");
+        StdOut.println((i * 8) + " bits");
     }
 }

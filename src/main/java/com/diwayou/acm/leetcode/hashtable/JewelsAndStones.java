@@ -9,17 +9,17 @@ import java.util.HashMap;
 class JewelsAndStones {
     public int numJewelsInStones(String J, String S) {
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
-        for(char c: J.toCharArray()) {
+        for (char c : J.toCharArray()) {
             map.put(c, 1);
         }
-        
+
         int numberOfJewels = 0;
-        for(char c: S.toCharArray()) {
-            if(map.containsKey(c)) {
+        for (char c : S.toCharArray()) {
+            if (map.containsKey(c)) {
                 numberOfJewels++;
             }
         }
-        
+
         return numberOfJewels;
     }
 }

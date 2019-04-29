@@ -10,7 +10,7 @@ import com.diwayou.acm.util.StdOut;
  *  Dependencies: ST.java Graph.java In.java StdIn.java StdOut.java
  *  Data files:   http://algs4.cs.princeton.edu/41undirected/routes.txt
  *                http://algs4.cs.princeton.edu/41undirected/movies.txt
- *  
+ *
  *  %  java SymbolGraph routes.txt " "
  *  JFK
  *     MCO
@@ -97,7 +97,7 @@ public class SymbolGraph {
 
 
     public static void main(String[] args) {
-        String filename  = args[0];
+        String filename = args[0];
         String delimiter = args[1];
         SymbolGraph sg = new SymbolGraph(filename, delimiter);
         Graph G = sg.G();

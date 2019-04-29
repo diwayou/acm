@@ -9,8 +9,8 @@ import com.diwayou.acm.util.StdOut;
  *  Dependencies: SymbolGraph.java Graph.java BreadthFirstPaths.java StdOut.java
  *  Data files:   http://algs4.cs.princeton.edu/41undirected/routes.txt
  *                http://algs4.cs.princeton.edu/41undirected/movies.txt
- *  
- *  
+ *
+ *
  *  %  java DegreesOfSeparation routes.txt " " "JFK"
  *  LAS
  *     JFK
@@ -56,9 +56,9 @@ import com.diwayou.acm.util.StdOut;
 
 public class DegreesOfSeparation {
     public static void main(String[] args) {
-        String filename  = args[0];
+        String filename = args[0];
         String delimiter = args[1];
-        String source    = args[2];
+        String source = args[2];
 
         StdOut.println("Source: " + source);
 
@@ -80,12 +80,10 @@ public class DegreesOfSeparation {
                     for (int v : bfs.pathTo(t)) {
                         StdOut.println("   " + sg.name(v));
                     }
-                }
-                else {
+                } else {
                     StdOut.println("Not connected");
                 }
-            }
-            else {
+            } else {
                 StdOut.println("   Not in database.");
             }
         }

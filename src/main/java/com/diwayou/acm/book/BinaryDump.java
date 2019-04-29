@@ -8,7 +8,7 @@ import com.diwayou.acm.util.StdOut;
  *  Execution:    java BinaryDump N < file
  *  Dependencies: BinaryStdIn.java
  *  Data file:    http://introcs.cs.princeton.edu/stdlib/abra.txt
- *  
+ *
  *  Reads in a binary file and writes out the bits, N per line.
  *
  *  % more abra.txt 
@@ -35,10 +35,12 @@ public class BinaryDump {
 
         int count;
         for (count = 0; !BinaryStdIn.isEmpty(); count++) {
-            if (BITS_PER_LINE == 0) { BinaryStdIn.readBoolean(); continue; }
-            else if (count != 0 && count % BITS_PER_LINE == 0) StdOut.println();
+            if (BITS_PER_LINE == 0) {
+                BinaryStdIn.readBoolean();
+                continue;
+            } else if (count != 0 && count % BITS_PER_LINE == 0) StdOut.println();
             if (BinaryStdIn.readBoolean()) StdOut.print(1);
-            else                           StdOut.print(0);
+            else StdOut.print(0);
         }
         if (BITS_PER_LINE != 0) StdOut.println();
         StdOut.println(count + " bits");

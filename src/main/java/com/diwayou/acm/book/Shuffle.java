@@ -7,7 +7,7 @@ import com.diwayou.acm.util.StdOut;
  *  Compilation:  javac Shuffle.java
  *  Execution:    java Shuffle < list.txt
  *  Data files:   http://algs4.cs.princeton.edu/11model/cards.txt
- *  
+ *
  *  Reads in a list of strings and prints them in random order.
  *  The Knuth (or Fisher-Yates) shuffling algorithm guarantees
  *  to rearrange the elements in uniformly random order, under
@@ -31,7 +31,7 @@ import com.diwayou.acm.util.StdOut;
  *
  *************************************************************************/
 
-public class Shuffle { 
+public class Shuffle {
     public static void main(String[] args) {
 
         // read in the data

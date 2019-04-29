@@ -22,18 +22,18 @@ package com.diwayou.web.exception;
  */
 public class RobotException extends RuntimeException {
 
-  public RobotException() {
-  }
+    public RobotException() {
+    }
 
-  public RobotException(String message) {
-    super(message);
-  }
+    public RobotException(String message) {
+        super(message);
+    }
 
-  public RobotException(Throwable cause) {
-    super(cause);
-  }
+    public RobotException(Throwable cause) {
+        super(cause);
+    }
 
-  public RobotException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    public RobotException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

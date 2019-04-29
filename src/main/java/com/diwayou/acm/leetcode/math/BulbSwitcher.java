@@ -11,6 +11,6 @@ package com.diwayou.acm.leetcode.math;//There are n bulbs that are initially off
 
 class BulbSwitcher {
     public int bulbSwitch(int n) {
-        return (int)Math.sqrt(n);
+        return (int) Math.sqrt(n);
     }
 }

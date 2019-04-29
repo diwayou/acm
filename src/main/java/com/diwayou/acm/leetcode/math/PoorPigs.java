@@ -9,12 +9,12 @@ package com.diwayou.acm.leetcode.math;//There are 1000 buckets, one and only one
 //you need to figure out the "poison" bucket within p minutes? There is exact one bucket with poison.
 
 class PoorPigs {
-    public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {    
+    public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
         int numPigs = 0;
         while (Math.pow(minutesToTest / minutesToDie + 1, numPigs) < buckets) {
             numPigs++;
         }
-        
+
         return numPigs;
     }
 }

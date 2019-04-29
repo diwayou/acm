@@ -31,17 +31,18 @@ package com.diwayou.acm.util;
 import java.util.Random;
 
 /**
- *  <i>Standard random</i>. This class provides methods for generating
- *  random number from various distributions.
- *  <p>
- *  For additional documentation, see <a href="http://introcs.cs.princeton.edu/22library">Section 2.2</a> of
- *  <i>Introduction to Programming in Java: An Interdisciplinary Approach</i> by Robert Sedgewick and Kevin Wayne.
+ * <i>Standard random</i>. This class provides methods for generating
+ * random number from various distributions.
+ * <p>
+ * For additional documentation, see <a href="http://introcs.cs.princeton.edu/22library">Section 2.2</a> of
+ * <i>Introduction to Programming in Java: An Interdisciplinary Approach</i> by Robert Sedgewick and Kevin Wayne.
  */
 public final class StdRandom {
 
     private static Random random = new Random();
 
-    private StdRandom() { }
+    private StdRandom() {
+    }
 
     /**
      * Set the seed of the psedurandom number generator.
@@ -87,7 +88,7 @@ public final class StdRandom {
      * Return real number uniformly in [a, b).
      */
     public static double uniform(double a, double b) {
-        return a + uniform() * (b-a);
+        return a + uniform() * (b - a);
     }
 
     /**
@@ -113,7 +114,7 @@ public final class StdRandom {
         do {
             x = uniform(-1.0, 1.0);
             y = uniform(-1.0, 1.0);
-            r = x*x + y*y;
+            r = x * x + y * y;
         } while (r >= 1 || r == 0);
         return x * Math.sqrt(-2 * Math.log(r) / r);
 
@@ -149,14 +150,14 @@ public final class StdRandom {
             k++;
             p *= uniform();
         } while (p >= L);
-        return k-1;
+        return k - 1;
     }
 
     /**
      * Return a real number with a Pareto distribution with parameter alpha.
      */
     public static double pareto(double alpha) {
-        return Math.pow(1 - uniform(), -1.0/alpha) - 1.0;
+        return Math.pow(1 - uniform(), -1.0 / alpha) - 1.0;
     }
 
     /**
@@ -194,7 +195,7 @@ public final class StdRandom {
     public static void shuffle(Object[] a) {
         int N = a.length;
         for (int i = 0; i < N; i++) {
-            int r = i + uniform(N-i);     // between i and N-1
+            int r = i + uniform(N - i);     // between i and N-1
             Object temp = a[i];
             a[i] = a[r];
             a[r] = temp;
@@ -207,7 +208,7 @@ public final class StdRandom {
     public static void shuffle(double[] a) {
         int N = a.length;
         for (int i = 0; i < N; i++) {
-            int r = i + uniform(N-i);     // between i and N-1
+            int r = i + uniform(N - i);     // between i and N-1
             double temp = a[i];
             a[i] = a[r];
             a[r] = temp;
@@ -220,7 +221,7 @@ public final class StdRandom {
     public static void shuffle(int[] a) {
         int N = a.length;
         for (int i = 0; i < N; i++) {
-            int r = i + uniform(N-i);     // between i and N-1
+            int r = i + uniform(N - i);     // between i and N-1
             int temp = a[i];
             a[i] = a[r];
             a[r] = temp;
@@ -235,7 +236,7 @@ public final class StdRandom {
         if (lo < 0 || lo > hi || hi >= a.length)
             throw new RuntimeException("Illegal subarray range");
         for (int i = lo; i <= hi; i++) {
-            int r = i + uniform(hi-i+1);     // between i and hi
+            int r = i + uniform(hi - i + 1);     // between i and hi
             Object temp = a[i];
             a[i] = a[r];
             a[r] = temp;
@@ -249,7 +250,7 @@ public final class StdRandom {
         if (lo < 0 || lo > hi || hi >= a.length)
             throw new RuntimeException("Illegal subarray range");
         for (int i = lo; i <= hi; i++) {
-            int r = i + uniform(hi-i+1);     // between i and hi
+            int r = i + uniform(hi - i + 1);     // between i and hi
             double temp = a[i];
             a[i] = a[r];
             a[r] = temp;
@@ -263,7 +264,7 @@ public final class StdRandom {
         if (lo < 0 || lo > hi || hi >= a.length)
             throw new RuntimeException("Illegal subarray range");
         for (int i = lo; i <= hi; i++) {
-            int r = i + uniform(hi-i+1);     // between i and hi
+            int r = i + uniform(hi - i + 1);     // between i and hi
             int temp = a[i];
             a[i] = a[r];
             a[r] = temp;
@@ -278,14 +279,14 @@ public final class StdRandom {
         int N = Integer.parseInt(args[0]);
         if (args.length == 2) StdRandom.setSeed(Long.parseLong(args[1]));
 
-        double[] t = { .5, .3, .1, .1 };
+        double[] t = {.5, .3, .1, .1};
 
         for (int i = 0; i < N; i++) {
-            StdOut.printf("%2d "  , uniform(100));
+            StdOut.printf("%2d ", uniform(100));
             StdOut.printf("%8.5f ", uniform(10.0, 99.0));
-            StdOut.printf("%5b "  , bernoulli(.5));
+            StdOut.printf("%5b ", bernoulli(.5));
             StdOut.printf("%7.5f ", gaussian(9.0, .2));
-            StdOut.printf("%2d "  , discrete(t));
+            StdOut.printf("%2d ", discrete(t));
             StdOut.println();
         }
     }

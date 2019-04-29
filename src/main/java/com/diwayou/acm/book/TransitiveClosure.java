@@ -67,7 +67,7 @@ public class TransitiveClosure {
             StdOut.printf("%3d: ", v);
             for (int w = 0; w < G.V(); w++) {
                 if (tc.reachable(v, w)) StdOut.printf("  T");
-                else                    StdOut.printf("   ");
+                else StdOut.printf("   ");
             }
             StdOut.println();
         }

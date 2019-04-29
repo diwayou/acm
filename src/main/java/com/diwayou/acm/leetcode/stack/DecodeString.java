@@ -12,44 +12,44 @@ public class DecodeString {
     public String decodeString(String s) {
         //declare empty string
         String decoded = "";
-        
+
         //initialize stack to hold counts
         Stack<Integer> countStack = new Stack<Integer>();
-        
+
         //initalize stack to hold decoded string
         Stack<String> decodedStack = new Stack<String>();
-        
+
         //initialize index to zero
         int index = 0;
-        
+
         //iterate through entire string
-        while(index < s.length()) {
+        while (index < s.length()) {
             //if the current character is numeric...
-            if(Character.isDigit(s.charAt(index))) {
+            if (Character.isDigit(s.charAt(index))) {
                 int count = 0;
-                
+
                 //determine the number
-                while(Character.isDigit(s.charAt(index))) {
+                while (Character.isDigit(s.charAt(index))) {
                     count = 10 * count + (s.charAt(index) - '0');
                     index++;
                 }
-                
+
                 //push the number onto the count stack
                 countStack.push(count);
-            } else if(s.charAt(index) == '[') {
+            } else if (s.charAt(index) == '[') {
                 //if the current character is an opening bracket
                 decodedStack.push(decoded);
                 decoded = "";
                 index++;
-            } else if(s.charAt(index) == ']') {
+            } else if (s.charAt(index) == ']') {
                 //if the current character is a closing bracket
                 StringBuilder temp = new StringBuilder(decodedStack.pop());
                 int repeatTimes = countStack.pop();
-                
-                for(int i = 0; i < repeatTimes; i++) {
+
+                for (int i = 0; i < repeatTimes; i++) {
                     temp.append(decoded);
                 }
-                
+
                 decoded = temp.toString();
                 index++;
             } else {
@@ -58,7 +58,7 @@ public class DecodeString {
                 index++;
             }
         }
-        
+
         //return the decoded string
         return decoded;
     }

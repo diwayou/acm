@@ -44,7 +44,7 @@ public class Ants {
         //declare current ant
         int currentAnt;
 
-        while(testCases > 0) {
+        while (testCases > 0) {
 
             //initialize length of rod and number of ants
             int length = sc.nextInt();
@@ -55,7 +55,7 @@ public class Ants {
             int max = 0;
 
             //iterate while there are still remaining ants to process
-            while(numberOfAnts > 0) {
+            while (numberOfAnts > 0) {
 
                 //read in current ant
                 currentAnt = sc.nextInt();
@@ -64,14 +64,14 @@ public class Ants {
                 currentAnt = currentAnt < length - currentAnt ? currentAnt : length - currentAnt;
 
                 //update minimum time to most restrictive ant minimum time
-                if(currentAnt > min) {
+                if (currentAnt > min) {
 
                     min = currentAnt;
 
                 }
 
                 //update maximum time to most restrictive ant maximum time
-                if(length - currentAnt > max) {
+                if (length - currentAnt > max) {
 
                     max = length - currentAnt;
 

@@ -17,7 +17,7 @@ public class FlowNetwork {
     private final int V;
     private int E;
     private Bag<FlowEdge>[] adj;
-    
+
     // empty graph with V vertices
     public FlowNetwork(int V) {
         this.V = V;
@@ -52,8 +52,13 @@ public class FlowNetwork {
 
 
     // number of vertices and edges
-    public int V() { return V; }
-    public int E() { return E; }
+    public int V() {
+        return V;
+    }
+
+    public int E() {
+        return E;
+    }
 
     // add edge e in both v's and w's adjacency lists
     public void addEdge(FlowEdge e) {

@@ -3,18 +3,18 @@ package com.diwayou.acm.book;
 import com.diwayou.acm.util.StdOut;
 
 public class Alphabet {
-    public static final Alphabet BINARY         = new Alphabet("01");
-    public static final Alphabet OCTAL          = new Alphabet("01234567");
-    public static final Alphabet DECIMAL        = new Alphabet("0123456789");
-    public static final Alphabet HEXADECIMAL    = new Alphabet("0123456789ABCDEF");
-    public static final Alphabet DNA            = new Alphabet("ACTG");
-    public static final Alphabet LOWERCASE      = new Alphabet("abcdefghijklmnopqrstuvwxyz");
-    public static final Alphabet UPPERCASE      = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    public static final Alphabet PROTEIN        = new Alphabet("ACDEFGHIKLMNPQRSTVWY");
-    public static final Alphabet BASE64         = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
-    public static final Alphabet ASCII          = new Alphabet(128);
+    public static final Alphabet BINARY = new Alphabet("01");
+    public static final Alphabet OCTAL = new Alphabet("01234567");
+    public static final Alphabet DECIMAL = new Alphabet("0123456789");
+    public static final Alphabet HEXADECIMAL = new Alphabet("0123456789ABCDEF");
+    public static final Alphabet DNA = new Alphabet("ACTG");
+    public static final Alphabet LOWERCASE = new Alphabet("abcdefghijklmnopqrstuvwxyz");
+    public static final Alphabet UPPERCASE = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    public static final Alphabet PROTEIN = new Alphabet("ACDEFGHIKLMNPQRSTVWY");
+    public static final Alphabet BASE64 = new Alphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+    public static final Alphabet ASCII = new Alphabet(128);
     public static final Alphabet EXTENDED_ASCII = new Alphabet(256);
-    public static final Alphabet UNICODE16      = new Alphabet(65536);
+    public static final Alphabet UNICODE16 = new Alphabet(65536);
 
     private char[] alphabet;     // the characters in the alphabet
     private int[] inverse;       // indices
@@ -90,7 +90,7 @@ public class Alphabet {
     // convert String s over this alphabet into a base-R integer
     public int[] toIndices(String s) {
         char[] source = s.toCharArray();
-        int[] target  = new int[s.length()];
+        int[] target = new int[s.length()];
         for (int i = 0; i < source.length; i++)
             target[i] = toIndex(source[i]);
         return target;
@@ -114,11 +114,11 @@ public class Alphabet {
 
 
     public static void main(String[] args) {
-        int[] encoded1  = Alphabet.BASE64.toIndices("NowIsTheTimeForAllGoodMen");
+        int[] encoded1 = Alphabet.BASE64.toIndices("NowIsTheTimeForAllGoodMen");
         String decoded1 = Alphabet.BASE64.toChars(encoded1);
         StdOut.println(decoded1);
- 
-        int[] encoded2  = Alphabet.DNA.toIndices("AACGAACGGTTTACCCCG");
+
+        int[] encoded2 = Alphabet.DNA.toIndices("AACGAACGGTTTACCCCG");
         String decoded2 = Alphabet.DNA.toChars(encoded2);
         StdOut.println(decoded2);
 

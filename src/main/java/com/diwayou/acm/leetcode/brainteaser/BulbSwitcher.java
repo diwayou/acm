@@ -11,7 +11,7 @@ package com.diwayou.acm.leetcode.brainteaser;//There are n bulbs that are initia
 
 class BulbSwitcher {
     public int bulbSwitch(int n) {
-        return (int)Math.sqrt(n);
+        return (int) Math.sqrt(n);
     }
 }
 

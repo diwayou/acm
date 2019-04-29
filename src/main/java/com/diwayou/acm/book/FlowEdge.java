@@ -9,11 +9,11 @@ package com.diwayou.acm.book; /*************************************************
 import com.diwayou.acm.util.StdOut;
 
 /**
- *  The <tt>FlowEdge</tt> class represents a capacitated edge with a flow
- *  in a digraph.
- *  <p>
- *  For additional documentation, see <a href="/algs4/74or">Section 7.4</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The <tt>FlowEdge</tt> class represents a capacitated edge with a flow
+ * in a digraph.
+ * <p>
+ * For additional documentation, see <a href="/algs4/74or">Section 7.4</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
 
 
@@ -25,41 +25,52 @@ public class FlowEdge {
 
     public FlowEdge(int v, int w, double capacity) {
         if (capacity < 0) throw new RuntimeException("Negative edge capacity");
-        this.v         = v;
-        this.w         = w;  
-        this.capacity  = capacity;
-        this.flow      = 0;
+        this.v = v;
+        this.w = w;
+        this.capacity = capacity;
+        this.flow = 0;
     }
 
     public FlowEdge(int v, int w, double capacity, double flow) {
         if (capacity < 0) throw new RuntimeException("Negative edge capacity");
-        this.v         = v;
-        this.w         = w;  
-        this.capacity  = capacity;
-        this.flow      = flow;
+        this.v = v;
+        this.w = w;
+        this.capacity = capacity;
+        this.flow = flow;
     }
 
     // accessor methods
-    public int from()         { return v;        }  
-    public int to()           { return w;        }  
-    public double capacity()  { return capacity; }
-    public double flow()      { return flow;     }
+    public int from() {
+        return v;
+    }
+
+    public int to() {
+        return w;
+    }
+
+    public double capacity() {
+        return capacity;
+    }
+
+    public double flow() {
+        return flow;
+    }
 
 
     public int other(int vertex) {
-        if      (vertex == v) return w;
+        if (vertex == v) return w;
         else if (vertex == w) return v;
         else throw new RuntimeException("Illegal endpoint");
     }
 
     public double residualCapacityTo(int vertex) {
-        if      (vertex == v) return flow;
+        if (vertex == v) return flow;
         else if (vertex == w) return capacity - flow;
         else throw new RuntimeException("Illegal endpoint");
     }
 
     public void addResidualFlowTo(int vertex, double delta) {
-        if      (vertex == v) flow -= delta;
+        if (vertex == v) flow -= delta;
         else if (vertex == w) flow += delta;
         else throw new RuntimeException("Illegal endpoint");
     }
@@ -70,7 +81,7 @@ public class FlowEdge {
     }
 
 
-   /**
+    /**
      * Test client.
      */
     public static void main(String[] args) {

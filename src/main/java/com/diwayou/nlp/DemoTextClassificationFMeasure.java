@@ -30,18 +30,16 @@ import static com.diwayou.nlp.DemoTextClassification.CORPUS_FOLDER;
  *
  * @author hankcs
  */
-public class DemoTextClassificationFMeasure
-{
+public class DemoTextClassificationFMeasure {
 
-    public static void main(String[] args) throws IOException
-    {
+    public static void main(String[] args) throws IOException {
         IDataSet trainingCorpus = new FileDataSet().                          // FileDataSet省内存，可加载大规模数据集
-            setTokenizer(new HanLPTokenizer()).                               // 支持不同的ITokenizer，详见源码中的文档
-            load(CORPUS_FOLDER, "UTF-8", 0.9);               // 前90%作为训练集
+                setTokenizer(new HanLPTokenizer()).                               // 支持不同的ITokenizer，详见源码中的文档
+                load(CORPUS_FOLDER, "UTF-8", 0.9);               // 前90%作为训练集
         IClassifier classifier = new NaiveBayesClassifier();
         classifier.train(trainingCorpus);
         IDataSet testingCorpus = new MemoryDataSet(classifier.getModel()).
-            load(CORPUS_FOLDER, "UTF-8", -0.1);        // 后10%作为测试集
+                load(CORPUS_FOLDER, "UTF-8", -0.1);        // 后10%作为测试集
         // 计算准确率
         FMeasure result = Evaluator.evaluate(classifier, testingCorpus);
         System.out.println(result);

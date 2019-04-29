@@ -75,9 +75,9 @@ public class BoyerMoore {
         int skip;
         for (int i = 0; i <= N - M; i += skip) {
             skip = 0;
-            for (int j = M-1; j >= 0; j--) {
-                if (pat.charAt(j) != txt.charAt(i+j)) {
-                    skip = Math.max(1, j - right[txt.charAt(i+j)]);
+            for (int j = M - 1; j >= 0; j--) {
+                if (pat.charAt(j) != txt.charAt(i + j)) {
+                    skip = Math.max(1, j - right[txt.charAt(i + j)]);
                     break;
                 }
             }
@@ -94,9 +94,9 @@ public class BoyerMoore {
         int skip;
         for (int i = 0; i <= N - M; i += skip) {
             skip = 0;
-            for (int j = M-1; j >= 0; j--) {
-                if (pattern[j] != text[i+j]) {
-                    skip = Math.max(1, j - right[text[i+j]]);
+            for (int j = M - 1; j >= 0; j--) {
+                if (pattern[j] != text[i + j]) {
+                    skip = Math.max(1, j - right[text[i + j]]);
                     break;
                 }
             }
@@ -106,13 +106,12 @@ public class BoyerMoore {
     }
 
 
-
     // test client
     public static void main(String[] args) {
         String pat = args[0];
         String txt = args[1];
         char[] pattern = pat.toCharArray();
-        char[] text    = txt.toCharArray();
+        char[] text = txt.toCharArray();
 
         BoyerMoore boyermoore1 = new BoyerMoore(pat);
         BoyerMoore boyermoore2 = new BoyerMoore(pattern, 256);

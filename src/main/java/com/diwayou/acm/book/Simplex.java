@@ -24,19 +24,19 @@ public class Simplex {
     private int N;          // number of original variables
 
     private int[] basis;    // basis[i] = basic variable corresponding to row i
-                            // only needed to print out solution, not book
+    // only needed to print out solution, not book
 
     // sets up the simplex tableaux
     public Simplex(double[][] A, double[] b, double[] c) {
         M = b.length;
         N = c.length;
-        a = new double[M+1][N+M+1];
+        a = new double[M + 1][N + M + 1];
         for (int i = 0; i < M; i++)
             for (int j = 0; j < N; j++)
                 a[i][j] = A[i][j];
-        for (int i = 0; i < M; i++) a[i][N+i] = 1.0;
-        for (int j = 0; j < N; j++) a[M][j]   = c[j];
-        for (int i = 0; i < M; i++) a[i][M+N] = b[i];
+        for (int i = 0; i < M; i++) a[i][N + i] = 1.0;
+        for (int j = 0; j < N; j++) a[M][j] = c[j];
+        for (int i = 0; i < M; i++) a[i][M + N] = b[i];
 
         basis = new int[M];
         for (int i = 0; i < M; i++) basis[i] = N + i;
@@ -74,7 +74,7 @@ public class Simplex {
         return -1;  // optimal
     }
 
-   // index of a non-basic column with most positive cost
+    // index of a non-basic column with most positive cost
     private int dantzig() {
         int q = 0;
         for (int j = 1; j < M + N; j++)
@@ -90,7 +90,7 @@ public class Simplex {
         for (int i = 0; i < M; i++) {
             if (a[i][q] <= 0) continue;
             else if (p == -1) p = i;
-            else if ((a[i][M+N] / a[i][q]) < (a[p][M+N] / a[p][q])) p = i;
+            else if ((a[i][M + N] / a[i][q]) < (a[p][M + N] / a[p][q])) p = i;
         }
         return p;
     }
@@ -115,14 +115,14 @@ public class Simplex {
 
     // return optimal objective value
     public double value() {
-        return -a[M][M+N];
+        return -a[M][M + N];
     }
 
     // return primal solution vector
     public double[] primal() {
         double[] x = new double[N];
         for (int i = 0; i < M; i++)
-            if (basis[i] < N) x[basis[i]] = a[i][M+N];
+            if (basis[i] < N) x[basis[i]] = a[i][M + N];
         return x;
     }
 
@@ -130,7 +130,7 @@ public class Simplex {
     public double[] dual() {
         double[] y = new double[M];
         for (int i = 0; i < M; i++)
-            y[i] = -a[M][N+i];
+            y[i] = -a[M][N + i];
         return y;
     }
 
@@ -210,7 +210,7 @@ public class Simplex {
         return true;
     }
 
-    private boolean check(double[][]A, double[] b, double[] c) {
+    private boolean check(double[][] A, double[] b, double[] c) {
         return isPrimalFeasible(A, b) && isDualFeasible(A, c) && isOptimal(b, c);
     }
 
@@ -226,7 +226,7 @@ public class Simplex {
         }
         StdOut.println("value = " + value());
         for (int i = 0; i < M; i++)
-            if (basis[i] < N) StdOut.println("x_" + basis[i] + " = " + a[i][M+N]);
+            if (basis[i] < N) StdOut.println("x_" + basis[i] + " = " + a[i][M + N]);
         StdOut.println();
     }
 
@@ -244,72 +244,83 @@ public class Simplex {
 
     public static void test1() {
         double[][] A = {
-            { -1,  1,  0 },
-            {  1,  4,  0 },
-            {  2,  1,  0 },
-            {  3, -4,  0 },
-            {  0,  0,  1 },
+                {-1, 1, 0},
+                {1, 4, 0},
+                {2, 1, 0},
+                {3, -4, 0},
+                {0, 0, 1},
         };
-        double[] c = { 1, 1, 1 };
-        double[] b = { 5, 45, 27, 24, 4 };
+        double[] c = {1, 1, 1};
+        double[] b = {5, 45, 27, 24, 4};
         test(A, b, c);
     }
 
 
     // x0 = 12, x1 = 28, opt = 800
     public static void test2() {
-        double[] c = {  13.0,  23.0 };
-        double[] b = { 480.0, 160.0, 1190.0 };
+        double[] c = {13.0, 23.0};
+        double[] b = {480.0, 160.0, 1190.0};
         double[][] A = {
-            {  5.0, 15.0 },
-            {  4.0,  4.0 },
-            { 35.0, 20.0 },
+                {5.0, 15.0},
+                {4.0, 4.0},
+                {35.0, 20.0},
         };
         test(A, b, c);
     }
 
     // unbounded
     public static void test3() {
-        double[] c = { 2.0, 3.0, -1.0, -12.0 };
-        double[] b = {  3.0,   2.0 };
+        double[] c = {2.0, 3.0, -1.0, -12.0};
+        double[] b = {3.0, 2.0};
         double[][] A = {
-            { -2.0, -9.0,  1.0,  9.0 },
-            {  1.0,  1.0, -1.0, -2.0 },
+                {-2.0, -9.0, 1.0, 9.0},
+                {1.0, 1.0, -1.0, -2.0},
         };
         test(A, b, c);
     }
 
     // degenerate - cycles if you choose most positive objective function coefficient
     public static void test4() {
-        double[] c = { 10.0, -57.0, -9.0, -24.0 };
-        double[] b = {  0.0,   0.0,  1.0 };
+        double[] c = {10.0, -57.0, -9.0, -24.0};
+        double[] b = {0.0, 0.0, 1.0};
         double[][] A = {
-            { 0.5, -5.5, -2.5, 9.0 },
-            { 0.5, -1.5, -0.5, 1.0 },
-            { 1.0,  0.0,  0.0, 0.0 },
+                {0.5, -5.5, -2.5, 9.0},
+                {0.5, -1.5, -0.5, 1.0},
+                {1.0, 0.0, 0.0, 0.0},
         };
         test(A, b, c);
     }
 
 
-
     // test client
     public static void main(String[] args) {
 
-        try                 { test1();             }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            test1();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         StdOut.println("--------------------------------");
 
-        try                 { test2();             }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            test2();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         StdOut.println("--------------------------------");
 
-        try                 { test3();             }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            test3();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         StdOut.println("--------------------------------");
 
-        try                 { test4();             }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            test4();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         StdOut.println("--------------------------------");
 
 

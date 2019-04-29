@@ -41,8 +41,12 @@ public class FrequencyCounter {
             String key = StdIn.readString();
             if (key.length() < minlen) continue;
             words++;
-            if (st.contains(key)) { st.put(key, st.get(key) + 1); }
-            else                  { st.put(key, 1); distinct++; }
+            if (st.contains(key)) {
+                st.put(key, st.get(key) + 1);
+            } else {
+                st.put(key, 1);
+                distinct++;
+            }
         }
 
         // find a key with the highest frequency count

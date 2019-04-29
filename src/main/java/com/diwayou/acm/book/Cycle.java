@@ -70,8 +70,13 @@ public class Cycle {
         return false;
     }
 
-    public boolean hasCycle()        { return cycle != null; }
-    public Iterable<Integer> cycle() { return cycle;         }
+    public boolean hasCycle() {
+        return cycle != null;
+    }
+
+    public Iterable<Integer> cycle() {
+        return cycle;
+    }
 
     private void dfs(Graph G, int u, int v) {
         marked[v] = true;
@@ -110,8 +115,7 @@ public class Cycle {
                 StdOut.print(v + " ");
             }
             StdOut.println();
-        }
-        else {
+        } else {
             StdOut.println("Graph is acyclic");
         }
     }

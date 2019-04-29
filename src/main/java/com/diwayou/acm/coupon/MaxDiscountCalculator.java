@@ -331,7 +331,7 @@ public class MaxDiscountCalculator {
 
         // 优化只有一张券的情况
         if (couponIds.length == 1) {
-            List<DiscountResult> r =  computeBestDiscountOne(itemIds, couponIds, remainDiscount);
+            List<DiscountResult> r = computeBestDiscountOne(itemIds, couponIds, remainDiscount);
             dpRecords.put(new DpRecord(itemIds, couponIds), r);
 
             return r;

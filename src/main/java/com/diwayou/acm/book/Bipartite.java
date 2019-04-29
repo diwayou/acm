@@ -22,7 +22,7 @@ public class Bipartite {
 
     public Bipartite(Graph G) {
         isBipartite = true;
-        color  = new boolean[G.V()];
+        color = new boolean[G.V()];
         marked = new boolean[G.V()];
         edgeTo = new int[G.V()];
 
@@ -35,7 +35,7 @@ public class Bipartite {
         assert check(G);
     }
 
-    private void dfs(Graph G, int v) { 
+    private void dfs(Graph G, int v) {
         marked[v] = true;
         for (int w : G.adj(v)) {
 
@@ -47,7 +47,7 @@ public class Bipartite {
                 edgeTo[w] = v;
                 color[w] = !color[v];
                 dfs(G, w);
-            } 
+            }
 
             // if v-w create an odd-length cycle, find it
             else if (color[w] == color[v]) {
@@ -62,9 +62,17 @@ public class Bipartite {
         }
     }
 
-    boolean isBipartite()            { return isBipartite; }
-    boolean color(int v)             { return color[v];    }
-    public Iterable<Integer> cycle() { return cycle;       }
+    boolean isBipartite() {
+        return isBipartite;
+    }
+
+    boolean color(int v) {
+        return color[v];
+    }
+
+    public Iterable<Integer> cycle() {
+        return cycle;
+    }
 
     private boolean check(Graph G) {
         // graph is bipartite
@@ -107,9 +115,9 @@ public class Bipartite {
         for (int i = 0; i < V; i++) vertices[i] = i;
         StdRandom.shuffle(vertices);
         for (int i = 0; i < E; i++) {
-            int v = StdRandom.uniform(V/2);
-            int w = StdRandom.uniform(V/2);
-            G.addEdge(vertices[v], vertices[V/2 + w]);
+            int v = StdRandom.uniform(V / 2);
+            int w = StdRandom.uniform(V / 2);
+            G.addEdge(vertices[v], vertices[V / 2 + w]);
         }
 
         // add F extra edges
@@ -128,8 +136,7 @@ public class Bipartite {
             for (int v = 0; v < G.V(); v++) {
                 StdOut.println(v + ": " + b.color(v));
             }
-        }
-        else {
+        } else {
             StdOut.print("Graph has an odd-length cycle: ");
             for (int x : b.cycle()) {
                 StdOut.print(x + " ");

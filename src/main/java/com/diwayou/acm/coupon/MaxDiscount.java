@@ -21,7 +21,7 @@ public class MaxDiscount {
         int maxPrice = 100;
 
         for (int i = 0; i < 10000; i++) {
-            getDiscountResults(random, itemSize, maxPrice, couponSize, true,true, i);
+            getDiscountResults(random, itemSize, maxPrice, couponSize, true, true, i);
         }
     }
 

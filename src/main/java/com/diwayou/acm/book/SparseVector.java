@@ -5,7 +5,7 @@ import com.diwayou.acm.util.StdOut;
 /*************************************************************************
  *  Compilation:  javac SparseVector.java
  *  Execution:    java SparseVector
- *  
+ *
  *  A sparse vector, implementing using a symbol table.
  *
  *  [Not clear we need the instance variable N except for error checking.]
@@ -18,7 +18,7 @@ public class SparseVector {
 
     // initialize the all 0s vector of length N
     public SparseVector(int N) {
-        this.N  = N;
+        this.N = N;
         this.st = new ST<Integer, Double>();
     }
 
@@ -26,14 +26,14 @@ public class SparseVector {
     public void put(int i, double value) {
         if (i < 0 || i >= N) throw new RuntimeException("Illegal index");
         if (value == 0.0) st.delete(i);
-        else              st.put(i, value);
+        else st.put(i, value);
     }
 
     // return st[i]
     public double get(int i) {
         if (i < 0 || i >= N) throw new RuntimeException("Illegal index");
         if (st.contains(i)) return st.get(i);
-        else                return 0.0;
+        else return 0.0;
     }
 
     // return the number of nonzero entries
@@ -55,8 +55,7 @@ public class SparseVector {
         if (this.st.size() <= that.st.size()) {
             for (int i : this.st.keys())
                 if (that.st.contains(i)) sum += this.get(i) * that.get(i);
-        }
-        else  {
+        } else {
             for (int i : that.st.keys())
                 if (this.st.contains(i)) sum += this.get(i) * that.get(i);
         }

@@ -92,18 +92,15 @@ public class OrderStateTest {
 
     static class RelationshipEdge
             extends
-            DefaultEdge
-    {
+            DefaultEdge {
         private String label;
 
         /**
          * Constructs a relationship edge
          *
          * @param label the label of the new edge.
-         *
          */
-        public RelationshipEdge(String label)
-        {
+        public RelationshipEdge(String label) {
             this.label = label;
         }
 
@@ -112,14 +109,12 @@ public class OrderStateTest {
          *
          * @return edge label
          */
-        public String getLabel()
-        {
+        public String getLabel() {
             return label;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "(" + getSource() + " : " + getTarget() + " : " + label + ")";
         }
     }

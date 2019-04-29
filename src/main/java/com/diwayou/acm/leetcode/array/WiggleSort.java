@@ -4,10 +4,10 @@ package com.diwayou.acm.leetcode.array;// Given an unsorted array nums, reorder 
 
 public class WiggleSort {
     public void wiggleSort(int[] nums) {
-        for(int i = 1; i < nums.length; i++) {
+        for (int i = 1; i < nums.length; i++) {
             int current = nums[i - 1];
-            
-            if((i % 2 == 1) == (current > nums[i])) {
+
+            if ((i % 2 == 1) == (current > nums[i])) {
                 nums[i - 1] = nums[i];
                 nums[i] = current;
             }

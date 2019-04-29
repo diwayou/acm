@@ -6,7 +6,7 @@ import com.diwayou.acm.util.StdOut;
 /*************************************************************************
  *  Compilation:  javac LinearProbingHashST.java
  *  Execution:    java LinearProbingHashST
- *  
+ *
  *  Symbol table implementation with linear probing hash table.
  *
  *  % java LinearProbingHashST
@@ -35,7 +35,7 @@ public class LinearProbingHashST<Key, Value> {
     // create linear proving hash table of given capacity
     public LinearProbingHashST(int capacity) {
         M = capacity;
-        keys = (Key[])   new Object[M];
+        keys = (Key[]) new Object[M];
         vals = (Value[]) new Object[M];
     }
 
@@ -69,7 +69,7 @@ public class LinearProbingHashST<Key, Value> {
         }
         keys = temp.keys;
         vals = temp.vals;
-        M    = temp.M;
+        M = temp.M;
     }
 
     // insert the key-value pair into the symbol table
@@ -77,11 +77,14 @@ public class LinearProbingHashST<Key, Value> {
         if (val == null) delete(key);
 
         // double table size if 50% full
-        if (N >= M/2) resize(2*M);
+        if (N >= M / 2) resize(2 * M);
 
         int i;
         for (i = hash(key); keys[i] != null; i = (i + 1) % M) {
-            if (keys[i].equals(key)) { vals[i] = val; return; }
+            if (keys[i].equals(key)) {
+                vals[i] = val;
+                return;
+            }
         }
         keys[i] = key;
         vals[i] = val;
@@ -90,7 +93,7 @@ public class LinearProbingHashST<Key, Value> {
 
     // return the value associated with the given key, null if no such value
     public Value get(Key key) {
-        for (int i = hash(key); keys[i] != null; i = (i + 1) % M) 
+        for (int i = hash(key); keys[i] != null; i = (i + 1) % M)
             if (keys[i].equals(key))
                 return vals[i];
         return null;
@@ -114,19 +117,19 @@ public class LinearProbingHashST<Key, Value> {
         i = (i + 1) % M;
         while (keys[i] != null) {
             // delete keys[i] an vals[i] and reinsert
-            Key   keyToRehash = keys[i];
+            Key keyToRehash = keys[i];
             Value valToRehash = vals[i];
             keys[i] = null;
             vals[i] = null;
-            N--;  
+            N--;
             put(keyToRehash, valToRehash);
             i = (i + 1) % M;
         }
 
-        N--;        
+        N--;
 
         // halves size of array if it's 12.5% full or less
-        if (N > 0 && N <= M/8) resize(M/2);
+        if (N > 0 && N <= M / 8) resize(M / 2);
 
         assert check();
     }
@@ -144,7 +147,7 @@ public class LinearProbingHashST<Key, Value> {
     private boolean check() {
 
         // check that hash table is at most 50% full
-        if (M < 2*N) {
+        if (M < 2 * N) {
             System.err.println("Hash table size M = " + M + "; array size N = " + N);
             return false;
         }
@@ -161,10 +164,10 @@ public class LinearProbingHashST<Key, Value> {
     }
 
 
-/***********************************************************************
-    *  Unit test client.
-    ***********************************************************************/
-    public static void main(String[] args) { 
+    /***********************************************************************
+     *  Unit test client.
+     ***********************************************************************/
+    public static void main(String[] args) {
         LinearProbingHashST<String, Integer> st = new LinearProbingHashST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
@@ -172,7 +175,7 @@ public class LinearProbingHashST<Key, Value> {
         }
 
         // print keys
-        for (String s : st.keys()) 
+        for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));
     }
 }

@@ -20,11 +20,9 @@ import com.diwayou.acm.util.StdOut;
  *  shells 3
  *  shore 7
  *  the 5
-
  *
  *  % java TST
  *  theory the now is the time for all good men
-
  *  Remarks
  *  --------
  *    - can't use a key that is the empty string ""
@@ -46,9 +44,9 @@ public class TST<Value> {
         return N;
     }
 
-   /**************************************************************
-    * Is string key in the symbol table?
-    **************************************************************/
+    /**************************************************************
+     * Is string key in the symbol table?
+     **************************************************************/
     public boolean contains(String key) {
         return get(key) != null;
     }
@@ -65,16 +63,16 @@ public class TST<Value> {
         if (key == null || key.length() == 0) throw new RuntimeException("illegal key");
         if (x == null) return null;
         char c = key.charAt(d);
-        if      (c < x.c)              return get(x.left,  key, d);
-        else if (c > x.c)              return get(x.right, key, d);
-        else if (d < key.length() - 1) return get(x.mid,   key, d+1);
-        else                           return x;
+        if (c < x.c) return get(x.left, key, d);
+        else if (c > x.c) return get(x.right, key, d);
+        else if (d < key.length() - 1) return get(x.mid, key, d + 1);
+        else return x;
     }
 
 
-   /**************************************************************
-    * Insert string s into the symbol table.
-    **************************************************************/
+    /**************************************************************
+     * Insert string s into the symbol table.
+     **************************************************************/
     public void put(String s, Value val) {
         if (!contains(s)) N++;
         root = put(root, s, val, 0);
@@ -86,17 +84,17 @@ public class TST<Value> {
             x = new Node();
             x.c = c;
         }
-        if      (c < x.c)             x.left  = put(x.left,  s, val, d);
-        else if (c > x.c)             x.right = put(x.right, s, val, d);
-        else if (d < s.length() - 1)  x.mid   = put(x.mid,   s, val, d+1);
-        else                          x.val   = val;
+        if (c < x.c) x.left = put(x.left, s, val, d);
+        else if (c > x.c) x.right = put(x.right, s, val, d);
+        else if (d < s.length() - 1) x.mid = put(x.mid, s, val, d + 1);
+        else x.val = val;
         return x;
     }
 
 
-   /**************************************************************
-    * Find and return longest prefix of s in TST
-    **************************************************************/
+    /**************************************************************
+     * Find and return longest prefix of s in TST
+     **************************************************************/
     public String longestPrefixOf(String s) {
         if (s == null || s.length() == 0) return null;
         int length = 0;
@@ -104,7 +102,7 @@ public class TST<Value> {
         int i = 0;
         while (x != null && i < s.length()) {
             char c = s.charAt(i);
-            if      (c < x.c) x = x.left;
+            if (c < x.c) x = x.left;
             else if (c > x.c) x = x.right;
             else {
                 i++;
@@ -135,10 +133,10 @@ public class TST<Value> {
     // all keys in subtrie rooted at x with given prefix
     private void collect(Node x, String prefix, Queue<String> queue) {
         if (x == null) return;
-        collect(x.left,  prefix,       queue);
+        collect(x.left, prefix, queue);
         if (x.val != null) queue.enqueue(prefix + x.c);
-        collect(x.mid,   prefix + x.c, queue);
-        collect(x.right, prefix,       queue);
+        collect(x.mid, prefix + x.c, queue);
+        collect(x.right, prefix, queue);
     }
 
 
@@ -148,18 +146,17 @@ public class TST<Value> {
         collect(root, "", 0, pat, queue);
         return queue;
     }
- 
+
     public void collect(Node x, String prefix, int i, String pat, Queue<String> q) {
         if (x == null) return;
         char c = pat.charAt(i);
         if (c == '.' || c < x.c) collect(x.left, prefix, i, pat, q);
         if (c == '.' || c == x.c) {
             if (i == pat.length() - 1 && x.val != null) q.enqueue(prefix + x.c);
-            if (i < pat.length() - 1) collect(x.mid, prefix + x.c, i+1, pat, q);
+            if (i < pat.length() - 1) collect(x.mid, prefix + x.c, i + 1, pat, q);
         }
         if (c == '.' || c > x.c) collect(x.right, prefix, i, pat, q);
     }
-
 
 
     // test client

@@ -19,15 +19,12 @@ import java.util.zip.ZipInputStream;
 /**
  * @author hankcs
  */
-public class TestUtility
-{
-    static
-    {
+public class TestUtility {
+    static {
         ensureFullData();
     }
 
-    public static void ensureFullData()
-    {
+    public static void ensureFullData() {
         ensureData("data/model/crf", "http://nlp.hankcs.com/download.php?file=data", ".", false);
     }
 
@@ -38,8 +35,7 @@ public class TestUtility
      * @param url  下载地址
      * @return name的绝对路径
      */
-    public static String ensureData(String name, String url)
-    {
+    public static String ensureData(String name, String url) {
         return ensureData(name, url, null, true);
     }
 
@@ -50,23 +46,18 @@ public class TestUtility
      * @param url  下载地址
      * @return name的绝对路径
      */
-    public static String ensureData(String name, String url, String parentPath, boolean overwrite)
-    {
+    public static String ensureData(String name, String url, String parentPath, boolean overwrite) {
         File target = new File(name);
         if (target.exists()) return target.getAbsolutePath();
-        try
-        {
+        try {
             File parentFile = parentPath == null ? new File(name).getParentFile() : new File(parentPath);
             if (!parentFile.exists()) parentFile.mkdirs();
             String filePath = downloadFile(url, parentFile.getAbsolutePath());
-            if (filePath.endsWith(".zip"))
-            {
+            if (filePath.endsWith(".zip")) {
                 unzip(filePath, parentFile.getAbsolutePath(), overwrite);
             }
             return target.getAbsolutePath();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.printf("数据下载失败，请尝试手动下载 %s 到 %s 。原因如下：\n", url, target.getAbsolutePath());
             e.printStackTrace();
             System.exit(1);
@@ -81,8 +72,7 @@ public class TestUtility
      * @param url
      * @return
      */
-    public static String ensureTestData(String name, String url)
-    {
+    public static String ensureTestData(String name, String url) {
         return ensureData(String.format("data/test/%s", name), url);
     }
 
@@ -95,33 +85,27 @@ public class TestUtility
      * @author www.codejava.net
      */
     public static String downloadFile(String fileURL, String savePath)
-        throws IOException
-    {
+            throws IOException {
         System.err.printf("Downloading %s to %s\n", fileURL, savePath);
         URL url = new URL(fileURL);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         int responseCode = httpConn.getResponseCode();
 
         // always check HTTP response code first
-        if (responseCode == HttpURLConnection.HTTP_OK)
-        {
+        if (responseCode == HttpURLConnection.HTTP_OK) {
             String fileName = "";
             String disposition = httpConn.getHeaderField("Content-Disposition");
             String contentType = httpConn.getContentType();
             int contentLength = httpConn.getContentLength();
 
-            if (disposition != null)
-            {
+            if (disposition != null) {
                 // extracts file name from header field
                 int index = disposition.indexOf("filename=");
-                if (index > 0)
-                {
+                if (index > 0) {
                     fileName = disposition.substring(index + 10,
-                                                     disposition.length() - 1);
+                            disposition.length() - 1);
                 }
-            }
-            else
-            {
+            } else {
                 // extracts file name from URL
                 fileName = new File(httpConn.getURL().getPath()).getName();
             }
@@ -137,13 +121,10 @@ public class TestUtility
             if (new File(savePath).isDirectory())
                 saveFilePath = savePath + File.separator + fileName;
             String realPath;
-            if (new File(saveFilePath).isFile())
-            {
+            if (new File(saveFilePath).isFile()) {
                 System.err.printf("Use cached %s instead.\n", fileName);
                 realPath = saveFilePath;
-            }
-            else
-            {
+            } else {
                 saveFilePath += ".downloading";
 
                 // opens an output stream to save into file
@@ -153,8 +134,7 @@ public class TestUtility
                 byte[] buffer = new byte[4096];
                 long start = System.currentTimeMillis();
                 int progress_size = 0;
-                while ((bytesRead = inputStream.read(buffer)) != -1)
-                {
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, bytesRead);
                     long duration = (System.currentTimeMillis() - start) / 1000;
                     duration = Math.max(duration, 1);
@@ -178,16 +158,13 @@ public class TestUtility
             httpConn.disconnect();
 
             return realPath;
-        }
-        else
-        {
+        } else {
             httpConn.disconnect();
             throw new IOException("No file to download. Server replied HTTP code: " + responseCode);
         }
     }
 
-    private static void unzip(String zipFilePath, String destDir, boolean overwrite)
-    {
+    private static void unzip(String zipFilePath, String destDir, boolean overwrite) {
         System.err.println("Unzipping to " + destDir);
         File dir = new File(destDir);
         // create output directory if it doesn't exist
@@ -195,29 +172,22 @@ public class TestUtility
         FileInputStream fis;
         //buffer for read and write data to file
         byte[] buffer = new byte[4096];
-        try
-        {
+        try {
             fis = new FileInputStream(zipFilePath);
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
-            while (ze != null)
-            {
+            while (ze != null) {
                 String fileName = ze.getName();
                 File newFile = new File(destDir + File.separator + fileName);
-                if (overwrite || !newFile.exists())
-                {
-                    if (ze.isDirectory())
-                    {
+                if (overwrite || !newFile.exists()) {
+                    if (ze.isDirectory()) {
                         //create directories for sub directories in zip
                         newFile.mkdirs();
-                    }
-                    else
-                    {
+                    } else {
                         new File(newFile.getParent()).mkdirs();
                         FileOutputStream fos = new FileOutputStream(newFile);
                         int len;
-                        while ((len = zis.read(buffer)) > 0)
-                        {
+                        while ((len = zis.read(buffer)) > 0) {
                             fos.write(buffer, 0, len);
                         }
                         fos.close();
@@ -232,9 +202,7 @@ public class TestUtility
             zis.close();
             fis.close();
             new File(zipFilePath).delete();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

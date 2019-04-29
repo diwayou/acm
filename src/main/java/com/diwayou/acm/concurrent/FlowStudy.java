@@ -18,7 +18,10 @@ public class FlowStudy {
         subscribeNames.forEach(name -> publisher.subscribe(new SimpleSubscribe(name, latch)));
 
         IntStream.rangeClosed(1, 20).forEach(i -> {
-                    int lag = publisher.offer(i, (s, item) -> {System.out.println(((SimpleSubscribe)s).getName() + " --- " + item); return true;});
+                    int lag = publisher.offer(i, (s, item) -> {
+                        System.out.println(((SimpleSubscribe) s).getName() + " --- " + item);
+                        return true;
+                    });
 
                     System.out.println(lag);
                 }

@@ -5,10 +5,10 @@ package com.diwayou.acm.leetcode.tree;// Given a binary search tree and a node i
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode(int x) { val = x; }
  * }
  */
 public class InorderSuccessorInBST {
@@ -24,16 +24,16 @@ public class InorderSuccessorInBST {
 
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
         TreeNode successor = null;
-        
-        while(root != null) {
-            if(p.val < root.val) {
+
+        while (root != null) {
+            if (p.val < root.val) {
                 successor = root;
                 root = root.left;
             } else {
                 root = root.right;
             }
         }
-        
+
         return successor;
     }
 }

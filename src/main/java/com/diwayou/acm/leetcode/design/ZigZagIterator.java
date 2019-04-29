@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Your ZigzagIterator object will be instantiated and called as such: 
+ * Your ZigzagIterator object will be instantiated and called as such:
  * ZigzagIterator i = new ZigzagIterator(v1, v2);
  * while (i.hasNext()) v[f()] = i.next();
  */
@@ -28,12 +28,12 @@ public class ZigZagIterator {
     }
 
     public int next() {
-        if(i.hasNext()) {
+        if (i.hasNext()) {
             temp = i;
             i = j;
             j = temp;
         }
-        
+
         return j.next();
     }
 

@@ -34,7 +34,6 @@ import com.diwayou.acm.util.StdOut;
  *************************************************************************/
 
 
-
 public class Count {
     public static void main(String[] args) {
         Alphabet alpha = new Alphabet(args[0]);

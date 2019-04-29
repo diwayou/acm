@@ -21,17 +21,19 @@ public class MovingAverageFromDataStream {
     int maxSize;
     Queue<Integer> window;
 
-    /** Initialize your data structure here. */
+    /**
+     * Initialize your data structure here.
+     */
     public MovingAverageFromDataStream(int size) {
         this.maxSize = size;
         window = new LinkedList<Integer>();
     }
-    
+
     public double next(int val) {
-        if(window.size() == maxSize) {
+        if (window.size() == maxSize) {
             previousSum -= window.remove();
         }
-        
+
         window.add(val);
         previousSum += val;
 

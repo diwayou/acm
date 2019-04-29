@@ -43,7 +43,7 @@ public class PeskyPalindromes {
 
         Scanner sc = new Scanner(System.in);
 
-        while(sc.hasNext()) {
+        while (sc.hasNext()) {
 
             String currentString = sc.next();
 
@@ -61,13 +61,13 @@ public class PeskyPalindromes {
 
         List<String> allSubstrings = new ArrayList<String>();
 
-        for(int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < s.length(); i++) {
 
-            for(int j = i + 1; j <= s.length(); j++) {
+            for (int j = i + 1; j <= s.length(); j++) {
 
                 String currentSubstring = s.substring(i, j);
 
-                if(!allSubstrings.contains(currentSubstring)) {
+                if (!allSubstrings.contains(currentSubstring)) {
 
                     allSubstrings.add(currentSubstring);
 
@@ -85,16 +85,16 @@ public class PeskyPalindromes {
 
         int totalUniquePalindromes = 0;
 
-        for(String s : allSubstrings) {
+        for (String s : allSubstrings) {
 
             int left = 0;
             int right = s.length() - 1;
 
             boolean isPalindrome = true;
 
-            while(left < right) {
+            while (left < right) {
 
-                if(s.charAt(left) != s.charAt(right)) {
+                if (s.charAt(left) != s.charAt(right)) {
 
                     isPalindrome = false;
                     break;
@@ -106,7 +106,7 @@ public class PeskyPalindromes {
 
             }
 
-            if(isPalindrome) {
+            if (isPalindrome) {
 
                 totalUniquePalindromes++;
 
@@ -117,9 +117,6 @@ public class PeskyPalindromes {
         return totalUniquePalindromes;
 
     }
-
-
-
 
 
 }

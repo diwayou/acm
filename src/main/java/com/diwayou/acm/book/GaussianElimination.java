@@ -5,7 +5,7 @@ import com.diwayou.acm.util.StdOut;
 /*************************************************************************
  *  Compilation:  javac GaussianElimination.java
  *  Execution:    java GaussianElimination
- * 
+ *
  *  Gaussian elimination with partial pivoting.
  *
  *  % java GaussianElimination
@@ -20,7 +20,7 @@ public class GaussianElimination {
 
     // Gaussian elimination with partial pivoting
     public static double[] lsolve(double[][] A, double[] b) {
-        int N  = b.length;
+        int N = b.length;
 
         for (int p = 0; p < N; p++) {
 
@@ -31,8 +31,12 @@ public class GaussianElimination {
                     max = i;
                 }
             }
-            double[] temp = A[p]; A[p] = A[max]; A[max] = temp;
-            double   t    = b[p]; b[p] = b[max]; b[max] = t;
+            double[] temp = A[p];
+            A[p] = A[max];
+            A[max] = temp;
+            double t = b[p];
+            b[p] = b[max];
+            b[max] = t;
 
             // singular or nearly singular
             if (Math.abs(A[p][p]) <= EPSILON) {
@@ -66,11 +70,11 @@ public class GaussianElimination {
     public static void main(String[] args) {
         int N = 3;
         double[][] A = {
-            { 0, 1,  1 },
-            { 2, 4, -2 },
-            { 0, 3, 15 }
+                {0, 1, 1},
+                {2, 4, -2},
+                {0, 3, 15}
         };
-        double[] b = { 4, 2, 36 };
+        double[] b = {4, 2, 36};
         double[] x = lsolve(A, b);
 
 

@@ -26,7 +26,7 @@ import com.diwayou.acm.util.StdOut;
 
 public class DirectedDFS {
     private boolean[] marked;  // marked[v] = true if v is reachable
-                               // from source (or sources)
+    // from source (or sources)
 
     // single-source reachability
     public DirectedDFS(Digraph G, int s) {
@@ -41,7 +41,7 @@ public class DirectedDFS {
             dfs(G, v);
     }
 
-    private void dfs(Digraph G, int v) { 
+    private void dfs(Digraph G, int v) {
         marked[v] = true;
         for (int w : G.adj(v)) {
             if (!marked[w]) dfs(G, w);

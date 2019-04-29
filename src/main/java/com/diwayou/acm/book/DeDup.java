@@ -35,7 +35,7 @@ import com.diwayou.acm.util.StdOut;
  *
  *************************************************************************/
 
-public class DeDup {  
+public class DeDup {
     public static void main(String[] args) {
         SET<String> set = new SET<String>();
 

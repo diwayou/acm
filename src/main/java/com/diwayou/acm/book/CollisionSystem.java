@@ -2,7 +2,7 @@ package com.diwayou.acm.book; /*************************************************
  *  Compilation:  javac CollisionSystem.java
  *  Execution:    java CollisionSystem N               (N random particles)
  *                java CollisionSystem < input.txt     (from a file) 
- *  
+ *
  *  Creates N random particles and simulates their motion according
  *  to the laws of elastic collisions.
  *
@@ -15,7 +15,7 @@ import java.awt.*;
 
 public class CollisionSystem {
     private MinPQ<Event> pq;        // the priority queue
-    private double t  = 0.0;        // simulation clock time
+    private double t = 0.0;        // simulation clock time
     private double hz = 0.5;        // number of redraw events per clock tick
     private Particle[] particles;   // the array of particles
 
@@ -54,12 +54,12 @@ public class CollisionSystem {
         }
     }
 
-      
-   /********************************************************************************
-    *  Event based simulation for limit seconds
-    ********************************************************************************/
+
+    /********************************************************************************
+     *  Event based simulation for limit seconds
+     ********************************************************************************/
     public void simulate(double limit) {
-        
+
         // initialize PQ with collision events and redraw event
         pq = new MinPQ<Event>();
         for (int i = 0; i < particles.length; i++) {
@@ -69,7 +69,7 @@ public class CollisionSystem {
 
 
         // the main event-driven simulation loop
-        while (!pq.isEmpty()) { 
+        while (!pq.isEmpty()) {
 
             // get impending event, discard if invalidated
             Event e = pq.delMin();
@@ -83,7 +83,7 @@ public class CollisionSystem {
             t = e.time;
 
             // process event
-            if      (a != null && b != null) a.bounceOff(b);              // particle-particle collision
+            if (a != null && b != null) a.bounceOff(b);              // particle-particle collision
             else if (a != null && b == null) a.bounceOffVerticalWall();   // particle-wall collision
             else if (a == null && b != null) b.bounceOffHorizontalWall(); // particle-wall collision
             else if (a == null && b == null) redraw(limit);               // redraw event
@@ -95,60 +95,59 @@ public class CollisionSystem {
     }
 
 
-   /*************************************************************************
-    *  An event during a particle collision simulation. Each event contains
-    *  the time at which it will occur (assuming no supervening actions)
-    *  and the particles a and b involved.
-    *
-    *    -  a and b both null:      redraw event
-    *    -  a null, b not null:     collision with vertical wall
-    *    -  a not null, b null:     collision with horizontal wall
-    *    -  a and b both not null:  binary collision between a and b
-    *
-    *************************************************************************/
+    /*************************************************************************
+     *  An event during a particle collision simulation. Each event contains
+     *  the time at which it will occur (assuming no supervening actions)
+     *  and the particles a and b involved.
+     *
+     *    -  a and b both null:      redraw event
+     *    -  a null, b not null:     collision with vertical wall
+     *    -  a not null, b null:     collision with horizontal wall
+     *    -  a and b both not null:  binary collision between a and b
+     *
+     *************************************************************************/
     private class Event implements Comparable<Event> {
         private final double time;         // time that event is scheduled to occur
         private final Particle a, b;       // particles involved in event, possibly null
         private final int countA, countB;  // collision counts at event creation
-                
-        
+
+
         // create a new event to occur at time t involving a and b
         public Event(double t, Particle a, Particle b) {
             this.time = t;
-            this.a    = a;
-            this.b    = b;
+            this.a = a;
+            this.b = b;
             if (a != null) countA = a.count();
-            else           countA = -1;
+            else countA = -1;
             if (b != null) countB = b.count();
-            else           countB = -1;
+            else countB = -1;
         }
 
         // compare times when two events will occur
         public int compareTo(Event that) {
-            if      (this.time < that.time) return -1;
+            if (this.time < that.time) return -1;
             else if (this.time > that.time) return +1;
-            else                            return  0;
+            else return 0;
         }
-        
+
         // has any collision occurred between when event was created and now?
         public boolean isValid() {
             if (a != null && a.count() != countA) return false;
             if (b != null && b.count() != countB) return false;
             return true;
         }
-   
+
     }
 
 
-
-   /********************************************************************************
-    *  Sample client
-    ********************************************************************************/
+    /********************************************************************************
+     *  Sample client
+     ********************************************************************************/
     public static void main(String[] args) {
 
         // remove the border
-        StdDraw.setXscale(1.0/22.0, 21.0/22.0);
-        StdDraw.setYscale(1.0/22.0, 21.0/22.0);
+        StdDraw.setXscale(1.0 / 22.0, 21.0 / 22.0);
+        StdDraw.setYscale(1.0 / 22.0, 21.0 / 22.0);
 
         // turn on animation mode
         StdDraw.show(0);
@@ -168,16 +167,16 @@ public class CollisionSystem {
             int N = StdIn.readInt();
             particles = new Particle[N];
             for (int i = 0; i < N; i++) {
-                double rx     = StdIn.readDouble();
-                double ry     = StdIn.readDouble();
-                double vx     = StdIn.readDouble();
-                double vy     = StdIn.readDouble();
+                double rx = StdIn.readDouble();
+                double ry = StdIn.readDouble();
+                double vx = StdIn.readDouble();
+                double vy = StdIn.readDouble();
                 double radius = StdIn.readDouble();
-                double mass   = StdIn.readDouble();
-                int r         = StdIn.readInt();
-                int g         = StdIn.readInt();
-                int b         = StdIn.readInt();
-                Color color   = new Color(r, g, b);
+                double mass = StdIn.readDouble();
+                int r = StdIn.readInt();
+                int g = StdIn.readInt();
+                int b = StdIn.readInt();
+                Color color = new Color(r, g, b);
                 particles[i] = new Particle(rx, ry, vx, vy, radius, mass, color);
             }
         }
@@ -186,5 +185,5 @@ public class CollisionSystem {
         CollisionSystem system = new CollisionSystem(particles);
         system.simulate(10000);
     }
-      
+
 }
