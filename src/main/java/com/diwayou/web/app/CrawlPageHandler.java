@@ -10,6 +10,7 @@ import com.diwayou.web.store.UrlStore;
 import com.diwayou.web.support.FilenameUtil;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
+import com.hankcs.hanlp.HanLP;
 import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -49,7 +50,11 @@ public class CrawlPageHandler implements PageHandler {
 
         log.info("处理网页url=" + page.getRequest().getUrl());
 
-        Document document = Jsoup.parse(page.bodyAsString());
+        String content = page.bodyAsString();
+        Document document = Jsoup.parse(content);
+
+        String cleanContent = document.text();
+        log.info("网页摘要: " + HanLP.extractSummary(cleanContent, 2));
 
         submit(document.select("a[href]").stream()
                 .map(e -> e.attr("href")), page, spider);
@@ -108,7 +113,7 @@ public class CrawlPageHandler implements PageHandler {
                 .filter(u -> !urlStore.contain(u))
                 .peek(u -> urlStore.add(u))
                 .map(u -> newRequest(u, page.getRequest()))
-                .filter(r -> r.getDepth() < 2)
+                .filter(r -> r.getDepth() < 4)
                 .forEach(spider::submitRequest);
     }
 

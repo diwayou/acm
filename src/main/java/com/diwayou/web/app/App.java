@@ -26,14 +26,12 @@ public class App {
                 .setPageExecutor(pageExecutor)
                 .build();
 
-        Request request = new Request("https://detail.tmall.com/item.htm?id=43165859354")
+        Request request = new Request("https://www.baidu.com")
                 .setFetcherType(FetcherType.FX_WEBVIEW)
                 .setTimeout(5)
                 .setScripts(Lists.newArrayList(
-                        new Script("window.scroll(0, 500000000)", 1),
-                        new Script("window.scroll(0, 1000)", 1),
-                        new Script("window.scroll(0, 2000)", 1),
-                        new Script("window.scroll(0, 3000)", 5)
+                        new Script("document.getElementById('kw').value = '计算机网络'", 1),
+                        new Script("document.getElementById('su').click()", 3)
                 ));
         spider.submitRequest(request);
 
