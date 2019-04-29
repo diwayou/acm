@@ -53,7 +53,7 @@ public class Autocomplete implements DocumentListener {
         // Find where the word starts
         int w;
         for (w = pos; w >= 0; w--) {
-            if (!Character.isLetter(content.charAt(w))) {
+            if (!Character.isLetterOrDigit(content.charAt(w))) {
                 break;
             }
         }
