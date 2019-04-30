@@ -1,6 +1,5 @@
 package com.diwayou.web.domain;
 
-import java.io.InputStream;
 import java.net.http.HttpHeaders;
 import java.util.Collections;
 
@@ -27,8 +26,8 @@ public class EmptyPage extends Page {
     }
 
     @Override
-    public InputStream bodyAsInputStream() {
-        return InputStream.nullInputStream();
+    public byte[] bodyAsByteArray() {
+        return new byte[0];
     }
 
     @Override

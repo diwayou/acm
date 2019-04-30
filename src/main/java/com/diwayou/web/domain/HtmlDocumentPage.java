@@ -3,8 +3,6 @@ package com.diwayou.web.domain;
 import com.diwayou.web.support.DocumentUtil;
 import org.w3c.dom.html.HTMLDocument;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.net.http.HttpHeaders;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -32,8 +30,8 @@ public class HtmlDocumentPage extends Page {
     }
 
     @Override
-    public InputStream bodyAsInputStream() {
-        return new ByteArrayInputStream(bodyAsString().getBytes(StandardCharsets.UTF_8));
+    public byte[] bodyAsByteArray() {
+        return bodyAsString().getBytes(StandardCharsets.UTF_8);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.diwayou.web.fetcher;
 
+import com.diwayou.web.config.RobotConfig;
 import com.diwayou.web.domain.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -26,13 +26,13 @@ public class JavaHttpFetcher implements Fetcher {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(request.getUrl()))
                 .timeout(Duration.ofSeconds(request.getTimeout()))
-                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3650.400 QQBrowser/10.4.3341.400")
+                .header("User-Agent", RobotConfig.getDefaultAgent())
                 .build();
 
 
-        HttpResponse<InputStream> response;
+        HttpResponse<byte[]> response;
         try {
-            response = client.send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
+            response = client.send(httpRequest, HttpResponse.BodyHandlers.ofByteArray());
         } catch (IOException | InterruptedException e) {
             return new EmptyPage(request, e);
         }

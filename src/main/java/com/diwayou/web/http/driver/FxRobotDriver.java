@@ -1,5 +1,6 @@
 package com.diwayou.web.http.driver;
 
+import com.diwayou.web.config.RobotConfig;
 import com.diwayou.web.http.robot.RobotDriver;
 import com.sun.webkit.LoadListenerClient;
 import com.sun.webkit.WebPage;
@@ -12,6 +13,7 @@ import org.w3c.dom.html.HTMLDocument;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FxRobotDriver implements RobotDriver {
@@ -36,6 +38,7 @@ public class FxRobotDriver implements RobotDriver {
             panel.setScene(s);
 
             WebEngine webEngine = v.getEngine();
+            webEngine.setUserAgent(RobotConfig.getDefaultAgent());
             engine.set(webEngine);
 
             Field f;
@@ -69,7 +72,14 @@ public class FxRobotDriver implements RobotDriver {
 
     @Override
     public Object executeScript(String script) {
-        return AppThread.exec(() -> engine.get().executeScript(script));
+        return AppThread.exec(() -> {
+            try {
+                return engine.get().executeScript(script);
+            } catch (Throwable t) {
+                log.log(Level.WARNING, "", t);
+                return null;
+            }
+        });
     }
 
     @Override

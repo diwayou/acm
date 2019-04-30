@@ -1,6 +1,5 @@
 package com.diwayou.web.domain;
 
-import java.io.InputStream;
 import java.net.http.HttpHeaders;
 
 public abstract class Page {
@@ -22,7 +21,7 @@ public abstract class Page {
 
     public abstract String bodyAsString();
 
-    public abstract InputStream bodyAsInputStream();
+    public abstract byte[] bodyAsByteArray();
 
     public abstract int statusCode();
 

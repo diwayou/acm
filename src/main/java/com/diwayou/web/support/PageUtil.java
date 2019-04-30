@@ -30,10 +30,36 @@ public class PageUtil {
         return contentType.contains("image");
     }
 
+    public static boolean hasBinaryContent(Page page) {
+        String contentType = getContentType(page);
+        String typeStr = (contentType != null) ? contentType.toLowerCase() : "";
+
+        return typeStr.contains("image") || typeStr.contains("audio") ||
+                typeStr.contains("video") || typeStr.contains("application");
+    }
+
+    public static boolean hasPlainTextContent(Page page) {
+        String contentType = getContentType(page);
+        String typeStr = (contentType != null) ? contentType.toLowerCase() : "";
+
+        return typeStr.contains("text") && !typeStr.contains("html");
+    }
+
+    public static boolean hasCssTextContent(Page page) {
+        String contentType = getContentType(page);
+        String typeStr = (contentType != null) ? contentType.toLowerCase() : "";
+
+        return typeStr.contains("css");
+    }
+
     public static Charset getCharset(Page page) {
+        return getCharset(page, StandardCharsets.UTF_8);
+    }
+
+    public static Charset getCharset(Page page, Charset defaultCharset) {
         String contentType = getContentType(page);
         if (contentType == null) {
-            return StandardCharsets.UTF_8;
+            return defaultCharset;
         }
 
         int idx = contentType.indexOf("=");
@@ -42,7 +68,7 @@ public class PageUtil {
             return Charset.forName(contentType.substring(idx + 1));
         }
 
-        return StandardCharsets.UTF_8;
+        return defaultCharset;
     }
 
     public static String getImageExt(String contentType) {

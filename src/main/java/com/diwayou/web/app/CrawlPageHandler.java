@@ -15,6 +15,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
@@ -94,7 +95,7 @@ public class CrawlPageHandler implements PageHandler {
                 Files.createDirectories(Path.of(dirPrefix, dir));
             }
 
-            Files.copy(page.bodyAsInputStream(), Path.of(dirPrefix, name));
+            Files.copy(new ByteArrayInputStream(page.bodyAsByteArray()), Path.of(dirPrefix, name));
         } catch (IOException e) {
             log.warning("保存图片失败!");
         }
