@@ -1,12 +1,12 @@
 package com.diwayou.web.domain;
 
-public class Script {
+public class RequestScript {
 
     private String src;
 
     private int timeout;
 
-    public Script(String src, int timeout) {
+    public RequestScript(String src, int timeout) {
         this.src = src;
         this.timeout = timeout;
     }
@@ -15,7 +15,7 @@ public class Script {
         return src;
     }
 
-    public Script setSrc(String src) {
+    public RequestScript setSrc(String src) {
         this.src = src;
         return this;
     }
@@ -24,7 +24,7 @@ public class Script {
         return timeout;
     }
 
-    public Script setTimeout(int timeout) {
+    public RequestScript setTimeout(int timeout) {
         this.timeout = timeout;
         return this;
     }

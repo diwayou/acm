@@ -41,7 +41,7 @@ public class Request {
      */
     private Map<String, String> attributes;
 
-    private List<Script> scripts;
+    private List<RequestScript> requestScripts;
 
     public Request(String url) {
         this.url = url;
@@ -110,12 +110,12 @@ public class Request {
         return this;
     }
 
-    public List<Script> getScripts() {
-        return scripts;
+    public List<RequestScript> getRequestScripts() {
+        return requestScripts;
     }
 
-    public Request setScripts(List<Script> scripts) {
-        this.scripts = scripts;
+    public Request setRequestScripts(List<RequestScript> requestScripts) {
+        this.requestScripts = requestScripts;
         return this;
     }
 

@@ -7,8 +7,8 @@ import javax.script.ScriptException;
 public class ScriptEngineStudy {
     public static void main(String[] args) throws ScriptException {
         ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        ScriptEngine jsEngine = scriptEngineManager.getEngineByName("nashorn");
+        ScriptEngine groovyEngine = scriptEngineManager.getEngineByName("groovy");
 
-        jsEngine.eval("print('Hello, World')");
+        groovyEngine.eval("println('hello')");
     }
 }

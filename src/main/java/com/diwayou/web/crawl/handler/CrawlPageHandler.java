@@ -1,12 +1,12 @@
-package com.diwayou.web.app;
+package com.diwayou.web.crawl.handler;
 
+import com.diwayou.web.config.CrawlConfig;
 import com.diwayou.web.crawl.PageHandler;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
-import com.diwayou.web.store.UrlStore;
 import com.diwayou.web.support.FilenameUtil;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
@@ -30,10 +30,10 @@ public class CrawlPageHandler implements PageHandler {
 
     private static final Logger log = Logger.getLogger(CrawlPageHandler.class.getName());
 
-    private UrlStore urlStore;
+    private CrawlConfig crawlConfig;
 
-    public CrawlPageHandler(UrlStore urlStore) {
-        this.urlStore = urlStore;
+    public CrawlPageHandler(CrawlConfig crawlConfig) {
+        this.crawlConfig = crawlConfig;
     }
 
     @Override
@@ -111,10 +111,10 @@ public class CrawlPageHandler implements PageHandler {
                     }
                 })
                 .filter(Objects::nonNull)
-                .filter(u -> !urlStore.contain(u))
-                .peek(u -> urlStore.add(u))
+                .filter(u -> !crawlConfig.getUrlStore().contain(u))
+                .peek(u -> crawlConfig.getUrlStore().add(u))
                 .map(u -> newRequest(u, page.getRequest()))
-                .filter(r -> r.getDepth() < 4)
+                .filter(r -> r.getDepth() < crawlConfig.getMaxDepth())
                 .forEach(spider::submitRequest);
     }
 

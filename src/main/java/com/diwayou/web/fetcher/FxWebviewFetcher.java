@@ -29,8 +29,8 @@ public class FxWebviewFetcher implements Fetcher {
         try (HttpRobot robot = pool.getResource()) {
             DocumentInfo body = robot.get(request.getUrl(), request.getTimeout());
 
-            if (request.getScripts() != null && request.getScripts() != null) {
-                exeScript(robot, request.getScripts());
+            if (request.getRequestScripts() != null && request.getRequestScripts() != null) {
+                exeScript(robot, request.getRequestScripts());
             }
 
             return new HtmlDocumentPage(request, body.getHtmlDocument(), body.getResourceUrls());
@@ -39,9 +39,9 @@ public class FxWebviewFetcher implements Fetcher {
         }
     }
 
-    private void exeScript(HttpRobot robot, List<Script> scripts) {
-        for (Script script : scripts) {
-            robot.executeScript(script.getSrc(), script.getTimeout());
+    private void exeScript(HttpRobot robot, List<RequestScript> requestScripts) {
+        for (RequestScript requestScript : requestScripts) {
+            robot.executeScript(requestScript.getSrc(), requestScript.getTimeout());
         }
     }
 
