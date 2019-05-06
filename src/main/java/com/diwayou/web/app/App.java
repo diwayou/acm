@@ -10,10 +10,22 @@ import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.domain.RequestScript;
 import com.diwayou.web.fetcher.FetcherFactory;
+import com.diwayou.web.script.CrawlScript;
+import com.diwayou.web.script.ScriptRegistry;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.TreeMap;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        TreeMap<String, CrawlScript> scripts = Maps.newTreeMap();
+        Path path = Path.of(App.class.getClassLoader().getResource("scripts/DownloadImage.groovy").toURI());
+        scripts.put(ScriptRegistry.DOMAIN_ALL, new CrawlScript(Files.readString(path)));
+        ScriptRegistry.one().load(scripts);
+
         CrawlConfig crawlConfig = new CrawlConfig();
         PageHandler handler = new ScriptCrawlPageHandler(crawlConfig);
 

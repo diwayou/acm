@@ -3,8 +3,6 @@ package com.diwayou.web.crawl.handler;
 import com.diwayou.web.config.CrawlConfig;
 import com.diwayou.web.crawl.PageHandler;
 import com.diwayou.web.crawl.Spider;
-import com.diwayou.web.domain.FetcherType;
-import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.script.CrawlScript;
@@ -13,15 +11,14 @@ import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import javax.script.Bindings;
+import javax.script.ScriptException;
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 public class ScriptCrawlPageHandler implements PageHandler {
 
@@ -29,12 +26,8 @@ public class ScriptCrawlPageHandler implements PageHandler {
 
     private CrawlConfig crawlConfig;
 
-    private ScriptEngine scriptEngine;
-
     public ScriptCrawlPageHandler(CrawlConfig crawlConfig) {
         this.crawlConfig = crawlConfig;
-
-        this.scriptEngine = new ScriptEngineManager().getEngineByName("groovy");
     }
 
     @Override
@@ -52,31 +45,35 @@ public class ScriptCrawlPageHandler implements PageHandler {
             return;
         }
 
+        Bindings bindings = ScriptRegistry.one().createBindings();
+        bindings.put("page", page);
+        bindings.put("util", this);
+        bindings.put("spider", spider);
+
         if (!PageUtil.isHtml(page)) {
             log.log(Level.INFO, "不是网页url=" + page.getRequest().getUrl());
+            executeScript(crawlScript, bindings);
             return;
         }
 
         String content = page.bodyAsString();
         Document document = Jsoup.parse(content);
+        bindings.put("doc", document);
 
-        submit(document.select("a[href]").stream()
-                .map(e -> e.attr("href")), page, spider);
+        executeScript(crawlScript, bindings);
+    }
 
-        if (page.getRequest().getFetcherType().equals(FetcherType.JAVA_HTTP)) {
-            submit(document.select("img").stream()
-                    .map(e -> e.attr("src")), page, spider);
-        } else if (page.getRequest().getFetcherType().equals(FetcherType.FX_WEBVIEW)) {
-            Set<String> resourceUrls = ((HtmlDocumentPage) page).getResourceUrls();
-
-            for (String resourceUrl : resourceUrls) {
-                spider.submitRequest(newRequest(resourceUrl, page.getRequest()));
-            }
+    private void executeScript(CrawlScript crawlScript, Bindings bindings) {
+        try {
+            crawlScript.getCompiledScript().eval(bindings);
+        } catch (ScriptException e) {
+            log.log(Level.WARNING, "", e);
         }
     }
 
-    private void submit(Stream<String> urlStream, Page page, Spider spider) {
-        urlStream
+    private void submit(Elements elements, String attr, Page page, Spider spider) {
+        elements.stream()
+                .map(e -> e.attr(attr))
                 .map(u -> {
                     try {
                         return URLCanonicalizer.getCanonicalURL(u, page.getRequest().getUrl());
@@ -96,5 +93,9 @@ public class ScriptCrawlPageHandler implements PageHandler {
         return new Request(newUrl)
                 .setParentUrl(old.getUrl())
                 .setDepth(old.getDepth() + 1);
+    }
+
+    public CrawlConfig getCrawlConfig() {
+        return crawlConfig;
     }
 }

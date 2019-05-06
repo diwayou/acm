@@ -103,7 +103,7 @@ public class Spider implements Closeable {
         try {
             pageHandler.handle(page, this);
         } catch (Exception e) {
-            log.log(Level.SEVERE, "处理page失败url=" + page.getRequest().getUrl());
+            log.log(Level.SEVERE, "处理page失败url=" + page.getRequest().getUrl(), e);
         }
     }
 
