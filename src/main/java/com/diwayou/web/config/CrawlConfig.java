@@ -1,11 +1,15 @@
 package com.diwayou.web.config;
 
+import com.diwayou.web.store.FilePageStore;
 import com.diwayou.web.store.MemoryUrlStore;
+import com.diwayou.web.store.PageStore;
 import com.diwayou.web.store.UrlStore;
 
 public class CrawlConfig {
 
     private UrlStore urlStore = new MemoryUrlStore();
+
+    private PageStore pageStore = new FilePageStore();
 
     /**
      * 爬取最大深度
@@ -27,6 +31,15 @@ public class CrawlConfig {
 
     public CrawlConfig setMaxDepth(int maxDepth) {
         this.maxDepth = maxDepth;
+        return this;
+    }
+
+    public PageStore getPageStore() {
+        return pageStore;
+    }
+
+    public CrawlConfig setPageStore(PageStore pageStore) {
+        this.pageStore = pageStore;
         return this;
     }
 }

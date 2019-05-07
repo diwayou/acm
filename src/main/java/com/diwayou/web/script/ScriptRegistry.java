@@ -29,7 +29,7 @@ public class ScriptRegistry {
 
     private Compilable compilable;
 
-    public ScriptRegistry() {
+    private ScriptRegistry() {
         this.scriptEngine = new ScriptEngineManager().getEngineByName("groovy");
         this.compilable = (Compilable) scriptEngine;
     }
