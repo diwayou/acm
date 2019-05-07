@@ -14,19 +14,22 @@ public class HtmlDocumentPage extends Page {
 
     private Set<String> resourceUrls;
 
+    private String html;
+
     public HtmlDocumentPage(Request request, HTMLDocument document, Set<String> resourceUrls) {
         super(request);
         this.document = document;
         this.resourceUrls = resourceUrls;
+        try {
+            this.html = DocumentUtil.toString(document);
+        } catch (Exception ignore) {
+            this.html = "";
+        }
     }
 
     @Override
     public String bodyAsString() {
-        try {
-            return DocumentUtil.toString(document);
-        } catch (Exception e) {
-            return "";
-        }
+        return html;
     }
 
     @Override
