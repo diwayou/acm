@@ -2,6 +2,8 @@ package com.diwayou.web.script;
 
 import com.diwayou.web.domain.Page;
 import com.hankcs.hanlp.collection.trie.DoubleArrayTrie;
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 
 import javax.script.*;
 import java.net.URI;
@@ -60,6 +62,37 @@ public class ScriptRegistry {
 
     public Bindings createBindings() {
         return this.scriptEngine.createBindings();
+    }
+
+    public Object execute(Page page, Map<String, Object> bindings) {
+        CrawlScript crawlScript = match(page);
+        if (crawlScript == null) {
+            log.warning("没有配置处理脚本url=" + page.getRequest().getUrl());
+            return null;
+        }
+
+        if (crawlScript.getScriptFile() != null) {
+            try {
+                return new GroovyShell(new Binding(bindings)).evaluate(crawlScript.getScriptFile());
+            } catch (Exception e) {
+                log.log(Level.WARNING, "", e);
+            }
+        } else if (crawlScript.getSrc() != null) {
+            try {
+                Bindings bind = createBindings();
+                bind.putAll(bindings);
+
+                return crawlScript.getCompiledScript().eval(bind);
+            } catch (ScriptException e) {
+                log.log(Level.WARNING, "", e);
+            }
+        } else {
+            log.warning("脚本没有内容url=" + page.getRequest().getUrl());
+
+            return null;
+        }
+
+        return null;
     }
 
     /**

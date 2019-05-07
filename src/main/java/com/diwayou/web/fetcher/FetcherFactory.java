@@ -31,6 +31,14 @@ public class FetcherFactory implements Closeable {
         }
     }
 
+    public JavaHttpFetcher getJavaHttpFetcher() {
+        return javaHttpFetcher;
+    }
+
+    public FxWebviewFetcher getFxWebviewFetcher() {
+        return fxWebviewFetcher;
+    }
+
     @Override
     public void close() {
         this.javaHttpFetcher.close();

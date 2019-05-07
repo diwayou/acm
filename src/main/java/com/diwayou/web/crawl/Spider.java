@@ -1,5 +1,6 @@
 package com.diwayou.web.crawl;
 
+import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.fetcher.Fetcher;
@@ -113,6 +114,14 @@ public class Spider implements Closeable {
         }
 
         return requestScheduler.push(request);
+    }
+
+    public boolean submitPage(HtmlDocumentPage page) {
+        if (state.get() != RUNNING) {
+            throw new IllegalStateException("当前spider不在运行中state=" + state.get());
+        }
+
+        return pageScheduler.push(page);
     }
 
     private void start() {

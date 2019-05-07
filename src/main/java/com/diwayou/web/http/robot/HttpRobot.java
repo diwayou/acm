@@ -6,6 +6,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.sun.webkit.LoadListenerClient;
 import org.apache.commons.lang3.StringUtils;
+import org.w3c.dom.html.HTMLDocument;
 
 import java.io.Closeable;
 import java.util.Collections;
@@ -83,15 +84,29 @@ public class HttpRobot implements Closeable {
         return executeScript(script, DEFAULT_TIMEOUT);
     }
 
+    public HTMLDocument getDocument() {
+        return driver.getDocument();
+    }
+
     @Override
     public void close() {
         if (pool != null) {
             driver.get("about:blank");
-            requestUrls = null;
             pool.returnResource(this);
         } else {
             quit();
         }
+    }
+
+    /**
+     * 清理收集的url
+     */
+    public void clear() {
+        requestUrls = null;
+    }
+
+    public Set<String> getRequestUrls() {
+        return requestUrls;
     }
 
     public void quit() {

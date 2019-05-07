@@ -11,15 +11,15 @@ import com.diwayou.web.script.CrawlScript;
 import com.diwayou.web.script.ScriptRegistry;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import javax.script.Bindings;
-import javax.script.ScriptException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
@@ -53,7 +53,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
             return;
         }
 
-        Bindings bindings = ScriptRegistry.one().createBindings();
+        Map<String, Object> bindings = Maps.newHashMap();
         ScriptHelper helper = new ScriptHelper(spider, page, crawlConfig);
         bindings.put("helper", helper);
 
@@ -69,7 +69,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
             bindings.put("urls", Collections.emptySet());
         }
 
-        Object scriptResult = executeScript(crawlScript, bindings);
+        Object scriptResult = ScriptRegistry.one().execute(page, bindings);
         if (scriptResult != null) {
             if (scriptResult instanceof Set) {
                 submit((Set<String>) scriptResult, spider, page);
@@ -93,16 +93,6 @@ public class ScriptCrawlPageHandler implements PageHandler {
                 .setDepth(old.getDepth() + 1);
     }
 
-    private Object executeScript(CrawlScript crawlScript, Bindings bindings) {
-        try {
-            return crawlScript.getCompiledScript().eval(bindings);
-        } catch (ScriptException e) {
-            log.log(Level.WARNING, "", e);
-        }
-
-        return null;
-    }
-
     private Set<String> allUrls(Document document, Page page) {
         Set<String> urls = Sets.newHashSet();
 
@@ -113,7 +103,9 @@ public class ScriptCrawlPageHandler implements PageHandler {
         } else if (page.getRequest().getFetcherType().equals(FetcherType.FX_WEBVIEW)) {
             Set<String> resourceUrls = ((HtmlDocumentPage) page).getResourceUrls();
 
-            urls.addAll(resourceUrls);
+            if (resourceUrls != null) {
+                urls.addAll(resourceUrls);
+            }
         }
 
         return urls;

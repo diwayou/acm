@@ -15,15 +15,14 @@ import com.diwayou.web.script.ScriptRegistry;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.File;
 import java.util.TreeMap;
 
 public class App {
     public static void main(String[] args) throws Exception {
         TreeMap<String, CrawlScript> scripts = Maps.newTreeMap();
-        Path path = Path.of(App.class.getClassLoader().getResource("scripts/Download.groovy").toURI());
-        scripts.put(ScriptRegistry.DOMAIN_ALL, new CrawlScript(Files.readString(path)));
+        File scriptFile = new File(ClassLoader.getSystemResource("scripts/Download.groovy").toURI());
+        scripts.put(ScriptRegistry.DOMAIN_ALL, new CrawlScript(scriptFile));
         ScriptRegistry.one().load(scripts);
 
         CrawlConfig crawlConfig = new CrawlConfig()
@@ -41,7 +40,7 @@ public class App {
 
         Request request = new Request("https://www.baidu.com")
                 .setFetcherType(FetcherType.FX_WEBVIEW)
-                .setTimeout(5)
+                .setTimeout(2)
                 .setRequestScripts(Lists.newArrayList(
                         new RequestScript("document.getElementById('kw').value = '计算机网络'", 1),
                         new RequestScript("document.getElementById('su').click()", 3)

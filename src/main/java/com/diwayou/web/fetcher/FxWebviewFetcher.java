@@ -45,6 +45,13 @@ public class FxWebviewFetcher implements Fetcher {
         }
     }
 
+    /**
+     * 使用该接口返回的robot需要自行关闭
+     */
+    public HttpRobot getRobot() {
+        return pool.getResource();
+    }
+
     @Override
     public FetcherType getType() {
         return FetcherType.FX_WEBVIEW;
