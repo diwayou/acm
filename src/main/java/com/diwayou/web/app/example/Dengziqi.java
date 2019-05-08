@@ -9,19 +9,14 @@ import com.diwayou.web.crawl.handler.ScriptCrawlPageHandler;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.fetcher.FetcherFactory;
-import com.diwayou.web.script.CrawlScript;
 import com.diwayou.web.script.ScriptRegistry;
-import com.google.common.collect.Maps;
 
 import java.io.File;
-import java.util.TreeMap;
 
-public class Douban {
+public class Dengziqi {
     public static void main(String[] args) throws Exception {
-        TreeMap<String, CrawlScript> scripts = Maps.newTreeMap();
-        File scriptFile = new File(ClassLoader.getSystemResource("scripts/All.groovy").toURI());
-        scripts.put(ScriptRegistry.DOMAIN_ALL, new CrawlScript(scriptFile));
-        ScriptRegistry.one().load(scripts);
+        File dir = new File(ClassLoader.getSystemResource("scripts").toURI());
+        ScriptRegistry.one().load(dir);
 
         CrawlConfig crawlConfig = new CrawlConfig()
                 .setMaxDepth(6);
@@ -36,9 +31,9 @@ public class Douban {
                 .setPageExecutor(pageExecutor)
                 .build();
 
-        Request request = new Request("https://www.douban.com")
+        Request request = new Request("http://geteverybodymoving.com/")
                 .setFetcherType(FetcherType.FX_WEBVIEW)
-                .setTimeout(3);
+                .setTimeout(5);
         spider.submitRequest(request);
 
         spider.waitUntilStop();

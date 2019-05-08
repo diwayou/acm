@@ -4,13 +4,22 @@ import com.diwayou.web.domain.Page;
 import com.hankcs.hanlp.collection.trie.DoubleArrayTrie;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.script.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * 要执行的脚本都在该类中注册，根据对域名匹配度进行执行处理
@@ -19,7 +28,7 @@ public class ScriptRegistry {
 
     private static final Logger log = Logger.getLogger(ScriptRegistry.class.getName());
 
-    public static final String DOMAIN_ALL = "*";
+    public static final String DOMAIN_ALL = "All";
 
     private static ScriptRegistry instance = new ScriptRegistry();
 
@@ -96,6 +105,27 @@ public class ScriptRegistry {
     }
 
     /**
+     * 加载目录下的所有脚本，文件名就是注册的域名
+     */
+    public void load(File dir) throws IOException, ScriptException {
+        if (dir == null || !dir.isDirectory()) {
+            throw new RuntimeException("脚本目录格式不正确!");
+        }
+
+        TreeMap<String, CrawlScript> domainScriptMap = Files.list(dir.toPath())
+                .map(this::pathToScriptPair)
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue, (a, b) -> a, TreeMap::new));
+
+        load(domainScriptMap);
+    }
+
+    private Pair<String, CrawlScript> pathToScriptPair(Path path) {
+        String domain = FilenameUtils.getBaseName(path.getFileName().toString()).replace("_", ".");
+
+        return new ImmutablePair<>(domain, new CrawlScript(path.toFile()));
+    }
+
+    /**
      * 加载域名适用的解析脚本
      * 例如www.baidu.com需要注册baidu.com，不包含www.
      */
@@ -104,7 +134,7 @@ public class ScriptRegistry {
             return;
         }
 
-        for (Map.Entry<String, CrawlScript> entry : domainScriptMap.entrySet()) {
+        for (Entry<String, CrawlScript> entry : domainScriptMap.entrySet()) {
             compile(entry.getValue());
         }
 
