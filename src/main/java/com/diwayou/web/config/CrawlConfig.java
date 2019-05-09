@@ -9,7 +9,7 @@ public class CrawlConfig {
 
     private UrlStore urlStore = new MemoryUrlStore();
 
-    private PageStore pageStore = new FilePageStore();
+    private PageStore pageStore = new FilePageStore(null);
 
     /**
      * 爬取最大深度

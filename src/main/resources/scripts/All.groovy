@@ -10,7 +10,7 @@ if (helper.isImage()) {
     return
 }
 if (!helper.isHtml()) {
-    //helper.store(PageStoreContext.create().put(FilePageStore.DIR, new File("D:/tmp/doc")))
+    helper.store(PageStoreContext.create().put(FilePageStore.DIR, new File("D:/tmp/doc")))
     return
 }
 

@@ -61,7 +61,10 @@ public class ScriptRegistry {
                 host = host.substring(4);
             }
 
-            return domainScripTrie.get(host);
+            CrawlScript script = domainScripTrie.get(host);
+            if (script != null) {
+                return script;
+            }
         } catch (Exception e) {
             log.log(Level.WARNING, "", e);
         }

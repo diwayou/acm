@@ -62,7 +62,7 @@ public class ScriptHelper {
     }
 
     public String imageExt() {
-        return PageUtil.getImageExt(PageUtil.getContentType(page));
+        return PageUtil.getExt(page);
     }
 
     public String url() {

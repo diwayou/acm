@@ -3,6 +3,8 @@ package com.diwayou.web.support;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.google.common.net.HttpHeaders;
+import com.google.common.net.MediaType;
+import org.apache.commons.io.FilenameUtils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -71,18 +73,23 @@ public class PageUtil {
         return defaultCharset;
     }
 
-    public static String getImageExt(String contentType) {
-        if (!isImage(contentType)) {
-            return null;
+    public static String getExt(Page page) {
+        String contentType = getContentType(page);
+        String ext = "txt";
+        if (contentType != null) {
+            try {
+                MediaType mediaType = MediaType.parse(contentType);
+                ext = mediaType.subtype();
+                if (ext == null || ext.isBlank()) {
+                    ext = FilenameUtils.getExtension(page.getRequest().getUrl());
+                    if (ext == null || ext.isBlank()) {
+                        ext = "txt";
+                    }
+                }
+            } catch (Exception ignore) {}
         }
 
-        int idx = contentType.indexOf("/");
-
-        if (idx > 0) {
-            return contentType.substring(idx + 1);
-        }
-
-        return null;
+        return ext;
     }
 
     public static String getContentType(Page page) {
