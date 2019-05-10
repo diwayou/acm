@@ -84,7 +84,13 @@ public class ScriptCrawlPageHandler implements PageHandler {
                 .peek(u -> crawlConfig.getUrlStore().add(u))
                 .map(u -> newRequest(u, page.getRequest()))
                 .filter(r -> r.getDepth() < crawlConfig.getMaxDepth())
-                .forEach(spider::submitRequest);
+                .forEach(r -> {
+                    boolean result = spider.submitRequest(r);
+                    // TODO 失败如何处理
+                    if (!result) {
+                        log.log(Level.WARNING, "添加request失败url=" + r.getUrl());
+                    }
+                });
     }
 
     private Request newRequest(String newUrl, Request old) {
