@@ -2,6 +2,7 @@ package com.diwayou.web.http.driver;
 
 import com.diwayou.web.config.RobotConfig;
 import com.diwayou.web.http.robot.RobotDriver;
+import com.sun.javafx.webkit.Accessor;
 import com.sun.webkit.LoadListenerClient;
 import com.sun.webkit.WebPage;
 import javafx.application.Platform;
@@ -11,7 +12,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.w3c.dom.html.HTMLDocument;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +34,8 @@ public class FxRobotDriver implements RobotDriver {
     public FxRobotDriver() {
         ReflectiveOperationException re = AppThread.exec(() -> {
             WebView v = new WebView();
+            v.setContextMenuEnabled(false);
+
             Scene s = new Scene(v);
             panel.setScene(s);
 
@@ -41,19 +43,10 @@ public class FxRobotDriver implements RobotDriver {
             webEngine.setUserAgent(RobotConfig.getDefaultAgent());
             engine.set(webEngine);
 
-            Field f;
-            ReflectiveOperationException exception = null;
-            try {
-                f = webEngine.getClass().getDeclaredField("page");
-                f.setAccessible(true);
-                WebPage webPage = (WebPage) f.get(webEngine);
+            WebPage webPage = Accessor.getPageFor(webEngine);
+            page.set(webPage);
 
-                page.set(webPage);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                exception = e;
-            }
-
-            return exception;
+            return null;
         });
 
         if (re != null) {
