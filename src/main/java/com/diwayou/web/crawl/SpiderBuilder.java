@@ -2,6 +2,7 @@ package com.diwayou.web.crawl;
 
 import com.diwayou.web.fetcher.FetcherFactory;
 
+import java.io.File;
 import java.util.concurrent.Executor;
 
 public class SpiderBuilder {
@@ -13,6 +14,8 @@ public class SpiderBuilder {
     private PageHandler pageHandler;
 
     private FetcherFactory fetcherFactory;
+
+    private File requestStorePath;
 
     private SpiderBuilder() {
     }
@@ -60,6 +63,15 @@ public class SpiderBuilder {
 
     public SpiderBuilder setFetcherFactory(FetcherFactory fetcherFactory) {
         this.fetcherFactory = fetcherFactory;
+        return this;
+    }
+
+    public File getRequestStorePath() {
+        return requestStorePath;
+    }
+
+    public SpiderBuilder setRequestStorePath(File requestStorePath) {
+        this.requestStorePath = requestStorePath;
         return this;
     }
 }

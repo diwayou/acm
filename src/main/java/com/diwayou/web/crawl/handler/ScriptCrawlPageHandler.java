@@ -17,13 +17,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
@@ -78,19 +77,19 @@ public class ScriptCrawlPageHandler implements PageHandler {
     }
 
     private void submit(Set<String> scriptResult, Spider spider, Page page) {
-        scriptResult.stream()
+        List<Request> requests = scriptResult.stream()
                 .filter(Objects::nonNull)
                 .filter(u -> !crawlConfig.getUrlStore().contain(u))
                 .peek(u -> crawlConfig.getUrlStore().add(u))
                 .map(u -> newRequest(u, page.getRequest()))
                 .filter(r -> r.getDepth() < crawlConfig.getMaxDepth())
-                .forEach(r -> {
-                    boolean result = spider.submitRequest(r);
-                    // TODO 失败如何处理
-                    if (!result) {
-                        log.log(Level.WARNING, "添加request失败url=" + r.getUrl());
-                    }
-                });
+                .collect(Collectors.toList());
+
+        try {
+            spider.submitRequest(requests);
+        } catch (IOException e) {
+            log.log(Level.WARNING, "", e);
+        }
     }
 
     private Request newRequest(String newUrl, Request old) {

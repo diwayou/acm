@@ -1,10 +1,7 @@
 package com.diwayou.lang.concurrent;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Flow;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.SubmissionPublisher;
+import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
 public class FlowStudy {
@@ -18,14 +15,23 @@ public class FlowStudy {
         subscribeNames.forEach(name -> publisher.subscribe(new SimpleSubscribe(name, latch)));
 
         IntStream.rangeClosed(1, 5).forEach(i -> {
-                    int lag = publisher.offer(i, (s, item) -> {
-                        System.out.println(((SimpleSubscribe) s).getName() + "丢弃--- " + item);
-                        return false;
-                    });
+                    while (true) {
+                        int lag = publisher.offer(i, (s, item) -> {
+                            System.out.println(((SimpleSubscribe) s).getName() + "丢弃--- " + item);
+                            return false;
+                        });
 
-                    System.out.println(lag);
-                }
-        );
+                        if (lag < 0) {
+                            System.out.println(i + " 执行延迟：" + lag);
+                            try {
+                                TimeUnit.SECONDS.sleep(1);
+                            } catch (InterruptedException ignore) {
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                });
 
         publisher.close();
 

@@ -7,6 +7,8 @@ import com.diwayou.web.domain.Request;
 import com.diwayou.web.store.PageStoreContext;
 import com.diwayou.web.support.PageUtil;
 
+import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ScriptHelper {
@@ -50,7 +52,11 @@ public class ScriptHelper {
             return;
         }
 
-        spider.submitRequest(request);
+        try {
+            spider.submitRequest(request);
+        } catch (IOException e) {
+            log.log(Level.WARNING, "", e);
+        }
     }
 
     public boolean isHtml() {

@@ -9,7 +9,9 @@ import org.iq80.leveldb.util.FileUtils;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
@@ -47,11 +49,11 @@ public class LevelDbStore implements Closeable {
         db = factory.open(databaseDir, options);
     }
 
-    private void write(Consumer<WriteBatch> callback) throws IOException {
+    public void write(Consumer<WriteBatch> callback) throws IOException {
         write(callback, false);
     }
 
-    private void write(Consumer<WriteBatch> callback, boolean sync) throws IOException {
+    public void write(Consumer<WriteBatch> callback, boolean sync) throws IOException {
         write(callback, sync, false);
     }
 
@@ -67,7 +69,7 @@ public class LevelDbStore implements Closeable {
         LevelDbQuery query = storeQuery.getQuery();
         DBIterator iterator = db.iterator(query.getOptions());
         if (query.getOffset() != null) {
-            iterator.seek(query.getOffset().getBytes());
+            iterator.seek(query.getOffset());
         } else {
             iterator.seekToFirst();
         }
@@ -75,7 +77,14 @@ public class LevelDbStore implements Closeable {
         List<Entry<byte[], byte[]>> result = Lists.newArrayListWithCapacity(storeQuery.getPageSize());
         int pageSize = storeQuery.getPageSize();
         while (iterator.hasNext() && pageSize-- > 0) {
-            result.add(iterator.next());
+            Map.Entry<byte[], byte[]> next = iterator.next();
+
+            byte[] namespace = new byte[]{next.getKey()[0]};
+            if (!Arrays.equals(namespace, query.getNamespace())) {
+                break;
+            }
+
+            result.add(next);
         }
 
         return result;

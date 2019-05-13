@@ -37,7 +37,7 @@ public class FlowScheduler<T> implements Scheduler<T> {
             return false;
         }
 
-        int lag = publisher.offer(t, (s, i) -> true);
+        int lag = publisher.offer(t, (s, i) -> false);
 
         return lag >= 0;
     }

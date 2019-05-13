@@ -2,11 +2,12 @@ package com.diwayou.web.store;
 
 import org.iq80.leveldb.ReadOptions;
 import org.iq80.leveldb.Snapshot;
-import org.iq80.leveldb.util.Slice;
 
 public class LevelDbQuery {
 
-    private Slice offset;
+    private byte[] offset;
+
+    private byte[] namespace;
 
     private ReadOptions options;
 
@@ -14,12 +15,21 @@ public class LevelDbQuery {
         this.options = new ReadOptions();
     }
 
-    public Slice getOffset() {
+    public byte[] getOffset() {
         return offset;
     }
 
-    public LevelDbQuery setOffset(Slice offset) {
+    public LevelDbQuery setOffset(byte[] offset) {
         this.offset = offset;
+        return this;
+    }
+
+    public byte[] getNamespace() {
+        return namespace;
+    }
+
+    public LevelDbQuery setNamespace(byte[] namespace) {
+        this.namespace = namespace;
         return this;
     }
 

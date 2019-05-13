@@ -37,6 +37,7 @@ public class App {
             Spider spider = SpiderBuilder.newBuilder(fetcherFactory, handler)
                     .setRequestExecutor(requestExecutor)
                     .setPageExecutor(pageExecutor)
+                    .setRequestStorePath(new File("D:/tmp/requests"))
                     .build();
 
             Request request = new Request("https://www.baidu.com")
