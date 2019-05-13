@@ -1,4 +1,4 @@
-package com.diwayou.acm.concurrent;
+package com.diwayou.lang.concurrent;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -11,16 +11,16 @@ public class FlowStudy {
     public static void main(String[] args) throws InterruptedException {
         SubmissionPublisher<Integer> publisher = new SubmissionPublisher<>(ForkJoinPool.commonPool(), 1);
 
-        List<String> subscribeNames = List.of("One", "Two", "Three", "Four");
+        List<String> subscribeNames = List.of("One", "Two");
 
         CountDownLatch latch = new CountDownLatch(subscribeNames.size());
 
         subscribeNames.forEach(name -> publisher.subscribe(new SimpleSubscribe(name, latch)));
 
-        IntStream.rangeClosed(1, 20).forEach(i -> {
+        IntStream.rangeClosed(1, 5).forEach(i -> {
                     int lag = publisher.offer(i, (s, item) -> {
-                        System.out.println(((SimpleSubscribe) s).getName() + " --- " + item);
-                        return true;
+                        System.out.println(((SimpleSubscribe) s).getName() + "丢弃--- " + item);
+                        return false;
                     });
 
                     System.out.println(lag);

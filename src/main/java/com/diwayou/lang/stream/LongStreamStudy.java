@@ -1,4 +1,4 @@
-package com.diwayou.acm.stream;
+package com.diwayou.lang.stream;
 
 import java.util.Arrays;
 import java.util.stream.LongStream;

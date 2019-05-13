@@ -39,9 +39,8 @@ public class StoreQueryApp {
                 }
 
                 while (true) {
-                    StoreQuery query = new StoreQuery()
-                            .setQuery(q)
-                            .setPageNum(pageNum)
+                    StoreQuery<Query> query = StoreQuery.create(q);
+                    query.setPageNum(pageNum)
                             .setPageSize(pageSize);
                     QueryResult result = lucenePageStoreQuery.query(query);
                     if (result.getTotal() <= 0) {

@@ -4,10 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -41,7 +38,7 @@ public class LucenePageStoreQuery implements Closeable {
         indexSearcher = new IndexSearcher(indexReader);
     }
 
-    public QueryResult query(StoreQuery storeQuery) throws IOException {
+    public QueryResult query(StoreQuery<Query> storeQuery) throws IOException {
         TopScoreDocCollector collector = TopScoreDocCollector.create(QUERY_LIMIT, QUERY_LIMIT);
         indexSearcher.search(storeQuery.getQuery(), collector);
         TopDocs results = collector.topDocs(storeQuery.getStartOffset(), storeQuery.getPageSize());

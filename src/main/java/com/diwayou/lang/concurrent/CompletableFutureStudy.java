@@ -1,4 +1,4 @@
-package com.diwayou.acm.concurrent;
+package com.diwayou.lang.concurrent;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

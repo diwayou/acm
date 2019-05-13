@@ -1,4 +1,4 @@
-package com.diwayou.acm.random;
+package com.diwayou.lang.random;
 
 import java.util.Random;
 
