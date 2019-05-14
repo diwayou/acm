@@ -72,7 +72,7 @@ public class LevelDbStore implements Closeable {
         LevelDbQuery query = storeQuery.getQuery();
         DBIterator iterator = db.iterator(query.getOptions());
         if (query.getOffset() != null) {
-            iterator.seek(query.getOffset());
+            iterator.seek(genKey(query.getNamespace(), query.getOffset()));
         } else {
             iterator.seekToFirst();
         }

@@ -13,7 +13,7 @@ import java.util.List;
 public class TmallItemDetail {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
-                .setCrawlThreadNum(1)
+                .setCrawlThreadNum(3)
                 .setMaxDepth(2)
                 .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();

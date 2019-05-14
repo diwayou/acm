@@ -10,6 +10,7 @@ import com.diwayou.web.script.CrawlScript;
 import com.diwayou.web.script.ScriptRegistry;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
+import com.diwayou.web.url.UrlUtil;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.jsoup.Jsoup;
@@ -73,17 +74,28 @@ public class ScriptCrawlPageHandler implements PageHandler {
                 .filter(Objects::nonNull)
                 .filter(u -> !spider.getUrlStore().contain(u))
                 .peek(u -> spider.getUrlStore().add(u))
-                .map(u -> newRequest(u, page.getRequest()))
+                .map(u -> newRequest(u, page))
                 .filter(r -> r.getDepth() < spider.getMaxDepth())
                 .collect(Collectors.toList());
 
         spider.submitRequest(requests);
     }
 
-    private Request newRequest(String newUrl, Request old) {
+    private Request newRequest(String newUrl, Page page) {
         return new Request(newUrl)
-                .setParentUrl(old.getUrl())
-                .setDepth(old.getDepth() + 1);
+                .setParentUrl(page.getRequest().getUrl())
+                .setDepth(page.getRequest().getDepth() + 1)
+                .setPriority(getPriority(newUrl));
+    }
+
+    private byte getPriority(String url) {
+        if (UrlUtil.isImage(url)) {
+            return Request.MAX_PRIORITY;
+        } else if (UrlUtil.hasExtension(url)) {
+            return Request.MIN_PRIORITY;
+        }
+
+        return Request.NORMAL_PRIORITY;
     }
 
     private Set<String> allUrls(Document document, Page page) {

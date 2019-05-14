@@ -12,6 +12,7 @@ import com.diwayou.web.store.LevelDbStore;
 import com.diwayou.web.store.StoreQuery;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,12 @@ public class RequestScheduler implements Scheduler<Request> {
     }
 
     private byte[] genKey(Request request) {
-        return request.getUrl().getBytes(StandardCharsets.UTF_8);
+        byte[] bUrl = request.getUrl().getBytes(StandardCharsets.UTF_8);
+        ByteBuffer buffer = ByteBuffer.allocate(1 + bUrl.length);
+        buffer.put(request.getPriority());
+        buffer.put(bUrl);
+
+        return buffer.array();
     }
 
     private Request processRequest(Request request) {

@@ -6,7 +6,11 @@ import java.util.Objects;
 
 public class Request {
 
-    public static final Request empty = new Request("");
+    public static final byte MIN_PRIORITY = 100;
+    public static final byte NORMAL_PRIORITY = 50;
+    public static final byte MAX_PRIORITY = 0;
+
+    public static final Request empty = new Request("").setPriority(MAX_PRIORITY);
 
     /**
      * 当前抓取地址
@@ -36,7 +40,7 @@ public class Request {
     /**
      * 抓取优先级
      */
-    private int priority;
+    private byte priority = NORMAL_PRIORITY;
 
     /**
      * 扩展信息
@@ -97,11 +101,11 @@ public class Request {
         return this;
     }
 
-    public int getPriority() {
+    public byte getPriority() {
         return priority;
     }
 
-    public Request setPriority(int priority) {
+    public Request setPriority(byte priority) {
         this.priority = priority;
         return this;
     }
