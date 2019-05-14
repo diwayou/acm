@@ -7,7 +7,7 @@ public class LevelDbQuery {
 
     private byte[] offset;
 
-    private byte[] namespace;
+    private int namespace;
 
     private ReadOptions options;
 
@@ -24,11 +24,11 @@ public class LevelDbQuery {
         return this;
     }
 
-    public byte[] getNamespace() {
+    public int getNamespace() {
         return namespace;
     }
 
-    public LevelDbQuery setNamespace(byte[] namespace) {
+    public LevelDbQuery setNamespace(int namespace) {
         this.namespace = namespace;
         return this;
     }

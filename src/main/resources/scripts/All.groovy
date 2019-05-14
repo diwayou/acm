@@ -1,15 +1,15 @@
 package scripts
 
-import com.diwayou.web.store.FilePageStore
-import com.diwayou.web.store.PageStoreContext
+
+import java.nio.file.Path
 
 if (helper.isImage()) {
     if (helper.contentLength() > 20 * 1000) {
-        helper.store(PageStoreContext.create().put(FilePageStore.DIR, new File("D:/tmp/image")))
+        helper.store(Path.of("D:/tmp/image"))
     }
     return
 }
 
-helper.store(PageStoreContext.create().put(FilePageStore.DIR, new File("D:/tmp/doc")))
+helper.store(Path.of("D:/tmp/doc"))
 
 return urls

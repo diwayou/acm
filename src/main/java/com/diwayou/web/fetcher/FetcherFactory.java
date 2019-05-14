@@ -6,18 +6,25 @@ import java.io.Closeable;
 
 public class FetcherFactory implements Closeable {
 
+    private static final FetcherFactory instance = new FetcherFactory();
+
     private JavaHttpFetcher javaHttpFetcher;
 
     private FxWebviewFetcher fxWebviewFetcher;
 
-    public FetcherFactory() {
-        this.javaHttpFetcher = new JavaHttpFetcher();
-        this.fxWebviewFetcher = new FxWebviewFetcher();
+    public static FetcherFactory one() {
+        return instance;
     }
 
-    public FetcherFactory(int fxPoolCapacity) {
+    private FetcherFactory() {
+        this(16);
+    }
+
+    private FetcherFactory(int fxPoolCapacity) {
         this.javaHttpFetcher = new JavaHttpFetcher();
         this.fxWebviewFetcher = new FxWebviewFetcher(fxPoolCapacity);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
     }
 
     public Fetcher getFetcher(FetcherType type) {

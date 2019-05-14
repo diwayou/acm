@@ -1,14 +1,13 @@
 package com.diwayou.web.crawl.handler;
 
-import com.diwayou.web.config.CrawlConfig;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.store.FilePageStore;
 import com.diwayou.web.store.PageStoreContext;
 import com.diwayou.web.support.PageUtil;
 
-import java.io.IOException;
-import java.util.logging.Level;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 public class ScriptHelper {
@@ -19,12 +18,9 @@ public class ScriptHelper {
 
     private Page page;
 
-    private CrawlConfig crawlConfig;
-
-    public ScriptHelper(Spider spider, Page page, CrawlConfig crawlConfig) {
+    public ScriptHelper(Spider spider, Page page) {
         this.spider = spider;
         this.page = page;
-        this.crawlConfig = crawlConfig;
     }
 
     public void submitRequest(Request request) {
@@ -36,11 +32,11 @@ public class ScriptHelper {
             return;
         }
 
-        if (crawlConfig.getUrlStore().contain(request.getUrl())) {
+        if (spider.getUrlStore().contain(request.getUrl())) {
             return;
         }
 
-        crawlConfig.getUrlStore().add(request.getUrl());
+        spider.getUrlStore().add(request.getUrl());
 
         if (request.getParentUrl() == null) {
             request.setParentUrl(page.getRequest().getUrl());
@@ -48,15 +44,11 @@ public class ScriptHelper {
 
         request.setDepth(page.getRequest().getDepth() + 1);
 
-        if (request.getDepth() > crawlConfig.getMaxDepth()) {
+        if (request.getDepth() > spider.getMaxDepth()) {
             return;
         }
 
-        try {
-            spider.submitRequest(request);
-        } catch (IOException e) {
-            log.log(Level.WARNING, "", e);
-        }
+        spider.submitRequest(request);
     }
 
     public boolean isHtml() {
@@ -83,11 +75,11 @@ public class ScriptHelper {
         return PageUtil.getContentLength(page);
     }
 
-    public void store(PageStoreContext context) {
-        if (crawlConfig.getPageStore() == null) {
-            log.warning("没有配置pageStore!");
-        }
+    public void store(Path path) {
+        spider.getFilePageStore().store(page, PageStoreContext.create().put(FilePageStore.DIR, path.toFile()));
+    }
 
-        crawlConfig.getPageStore().store(page, context);
+    public void storeWithIndex(Path path) {
+        spider.getLucenePageStore().store(page, PageStoreContext.create().put(FilePageStore.DIR, path.toFile()));
     }
 }

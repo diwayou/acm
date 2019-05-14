@@ -11,26 +11,12 @@ public class CrawlConfig {
 
     private PageStore pageStore = new FilePageStore(null);
 
-    /**
-     * 爬取最大深度
-     */
-    private int maxDepth = 4;
-
     public UrlStore getUrlStore() {
         return urlStore;
     }
 
     public CrawlConfig setUrlStore(UrlStore urlStore) {
         this.urlStore = urlStore;
-        return this;
-    }
-
-    public int getMaxDepth() {
-        return maxDepth;
-    }
-
-    public CrawlConfig setMaxDepth(int maxDepth) {
-        this.maxDepth = maxDepth;
         return this;
     }
 

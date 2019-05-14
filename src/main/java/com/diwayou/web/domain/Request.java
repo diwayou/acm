@@ -6,6 +6,8 @@ import java.util.Objects;
 
 public class Request {
 
+    public static final Request empty = new Request("");
+
     /**
      * 当前抓取地址
      */

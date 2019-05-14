@@ -1,50 +1,56 @@
 package com.diwayou.web.crawl;
 
-import com.diwayou.web.fetcher.FetcherFactory;
+import com.diwayou.web.crawl.handler.ScriptCrawlPageHandler;
+import com.diwayou.web.store.MemoryUrlStore;
+import com.diwayou.web.store.UrlStore;
 
-import java.io.File;
-import java.util.concurrent.Executor;
+import java.nio.file.Path;
 
 public class SpiderBuilder {
 
-    private Executor requestExecutor;
+    private int crawlThreadNum = 2;
 
-    private Executor pageExecutor;
+    /**
+     * 爬取最大深度
+     */
+    private int maxDepth = 4;
 
-    private PageHandler pageHandler;
+    private PageHandler pageHandler = new ScriptCrawlPageHandler();
 
-    private FetcherFactory fetcherFactory;
+    private Path storePath;
 
-    private File requestStorePath;
+    private UrlStore urlStore = new MemoryUrlStore();
+
+    private Path scriptsPath;
 
     private SpiderBuilder() {
     }
 
-    public static SpiderBuilder newBuilder(FetcherFactory fetcherFactory, PageHandler pageHandler) {
+    public static SpiderBuilder newBuilder(Path storePath) {
         return new SpiderBuilder()
-                .setFetcherFactory(fetcherFactory)
-                .setPageHandler(pageHandler);
+                .setStorePath(storePath)
+                .setScriptsPath(storePath.resolve("scripts"));
     }
 
     public Spider build() {
         return new Spider(this);
     }
 
-    public Executor getRequestExecutor() {
-        return requestExecutor;
+    public int getCrawlThreadNum() {
+        return crawlThreadNum;
     }
 
-    public SpiderBuilder setRequestExecutor(Executor requestExecutor) {
-        this.requestExecutor = requestExecutor;
+    public SpiderBuilder setCrawlThreadNum(int crawlThreadNum) {
+        this.crawlThreadNum = crawlThreadNum;
         return this;
     }
 
-    public Executor getPageExecutor() {
-        return pageExecutor;
+    public int getMaxDepth() {
+        return maxDepth;
     }
 
-    public SpiderBuilder setPageExecutor(Executor pageExecutor) {
-        this.pageExecutor = pageExecutor;
+    public SpiderBuilder setMaxDepth(int maxDepth) {
+        this.maxDepth = maxDepth;
         return this;
     }
 
@@ -57,21 +63,30 @@ public class SpiderBuilder {
         return this;
     }
 
-    public FetcherFactory getFetcherFactory() {
-        return fetcherFactory;
+    public Path getStorePath() {
+        return storePath;
     }
 
-    public SpiderBuilder setFetcherFactory(FetcherFactory fetcherFactory) {
-        this.fetcherFactory = fetcherFactory;
+    public SpiderBuilder setStorePath(Path storePath) {
+        this.storePath = storePath;
         return this;
     }
 
-    public File getRequestStorePath() {
-        return requestStorePath;
+    public UrlStore getUrlStore() {
+        return urlStore;
     }
 
-    public SpiderBuilder setRequestStorePath(File requestStorePath) {
-        this.requestStorePath = requestStorePath;
+    public SpiderBuilder setUrlStore(UrlStore urlStore) {
+        this.urlStore = urlStore;
+        return this;
+    }
+
+    public Path getScriptsPath() {
+        return scriptsPath;
+    }
+
+    public SpiderBuilder setScriptsPath(Path scriptsPath) {
+        this.scriptsPath = scriptsPath;
         return this;
     }
 }

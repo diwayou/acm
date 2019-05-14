@@ -1,6 +1,5 @@
 package com.diwayou.web.crawl.handler;
 
-import com.diwayou.web.config.CrawlConfig;
 import com.diwayou.web.crawl.PageHandler;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.FetcherType;
@@ -17,7 +16,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.logging.Level;
@@ -30,12 +28,6 @@ import static java.util.stream.Collectors.toSet;
 public class ScriptCrawlPageHandler implements PageHandler {
 
     private static final Logger log = Logger.getLogger(ScriptCrawlPageHandler.class.getName());
-
-    private CrawlConfig crawlConfig;
-
-    public ScriptCrawlPageHandler(CrawlConfig crawlConfig) {
-        this.crawlConfig = crawlConfig;
-    }
 
     @Override
     public void handle(Page page, Spider spider) {
@@ -53,7 +45,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
         }
 
         Map<String, Object> bindings = Maps.newHashMap();
-        ScriptHelper helper = new ScriptHelper(spider, page, crawlConfig);
+        ScriptHelper helper = new ScriptHelper(spider, page);
         bindings.put("helper", helper);
 
         if (PageUtil.isHtml(page)) {
@@ -79,17 +71,13 @@ public class ScriptCrawlPageHandler implements PageHandler {
     private void submit(Set<String> scriptResult, Spider spider, Page page) {
         List<Request> requests = scriptResult.stream()
                 .filter(Objects::nonNull)
-                .filter(u -> !crawlConfig.getUrlStore().contain(u))
-                .peek(u -> crawlConfig.getUrlStore().add(u))
+                .filter(u -> !spider.getUrlStore().contain(u))
+                .peek(u -> spider.getUrlStore().add(u))
                 .map(u -> newRequest(u, page.getRequest()))
-                .filter(r -> r.getDepth() < crawlConfig.getMaxDepth())
+                .filter(r -> r.getDepth() < spider.getMaxDepth())
                 .collect(Collectors.toList());
 
-        try {
-            spider.submitRequest(requests);
-        } catch (IOException e) {
-            log.log(Level.WARNING, "", e);
-        }
+        spider.submitRequest(requests);
     }
 
     private Request newRequest(String newUrl, Request old) {
