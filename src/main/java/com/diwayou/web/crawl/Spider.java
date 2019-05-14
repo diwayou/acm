@@ -72,6 +72,7 @@ public class Spider implements Closeable {
 
         try {
             requestScheduler.close();
+            lucenePageStore.close();
         } catch (IOException ignore) {
         }
     }

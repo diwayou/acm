@@ -97,11 +97,18 @@ public class ScriptCrawlPageHandler implements PageHandler {
             Set<String> resourceUrls = ((HtmlDocumentPage) page).getResourceUrls();
 
             if (resourceUrls != null) {
+                resourceUrls = removeBase64Image(resourceUrls);
                 urls.addAll(resourceUrls);
             }
         }
 
         return urls;
+    }
+
+    private Set<String> removeBase64Image(Set<String> resourceUrls) {
+        return resourceUrls.stream()
+                .filter(u -> !u.startsWith("data:image"))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private Set<String> collectUrls(Elements elements, String attr, Page page, Set<String> urls) {

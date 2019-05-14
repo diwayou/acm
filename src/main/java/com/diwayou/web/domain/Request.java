@@ -45,6 +45,9 @@ public class Request {
 
     private List<RequestScript> requestScripts;
 
+    public Request() {
+    }
+
     public Request(String url) {
         this.url = url;
     }
