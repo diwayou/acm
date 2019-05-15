@@ -1,7 +1,7 @@
 package com.diwayou.web.scheduler;
 
 import com.alibaba.fastjson.JSON;
-import com.diwayou.web.concurrent.FixedBlockingExecutor;
+import com.diwayou.web.concurrent.FixedThreadPoolExecutor;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
@@ -16,10 +16,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,7 +27,7 @@ public class RequestScheduler implements Scheduler<Request> {
 
     private Spider spider;
 
-    private FixedBlockingExecutor threadPool;
+    private ExecutorService threadPool;
 
     private ScheduledExecutorService requestScheduledService;
 
@@ -41,7 +38,7 @@ public class RequestScheduler implements Scheduler<Request> {
 
     public RequestScheduler(Spider spider, int threadPoolSize) {
         this.spider = spider;
-        this.threadPool = new FixedBlockingExecutor(threadPoolSize);
+        this.threadPool = new FixedThreadPoolExecutor(threadPoolSize);
         try {
             this.requestStore = new LevelDbStore(spider.getStorePath().resolve("requests").toFile());
         } catch (IOException e) {
@@ -60,6 +57,8 @@ public class RequestScheduler implements Scheduler<Request> {
                         .setOffset(genKey(Request.empty))
                         .setNamespace(WAITING_NAMESPACE);
                 StoreQuery<LevelDbQuery> query = StoreQuery.create(levelDbQuery);
+                query.setPageSize(50);
+
                 List<Map.Entry<byte[], byte[]>> pageResult = requestStore.query(query);
                 do {
                     List<Request> requests = pageResult.stream()

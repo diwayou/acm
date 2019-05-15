@@ -64,6 +64,8 @@ public class Spider implements Closeable {
 
         this.requestScheduler = new RequestScheduler(this, builder.getCrawlThreadNum());
         start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
     }
 
     @Override
