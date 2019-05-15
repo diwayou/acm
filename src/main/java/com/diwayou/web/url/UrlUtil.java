@@ -25,6 +25,20 @@ public class UrlUtil {
         }
     }
 
+    public static String getHost(String url) {
+        URI uri = URI.create(url);
+        String host = uri.getHost();
+        if (host == null) {
+            return null;
+        }
+
+        if (host.startsWith("www.")) {
+            host = host.substring(4);
+        }
+
+        return host;
+    }
+
     public static boolean isImage(String url) {
         String ext = FilenameUtils.getExtension(url);
 

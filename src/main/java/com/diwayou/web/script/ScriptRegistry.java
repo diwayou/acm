@@ -1,6 +1,7 @@
 package com.diwayou.web.script;
 
 import com.diwayou.web.domain.Page;
+import com.diwayou.web.url.UrlUtil;
 import com.hankcs.hanlp.collection.trie.DoubleArrayTrie;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -11,7 +12,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.script.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -51,15 +51,7 @@ public class ScriptRegistry {
         }
 
         try {
-            URI uri = URI.create(page.getRequest().getUrl());
-            String host = uri.getHost();
-            if (host == null) {
-                return defaultScript;
-            }
-
-            if (host.startsWith("www.")) {
-                host = host.substring(4);
-            }
+            String host = UrlUtil.getHost(page.getRequest().getUrl());
 
             CrawlScript script = domainScripTrie.get(host);
             if (script != null) {
