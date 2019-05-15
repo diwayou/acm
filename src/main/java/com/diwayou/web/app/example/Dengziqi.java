@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class Dengziqi {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
-                .setCrawlThreadNum(1)
+                .setCrawlThreadNum(20)
                 .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();
 

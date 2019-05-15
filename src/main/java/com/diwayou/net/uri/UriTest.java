@@ -1,5 +1,6 @@
 package com.diwayou.net.uri;
 
+import java.io.File;
 import java.net.URI;
 
 public class UriTest {
@@ -8,5 +9,7 @@ public class UriTest {
         System.out.println(uri.getHost());
         System.out.println(uri.getPort());
         System.out.println(uri.getPath());
+        System.out.println(uri.getSchemeSpecificPart());
+        System.out.println(new File(uri.getSchemeSpecificPart()).getAbsolutePath());
     }
 }
