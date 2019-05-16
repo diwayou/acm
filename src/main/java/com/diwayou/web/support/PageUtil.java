@@ -32,6 +32,10 @@ public class PageUtil {
         return contentType.contains("image");
     }
 
+    public static boolean isImage(Page page) {
+        return isImage(getContentType(page));
+    }
+
     public static boolean hasBinaryContent(Page page) {
         String contentType = getContentType(page);
         String typeStr = (contentType != null) ? contentType.toLowerCase() : "";

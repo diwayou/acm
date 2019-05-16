@@ -56,7 +56,7 @@ public class ScriptHelper {
     }
 
     public boolean isImage() {
-        return PageUtil.isImage(PageUtil.getContentType(page));
+        return PageUtil.isImage(page);
     }
 
     public String imageExt() {

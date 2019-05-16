@@ -2,7 +2,7 @@ package com.diwayou.web.script;
 
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.url.UrlUtil;
-import com.hankcs.hanlp.collection.trie.DoubleArrayTrie;
+import com.google.common.collect.Maps;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import org.apache.commons.io.FilenameUtils;
@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class ScriptRegistry {
 
     private static ScriptRegistry instance = new ScriptRegistry();
 
-    private DoubleArrayTrie<CrawlScript> domainScripTrie = new DoubleArrayTrie<>();
+    private ConcurrentMap<String, CrawlScript> domainScripMap = Maps.newConcurrentMap();
 
     private CrawlScript defaultScript;
 
@@ -46,14 +47,14 @@ public class ScriptRegistry {
     }
 
     public CrawlScript match(Page page) {
-        if (domainScripTrie == null || domainScripTrie.getSize() == 0) {
+        if (domainScripMap == null || domainScripMap.isEmpty()) {
             return defaultScript;
         }
 
         try {
             String host = UrlUtil.getHost(page.getRequest().getUrl());
 
-            CrawlScript script = domainScripTrie.get(host);
+            CrawlScript script = domainScripMap.get(host);
             if (script != null) {
                 return script;
             }
@@ -139,7 +140,7 @@ public class ScriptRegistry {
         }
 
         if (!domainScriptMap.isEmpty()) {
-            domainScripTrie.build(domainScriptMap);
+            domainScripMap.putAll(domainScriptMap);
         }
     }
 
