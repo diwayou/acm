@@ -100,6 +100,16 @@ public class ScriptRegistry {
         return null;
     }
 
+    public Object execute(String script, Map<String, Object> bindings) {
+        try {
+            return new GroovyShell(new Binding(bindings)).evaluate(script);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "", e);
+        }
+
+        return null;
+    }
+
     /**
      * 加载目录下的所有脚本，文件名就是注册的域名
      */

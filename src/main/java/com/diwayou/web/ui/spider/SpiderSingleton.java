@@ -42,7 +42,7 @@ public class SpiderSingleton {
         Path scriptPath = storePath.resolve("scripts");
 
         spider = SpiderBuilder.newBuilder(storePath)
-                .setCrawlThreadNum(4)
+                .setCrawlThreadNum(Runtime.getRuntime().availableProcessors() * 2)
                 .setScriptsPath(scriptPath)
                 .build();
     }

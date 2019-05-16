@@ -3,6 +3,7 @@ package com.diwayou.web.ui.swing;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.ui.script.ScriptFrame;
 import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.diwayou.web.url.UrlDict;
 import org.pushingpixels.substance.api.SubstanceCortex;
@@ -20,6 +21,8 @@ public class ToolPanel extends JPanel {
         addUrlInput(mainFrame);
 
         addSpider(mainFrame);
+
+        addScript(mainFrame);
     }
 
     private void addSpider(RobotMainFrame mainFrame) {
@@ -39,6 +42,16 @@ public class ToolPanel extends JPanel {
         });
 
         this.add(spiderButton);
+    }
+
+    private void addScript(RobotMainFrame mainFrame) {
+        JButton scriptButton = new JButton("脚本");
+        scriptButton.addActionListener(ae -> {
+            new ScriptFrame(mainFrame)
+                    .setVisible(true);
+        });
+
+        this.add(scriptButton);
     }
 
     private void addUrlInput(RobotMainFrame mainFrame) {
