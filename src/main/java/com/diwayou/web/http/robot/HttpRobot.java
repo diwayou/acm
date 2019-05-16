@@ -20,7 +20,7 @@ public class HttpRobot implements Closeable {
 
     public static final int DEFAULT_TIMEOUT = 3;
 
-    private RobotDriver driver;
+    private FxRobotDriver driver;
 
     private Pool<HttpRobot> pool;
 
@@ -103,6 +103,10 @@ public class HttpRobot implements Closeable {
      */
     public void clear() {
         requestUrls = null;
+    }
+
+    public FxRobotDriver getDriver() {
+        return driver;
     }
 
     public Set<String> getRequestUrls() {

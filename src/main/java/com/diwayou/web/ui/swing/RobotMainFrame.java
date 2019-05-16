@@ -1,13 +1,14 @@
 package com.diwayou.web.ui.swing;
 
-import com.diwayou.web.http.driver.FxRobotDriver;
+import com.diwayou.web.fetcher.FetcherFactory;
+import com.diwayou.web.http.robot.HttpRobot;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class RobotMainFrame extends JFrame {
 
-    private FxRobotDriver driver;
+    private HttpRobot robot;
 
     private ToolPanel toolPanel;
 
@@ -15,8 +16,8 @@ public class RobotMainFrame extends JFrame {
         super("RobotBrowser");
         this.setLayout(new BorderLayout());
 
-        driver = new FxRobotDriver();
-        this.add(driver.getPanel(), BorderLayout.CENTER);
+        robot = FetcherFactory.one().getFxWebviewFetcher().getRobot();
+        this.add(robot.getDriver().getPanel(), BorderLayout.CENTER);
 
         toolPanel = new ToolPanel(this);
         this.add(toolPanel, BorderLayout.NORTH);
@@ -24,7 +25,7 @@ public class RobotMainFrame extends JFrame {
         this.setResizable(true);
     }
 
-    public FxRobotDriver getDriver() {
-        return driver;
+    public HttpRobot getRobot() {
+        return robot;
     }
 }

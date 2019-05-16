@@ -2,6 +2,7 @@ package com.diwayou.web.ui.spider;
 
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.crawl.SpiderBuilder;
+import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
 
 import java.io.File;
@@ -30,6 +31,10 @@ public class SpiderSingleton {
 
     public void submitRequest(Request request) {
         spider.submitRequest(request);
+    }
+
+    public void submitPage(HtmlDocumentPage page) {
+        spider.submitPage(page);
     }
 
     private void init() {
