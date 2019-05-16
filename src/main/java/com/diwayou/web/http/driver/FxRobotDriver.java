@@ -58,6 +58,11 @@ public class FxRobotDriver implements RobotDriver {
         return panel;
     }
 
+    public String getUrl() {
+        HTMLDocument doc = getDocument();
+        return doc == null ? null : doc.getURL();
+    }
+
     @Override
     public void close() {
         Platform.exit();

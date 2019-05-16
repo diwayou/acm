@@ -5,9 +5,15 @@ import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.skin.GraphiteSkin;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class RobotBrowser {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
+        initLog();
         SwingUtilities.invokeLater(() -> {
             SubstanceCortex.GlobalScope.setSkin(new GraphiteSkin());
             JFrame.setDefaultLookAndFeelDecorated(true);
@@ -18,5 +24,12 @@ public class RobotBrowser {
             mainFrame.setVisible(true);
             mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
+    }
+
+    private static void initLog() throws IOException {
+        FileHandler handler = new FileHandler("./browser.log");
+        handler.setFormatter(new SimpleFormatter());
+
+        Logger.getGlobal().addHandler(handler);
     }
 }

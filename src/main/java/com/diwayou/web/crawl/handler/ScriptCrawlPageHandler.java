@@ -28,7 +28,7 @@ import static java.util.stream.Collectors.toSet;
 
 public class ScriptCrawlPageHandler implements PageHandler {
 
-    private static final Logger log = Logger.getLogger(ScriptCrawlPageHandler.class.getName());
+    private static final Logger log = Logger.getGlobal();
 
     @Override
     public void handle(Page page, Spider spider) {

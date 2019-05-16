@@ -1,5 +1,8 @@
 package com.diwayou.web.ui.swing;
 
+import com.diwayou.web.domain.FetcherType;
+import com.diwayou.web.domain.Request;
+import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.diwayou.web.url.UrlDict;
 import org.pushingpixels.substance.api.SubstanceCortex;
 
@@ -12,6 +15,30 @@ public class ToolPanel extends JPanel {
     public ToolPanel(RobotMainFrame mainFrame) {
         super(new FlowLayout(FlowLayout.LEFT));
 
+        addUrlInput(mainFrame);
+
+        addSpider(mainFrame);
+    }
+
+    private void addSpider(RobotMainFrame mainFrame) {
+        JButton spiderButton = new JButton("爬取");
+        spiderButton.addActionListener(e -> {
+            String url = mainFrame.getDriver().getUrl();
+            if (url == null || url.isBlank()) {
+                return;
+            }
+
+            Request request = new Request(url)
+                    .setFetcherType(FetcherType.FX_WEBVIEW)
+                    .setPriority(Request.MAX_PRIORITY);
+
+            SpiderSingleton.one().submitRequest(request);
+        });
+
+        this.add(spiderButton);
+    }
+
+    private void addUrlInput(RobotMainFrame mainFrame) {
         JTextField urlInputField = new JTextField("input a url", 50);
         urlInputField.setFocusTraversalKeysEnabled(false);
         SubstanceCortex.ComponentOrParentChainScope.setSelectTextOnFocus(urlInputField, true);

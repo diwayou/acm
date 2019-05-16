@@ -82,4 +82,12 @@ public class ScriptHelper {
     public void storeWithIndex(Path path) {
         spider.getLucenePageStore().store(page, PageStoreContext.create().put(FilePageStore.DIR, path.toFile()));
     }
+
+    public void store() {
+        spider.getFilePageStore().store(page, PageStoreContext.create());
+    }
+
+    public void storeWithIndex() {
+        spider.getLucenePageStore().store(page, PageStoreContext.create());
+    }
 }

@@ -37,16 +37,17 @@ public class FilePageStore implements PageStore {
         }
 
         try {
-            if (!Files.exists(userDir.toPath())) {
-                Files.createDirectories(userDir.toPath());
+            String urlPath = UrlUtil.urlToFilename(page.getRequest().getParentUrl());
+
+            Path fileDirPath = Path.of(userDir.getAbsolutePath(), urlPath);
+            if (!Files.exists(fileDirPath)) {
+                Files.createDirectories(fileDirPath);
             }
 
             String ext = PageUtil.getExt(page);
             String name = FilenameUtil.randFileName(ext);
 
-            String urlPath = UrlUtil.urlToFilename(page.getRequest().getParentUrl()) + "_" + name;
-
-            Path path = Path.of(userDir.getAbsolutePath(), urlPath);
+            Path path = fileDirPath.resolve(name);
             Files.copy(new ByteArrayInputStream(page.bodyAsByteArray()), path);
 
             return new StoreResult(path.toString());

@@ -13,7 +13,7 @@ public class SpiderBuilder {
     /**
      * 爬取最大深度
      */
-    private int maxDepth = 4;
+    private int maxDepth = 3;
 
     private PageHandler pageHandler = new ScriptCrawlPageHandler();
 

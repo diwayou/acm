@@ -2,8 +2,6 @@ package scripts
 
 import com.diwayou.web.crawl.handler.ScriptHelper
 import org.jsoup.nodes.Document
-
-import java.nio.file.Path
 /**
  * 脚本支持4个工具变量：
  * helper：帮助类，详细见com.diwayou.web.crawl.handler.ScriptHelper
@@ -19,11 +17,11 @@ Document d = doc
 
 if (h.isImage()) {
     if (h.contentLength() > 20 * 1000) {
-        h.storeWithIndex(Path.of("D:/tmp/image"))
+        h.storeWithIndex()
     }
     return
 }
 
-h.storeWithIndex(Path.of("D:/tmp/doc"))
+//h.storeWithIndex()
 
 return u
