@@ -1,7 +1,7 @@
 package com.diwayou.web.crawl;
 
 import com.diwayou.web.crawl.handler.ScriptCrawlPageHandler;
-import com.diwayou.web.store.MemoryUrlStore;
+import com.diwayou.web.store.LevelDbUrlStore;
 import com.diwayou.web.store.UrlStore;
 
 import java.nio.file.Path;
@@ -14,7 +14,7 @@ public class SpiderBuilder {
 
     private Path storePath;
 
-    private UrlStore urlStore = new MemoryUrlStore();
+    private UrlStore urlStore;
 
     private Path scriptsPath;
 
@@ -22,8 +22,10 @@ public class SpiderBuilder {
     }
 
     public static SpiderBuilder newBuilder(Path storePath) {
+        UrlStore urlStore = new LevelDbUrlStore(storePath);
         return new SpiderBuilder()
                 .setStorePath(storePath)
+                .setUrlStore(urlStore)
                 .setScriptsPath(storePath.resolve("scripts"));
     }
 
