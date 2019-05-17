@@ -9,19 +9,17 @@ import com.diwayou.web.http.robot.HttpRobot;
 
 import java.nio.file.Path;
 
-public class Baidu {
+public class Tieba {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
                 .setCrawlThreadNum(1)
                 .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();
 
-        Request request = new Request("https://www.baidu.com")
+        Request request = new Request("https://tieba.baidu.com")
                 .setFetcherType(FetcherType.FX_WEBVIEW);
         try (HttpRobot robot = FetcherFactory.one().getFxWebviewFetcher().getRobot()) {
-            robot.get("https://www.baidu.com", 2);
-            robot.executeScript("document.getElementById('kw').value = '计算机网络'", 1);
-            robot.executeScript("document.getElementById('su').click()", 3);
+            robot.get("http://tieba.baidu.com/f?ie=utf-8&kw=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C&fr=search&red_tag=p2630938194", 10);
 
             // 抓取前10页结果
             for (int i = 1; i < 10; i++) {
@@ -30,7 +28,7 @@ public class Baidu {
                 // 清除url记录
                 robot.clear();
 
-                robot.executeScript("a = document.getElementsByClassName('n'); a[a.length - 1].click()", 5);
+                robot.executeScript("document.getElementsByClassName('search_btn_enter_ba')[0].click()", 5);
             }
         }
 

@@ -43,8 +43,12 @@ public class SpiderSingleton {
         Path scriptPath = storePath.resolve("scripts");
 
         spider = SpiderBuilder.newBuilder(storePath)
-                .setCrawlThreadNum(Runtime.getRuntime().availableProcessors() * 2)
+                .setCrawlThreadNum(Runtime.getRuntime().availableProcessors())
                 .setScriptsPath(scriptPath)
                 .build();
+    }
+
+    public Path getIndexPath() {
+        return spider.getLucenePageStore().getIndexPath();
     }
 }

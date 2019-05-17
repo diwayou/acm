@@ -1,22 +1,22 @@
 package spider
 
 import com.diwayou.web.domain.FetcherType
-import com.diwayou.web.domain.HtmlDocumentPage
 import com.diwayou.web.domain.Request
+import com.diwayou.web.http.robot.HttpRobot
 
-Request request = new Request("https://tieba.baidu.com/index.html")
+Request request = new Request("https://tieba.baidu.com")
         .setFetcherType(FetcherType.FX_WEBVIEW)
 
-robot.get("https://tieba.baidu.com/index.html", 2)
-robot.executeScript("document.getElementsByClassName('j_search_input')[0].value = '计算机网络'", 1)
-robot.executeScript("document.getElementsByClassName('search_btn_enter_ba')[0].click()", 3)
+HttpRobot httpRobot = robot
+
+httpRobot.get("http://tieba.baidu.com/f?ie=utf-8&kw=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C&fr=search&red_tag=p2630938194", 10)
 
 // 抓取前10页结果
 for (int i = 1; i < 10; i++) {
-    spider.submitPage(new HtmlDocumentPage(request, robot.getDocument(), robot.getRequestUrls()))
+    spider.submitRequest(request.setUrl(httpRobot.getDocument().getURL()))
 
     // 清除url记录
-    robot.clear()
+    httpRobot.clear()
 
-    robot.executeScript("document.getElementsByClassName('next pagination-item')[0].click()", 3)
+    httpRobot.executeScript("document.getElementsByClassName('next pagination-item')[0].click()", 6)
 }

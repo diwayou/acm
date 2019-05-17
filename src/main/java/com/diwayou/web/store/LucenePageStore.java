@@ -72,22 +72,22 @@ public class LucenePageStore implements PageStore, Closeable {
     @Override
     public StoreResult store(Page page, PageStoreContext context) {
         Document doc = new Document();
-        doc.add(new TextField("parentUrl", UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
-        doc.add(new TextField("url", UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
+        doc.add(new TextField(IndexFieldName.parentUrl.name(), UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
+        doc.add(new TextField(IndexFieldName.url.name(), UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
 
         if (PageUtil.isHtml(page)) {
-            doc.add(new StringField("type", "html", Field.Store.NO));
+            doc.add(new StringField(IndexFieldName.type.name(), "html", Field.Store.YES));
 
             String text = Jsoup.parse(page.bodyAsString()).text();
-            doc.add(new TextField("content", text, Field.Store.YES));
+            doc.add(new TextField(IndexFieldName.content.name(), text, Field.Store.YES));
         } if (PageUtil.isImage(page)) {
-            doc.add(new StringField("type", "image", Field.Store.NO));
+            doc.add(new StringField(IndexFieldName.type.name(), "image", Field.Store.YES));
             StoreResult result = filePageStore.store(page, context);
-            doc.add(new TextField("content", result.getPath(), Field.Store.YES));
+            doc.add(new TextField(IndexFieldName.content.name(), result.getPath(), Field.Store.YES));
         } else {
-            doc.add(new StringField("type", PageUtil.getExt(page), Field.Store.NO));
+            doc.add(new StringField(IndexFieldName.type.name(), PageUtil.getExt(page), Field.Store.YES));
             StoreResult result = filePageStore.store(page, context);
-            doc.add(new TextField("content", result.getPath(), Field.Store.YES));
+            doc.add(new TextField(IndexFieldName.content.name(), result.getPath(), Field.Store.YES));
         }
 
         try {
@@ -107,5 +107,9 @@ public class LucenePageStore implements PageStore, Closeable {
         if (this.indexWriter != null) {
             this.indexWriter.close();
         }
+    }
+
+    public Path getIndexPath() {
+        return indexPath;
     }
 }

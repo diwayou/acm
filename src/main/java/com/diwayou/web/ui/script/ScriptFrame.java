@@ -26,6 +26,7 @@ public class ScriptFrame extends JFrame {
     private static final ExecutorService threadPool = new FixedRejectThreadPoolExecutor(1);
 
     public ScriptFrame(JFrame mainFrame) {
+        Runtime.getRuntime().addShutdownHook(new Thread(threadPool::shutdownNow));
         JPanel cp = new JPanel(new BorderLayout());
 
         RSyntaxTextArea textArea = new RSyntaxTextArea(35, 120);

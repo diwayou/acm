@@ -35,7 +35,7 @@ public class Request {
     /**
      * 爬取最大深度
      */
-    private int maxDepth = 3;
+    private int maxDepth = 2;
 
     /**
      * 当前抓取深度

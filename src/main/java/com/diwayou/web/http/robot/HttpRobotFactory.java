@@ -17,7 +17,7 @@ public class HttpRobotFactory implements PooledObjectFactory<HttpRobot> {
     @Override
     public void destroyObject(PooledObject<HttpRobot> p) throws Exception {
         // 默认垃圾回收?
-        p.getObject().close();
+        p.getObject().quit();
     }
 
     @Override

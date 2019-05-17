@@ -3,6 +3,7 @@ package com.diwayou.web.ui.swing;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.ui.query.QueryFrame;
 import com.diwayou.web.ui.script.ScriptFrame;
 import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.diwayou.web.url.UrlDict;
@@ -23,6 +24,18 @@ public class ToolPanel extends JPanel {
         addSpider(mainFrame);
 
         addScript(mainFrame);
+
+        addQuery(mainFrame);
+    }
+
+    private void addQuery(RobotMainFrame mainFrame) {
+        JButton scriptButton = new JButton("查询");
+        scriptButton.addActionListener(ae -> {
+            new QueryFrame(mainFrame)
+                    .setVisible(true);
+        });
+
+        this.add(scriptButton);
     }
 
     private void addSpider(RobotMainFrame mainFrame) {
