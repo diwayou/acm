@@ -18,5 +18,5 @@ for (int i = 1; i < 10; i++) {
     // 清除url记录
     robot.clear()
 
-    robot.executeScript("document.getElementsByClassName('next pagination-item')[0].click()", 1)
+    robot.executeScript("document.getElementsByClassName('next pagination-item')[0].click()", 3)
 }
