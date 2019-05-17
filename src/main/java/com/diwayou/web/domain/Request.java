@@ -146,6 +146,18 @@ public class Request {
         return depth <= maxDepth;
     }
 
+    public Request copy() {
+        return new Request(url)
+                .setParentUrl(parentUrl)
+                .setMaxDepth(maxDepth)
+                .setDepth(depth)
+                .setPriority(priority)
+                .setAttributes(attributes)
+                .setFetcherType(fetcherType)
+                .setTimeout(timeout)
+                .setRequestScripts(requestScripts);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

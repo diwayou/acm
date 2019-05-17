@@ -35,7 +35,7 @@ public class FxRobotDriver implements RobotDriver {
     public FxRobotDriver() {
         ReflectiveOperationException re = AppThread.exec(() -> {
             WebView v = new WebView();
-            v.setContextMenuEnabled(false);
+            //v.setContextMenuEnabled(false);
 
             Scene s = new Scene(v);
             panel.setScene(s);
