@@ -1,6 +1,7 @@
 package com.diwayou.web.store;
 
 import com.diwayou.web.domain.Page;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.UrlUtil;
 import com.google.common.base.Preconditions;
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
 
 public class LucenePageStore implements PageStore, Closeable {
 
-    private static final Logger log = Logger.getLogger(LucenePageStore.class.getName());
+    private static final Logger log = AppLog.getCrawl();
 
     private FilePageStore filePageStore;
 

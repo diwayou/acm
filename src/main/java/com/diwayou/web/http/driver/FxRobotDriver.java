@@ -2,6 +2,7 @@ package com.diwayou.web.http.driver;
 
 import com.diwayou.web.config.RobotConfig;
 import com.diwayou.web.http.robot.RobotDriver;
+import com.diwayou.web.log.AppLog;
 import com.sun.javafx.webkit.Accessor;
 import com.sun.webkit.LoadListenerClient;
 import com.sun.webkit.WebPage;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 
 public class FxRobotDriver implements RobotDriver {
 
-    private static final Logger log = Logger.getLogger(FxRobotDriver.class.getName());
+    private static final Logger log = AppLog.getRobot();
 
     private JFXPanel panel = new JFXPanel();
 

@@ -33,6 +33,11 @@ public class Request {
     private String parentUrl;
 
     /**
+     * 爬取最大深度
+     */
+    private int maxDepth = 3;
+
+    /**
      * 当前抓取深度
      */
     private int depth;
@@ -128,6 +133,19 @@ public class Request {
         return this;
     }
 
+    public int getMaxDepth() {
+        return maxDepth;
+    }
+
+    public Request setMaxDepth(int maxDepth) {
+        this.maxDepth = maxDepth;
+        return this;
+    }
+
+    public boolean needCrawl() {
+        return depth <= maxDepth;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -148,9 +166,11 @@ public class Request {
                 ", fetcherType=" + fetcherType +
                 ", timeout=" + timeout +
                 ", parentUrl='" + parentUrl + '\'' +
+                ", maxDepth=" + maxDepth +
                 ", depth=" + depth +
                 ", priority=" + priority +
                 ", attributes=" + attributes +
+                ", requestScripts=" + requestScripts +
                 '}';
     }
 }

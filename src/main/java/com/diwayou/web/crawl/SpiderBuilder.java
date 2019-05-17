@@ -10,11 +10,6 @@ public class SpiderBuilder {
 
     private int crawlThreadNum = 2;
 
-    /**
-     * 爬取最大深度
-     */
-    private int maxDepth = 3;
-
     private PageHandler pageHandler = new ScriptCrawlPageHandler();
 
     private Path storePath;
@@ -42,15 +37,6 @@ public class SpiderBuilder {
 
     public SpiderBuilder setCrawlThreadNum(int crawlThreadNum) {
         this.crawlThreadNum = crawlThreadNum;
-        return this;
-    }
-
-    public int getMaxDepth() {
-        return maxDepth;
-    }
-
-    public SpiderBuilder setMaxDepth(int maxDepth) {
-        this.maxDepth = maxDepth;
         return this;
     }
 

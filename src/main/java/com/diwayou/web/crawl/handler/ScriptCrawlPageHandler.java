@@ -6,6 +6,7 @@ import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.script.CrawlScript;
 import com.diwayou.web.script.ScriptRegistry;
 import com.diwayou.web.support.PageUtil;
@@ -28,7 +29,7 @@ import static java.util.stream.Collectors.toSet;
 
 public class ScriptCrawlPageHandler implements PageHandler {
 
-    private static final Logger log = Logger.getGlobal();
+    private static final Logger log = AppLog.getCrawl();
 
     @Override
     public void handle(Page page, Spider spider) {
@@ -75,7 +76,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
                 .filter(u -> !spider.getUrlStore().contain(u))
                 .peek(u -> spider.getUrlStore().add(u))
                 .map(u -> newRequest(u, page))
-                .filter(r -> r.getDepth() < spider.getMaxDepth())
+                .filter(Request::needCrawl)
                 .collect(Collectors.toList());
 
         spider.submitRequest(requests);

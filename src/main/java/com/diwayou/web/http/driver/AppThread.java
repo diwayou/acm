@@ -18,6 +18,7 @@
 package com.diwayou.web.http.driver;
 
 import com.diwayou.web.exception.TimeoutException;
+import com.diwayou.web.log.AppLog;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import javafx.application.Platform;
 
@@ -28,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AppThread {
-    private static final Logger log = Logger.getLogger(AppThread.class.getName());
+    private static final Logger log = AppLog.getRobot();
 
     private static final Random rand = new Random();
 

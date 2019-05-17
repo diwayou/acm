@@ -4,6 +4,7 @@ import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.crawl.SpiderBuilder;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.log.AppLog;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 
 public class SpiderSingleton {
 
-    private static final Logger log = Logger.getGlobal();
+    private static final Logger log = AppLog.getBrowser();
 
     private Spider spider;
 

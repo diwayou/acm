@@ -1,6 +1,7 @@
 package com.diwayou.web.http.robot;
 
 import com.diwayou.web.http.driver.FxRobotDriver;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.Pool;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
 
 public class HttpRobot implements Closeable {
 
-    private static final Logger log = Logger.getLogger(HttpRobot.class.getName());
+    private static final Logger log = AppLog.getRobot();
 
     public static final int DEFAULT_TIMEOUT = 3;
 

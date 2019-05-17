@@ -3,6 +3,7 @@ package com.diwayou.web.crawl.handler;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.store.FilePageStore;
 import com.diwayou.web.store.PageStoreContext;
 import com.diwayou.web.support.PageUtil;
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
 
 public class ScriptHelper {
 
-    private static final Logger log = Logger.getLogger(ScriptHelper.class.getName());
+    private static final Logger log = AppLog.getCrawl();
 
     private Spider spider;
 
@@ -44,7 +45,7 @@ public class ScriptHelper {
 
         request.setDepth(page.getRequest().getDepth() + 1);
 
-        if (request.getDepth() > spider.getMaxDepth()) {
+        if (!request.needCrawl()) {
             return;
         }
 

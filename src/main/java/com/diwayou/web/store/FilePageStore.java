@@ -1,6 +1,7 @@
 package com.diwayou.web.store;
 
 import com.diwayou.web.domain.Page;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.FilenameUtil;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.UrlUtil;
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
 
 public class FilePageStore implements PageStore {
 
-    private static final Logger log = Logger.getLogger(FilePageStore.class.getName());
+    private static final Logger log = AppLog.getCrawl();
 
     public static final String DIR = "dir";
 

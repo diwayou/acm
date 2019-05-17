@@ -16,11 +16,12 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Spider implements Closeable {
 
-    private static final Logger log = Logger.getLogger(Spider.class.getName());
+    private static final Logger log = Logger.getLogger("");
 
     private SpiderBuilder builder;
 
@@ -92,6 +93,8 @@ public class Spider implements Closeable {
     }
 
     public void submitPage(HtmlDocumentPage page) {
+        log.log(Level.INFO, String.format("提交page请求originalUrl=%s, url=%s", page.getRequest().getUrl(), page.getDocument().getURL()));
+
         if (!isRunning()) {
             throw new IllegalStateException("当前spider不在运行中state=" + state.get());
         }
@@ -121,10 +124,6 @@ public class Spider implements Closeable {
 
     public PageHandler getPageHandler() {
         return pageHandler;
-    }
-
-    public int getMaxDepth() {
-        return builder.getMaxDepth();
     }
 
     public FilePageStore getFilePageStore() {

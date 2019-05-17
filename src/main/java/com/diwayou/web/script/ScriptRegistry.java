@@ -1,6 +1,7 @@
 package com.diwayou.web.script;
 
 import com.diwayou.web.domain.Page;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.url.UrlUtil;
 import com.google.common.collect.Maps;
 import groovy.lang.Binding;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class ScriptRegistry {
 
-    private static final Logger log = Logger.getLogger(ScriptRegistry.class.getName());
+    private static final Logger log = AppLog.getCrawl();
 
     public static final String DOMAIN_ALL = "All";
 

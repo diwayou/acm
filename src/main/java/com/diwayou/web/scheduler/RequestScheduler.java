@@ -7,6 +7,7 @@ import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.fetcher.Fetcher;
 import com.diwayou.web.fetcher.FetcherFactory;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.store.LevelDbQuery;
 import com.diwayou.web.store.LevelDbStore;
 import com.diwayou.web.store.StoreQuery;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class RequestScheduler implements Scheduler<Request> {
 
-    private static final Logger log = Logger.getLogger(RequestScheduler.class.getName());
+    private static final Logger log = AppLog.getCrawl();
 
     private Spider spider;
 
