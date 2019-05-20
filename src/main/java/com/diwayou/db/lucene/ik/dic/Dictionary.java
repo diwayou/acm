@@ -1,0 +1,452 @@
+/**
+ * IK 中文分词  版本 5.0
+ * IK Analyzer release 5.0
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * <p>
+ * 源代码由林良益(linliangyi2005@gmail.com)提供
+ * 版权声明 2012，乌龙茶工作室
+ * provided by Linliangyi and copyright 2012 by Oolong studio
+ */
+package com.diwayou.db.lucene.ik.dic;
+
+import com.diwayou.db.lucene.ik.cfg.Configuration;
+import com.diwayou.web.log.AppLog;
+
+import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * 词典管理类,单子模式
+ */
+public class Dictionary {
+
+    /*
+     * 词典单子实例
+     */
+    private static Dictionary singleton;
+
+    private DictSegment _MainDict;
+
+    private DictSegment _QuantifierDict;
+
+    private DictSegment _StopWords;
+
+    /**
+     * 配置对象
+     */
+    private Configuration configuration;
+
+    private static final Logger log = AppLog.getBrowser();
+
+    private static final String PATH_DIC_MAIN = "main.dic";
+    private static final String PATH_DIC_SURNAME = "surname.dic";
+    private static final String PATH_DIC_QUANTIFIER = "quantifier.dic";
+    private static final String PATH_DIC_SUFFIX = "suffix.dic";
+    private static final String PATH_DIC_PREP = "preposition.dic";
+    private static final String PATH_DIC_STOP = "stopword.dic";
+
+    private final static String FILE_NAME = "IKAnalyzer.cfg.xml";
+    private final static String EXT_DICT = "ext_dict";
+    private final static String REMOTE_EXT_DICT = "remote_ext_dict";
+    private final static String EXT_STOP = "ext_stopwords";
+    private final static String REMOTE_EXT_STOP = "remote_ext_stopwords";
+
+    private Path conf_dir;
+    private Properties props;
+
+    private Dictionary(Configuration cfg) {
+        this.configuration = cfg;
+        this.props = new Properties();
+        try {
+            this.conf_dir = Path.of(ClassLoader.getSystemResource("config").toURI());
+        } catch (URISyntaxException e) {
+            log.log(Level.SEVERE, "", e);
+            throw new RuntimeException(e);
+        }
+
+        Path configFile = conf_dir.resolve(FILE_NAME);
+
+        InputStream input = null;
+        try {
+            log.log(Level.INFO, "try load config from {}", configFile);
+            input = new FileInputStream(configFile.toFile());
+        } catch (FileNotFoundException e) {
+            // TODO
+            conf_dir = Path.of("config");
+            configFile = conf_dir.resolve(FILE_NAME);
+            try {
+                log.log(Level.INFO, "try load config from {}", configFile);
+                input = new FileInputStream(configFile.toFile());
+            } catch (FileNotFoundException ex) {
+                // We should report origin exception
+                log.log(Level.WARNING, "ik-analyzer", e);
+            }
+        }
+        if (input != null) {
+            try {
+                props.loadFromXML(input);
+            } catch (IOException e) {
+                log.log(Level.WARNING, "ik-analyzer", e);
+            }
+        }
+    }
+
+    private String getProperty(String key) {
+        if (props != null) {
+            return props.getProperty(key);
+        }
+        return null;
+    }
+
+    /**
+     * 词典初始化 由于IK Analyzer的词典采用Dictionary类的静态方法进行词典初始化
+     * 只有当Dictionary类被实际调用时，才会开始载入词典， 这将延长首次分词操作的时间 该方法提供了一个在应用加载阶段就初始化字典的手段
+     *
+     * @return Dictionary
+     */
+    public static synchronized void initial(Configuration cfg) {
+        if (singleton == null) {
+            synchronized (Dictionary.class) {
+                if (singleton == null) {
+
+                    singleton = new Dictionary(cfg);
+                    singleton.loadMainDict();
+                    singleton.loadSurnameDict();
+                    singleton.loadQuantifierDict();
+                    singleton.loadSuffixDict();
+                    singleton.loadPrepDict();
+                    singleton.loadStopWordDict();
+                }
+            }
+        }
+    }
+
+    private void walkFileTree(List<String> files, Path path) {
+        if (Files.isRegularFile(path)) {
+            files.add(path.toString());
+        } else if (Files.isDirectory(path)) try {
+            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                    files.add(file.toString());
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException e) {
+                    log.log(Level.WARNING, "[Ext Loading] listing files", e);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            log.log(Level.WARNING, "[Ext Loading] listing files", e);
+        }
+        else {
+            log.log(Level.WARNING, "[Ext Loading] file not found: " + path);
+        }
+    }
+
+    private void loadDictFile(DictSegment dict, Path file, boolean critical, String name) {
+        try (InputStream is = new FileInputStream(file.toFile())) {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(is, "UTF-8"), 512);
+            String word = br.readLine();
+            if (word != null) {
+                if (word.startsWith("\uFEFF"))
+                    word = word.substring(1);
+                for (; word != null; word = br.readLine()) {
+                    word = word.trim();
+                    if (word.isEmpty()) continue;
+                    dict.fillSegment(word.toCharArray());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            log.log(Level.WARNING, "ik-analyzer: " + name + " not found", e);
+            if (critical) throw new RuntimeException("ik-analyzer: " + name + " not found!!!", e);
+        } catch (IOException e) {
+            log.log(Level.WARNING, "ik-analyzer: " + name + " loading failed", e);
+        }
+    }
+
+    private List<String> getExtDictionarys() {
+        List<String> extDictFiles = new ArrayList<String>(2);
+        String extDictCfg = getProperty(EXT_DICT);
+        if (extDictCfg != null) {
+
+            String[] filePaths = extDictCfg.split(";");
+            for (String filePath : filePaths) {
+                if (filePath != null && !"".equals(filePath.trim())) {
+                    Path file = Path.of(getDictRoot(), filePath.trim());
+                    walkFileTree(extDictFiles, file);
+
+                }
+            }
+        }
+        return extDictFiles;
+    }
+
+    private List<String> getRemoteExtDictionarys() {
+        List<String> remoteExtDictFiles = new ArrayList<String>(2);
+        String remoteExtDictCfg = getProperty(REMOTE_EXT_DICT);
+        if (remoteExtDictCfg != null) {
+
+            String[] filePaths = remoteExtDictCfg.split(";");
+            for (String filePath : filePaths) {
+                if (filePath != null && !"".equals(filePath.trim())) {
+                    remoteExtDictFiles.add(filePath);
+
+                }
+            }
+        }
+        return remoteExtDictFiles;
+    }
+
+    private List<String> getExtStopWordDictionarys() {
+        List<String> extStopWordDictFiles = new ArrayList<String>(2);
+        String extStopWordDictCfg = getProperty(EXT_STOP);
+        if (extStopWordDictCfg != null) {
+
+            String[] filePaths = extStopWordDictCfg.split(";");
+            for (String filePath : filePaths) {
+                if (filePath != null && !"".equals(filePath.trim())) {
+                    Path file = Path.of(getDictRoot(), filePath.trim());
+                    walkFileTree(extStopWordDictFiles, file);
+
+                }
+            }
+        }
+        return extStopWordDictFiles;
+    }
+
+    private List<String> getRemoteExtStopWordDictionarys() {
+        List<String> remoteExtStopWordDictFiles = new ArrayList<String>(2);
+        String remoteExtStopWordDictCfg = getProperty(REMOTE_EXT_STOP);
+        if (remoteExtStopWordDictCfg != null) {
+
+            String[] filePaths = remoteExtStopWordDictCfg.split(";");
+            for (String filePath : filePaths) {
+                if (filePath != null && !"".equals(filePath.trim())) {
+                    remoteExtStopWordDictFiles.add(filePath);
+
+                }
+            }
+        }
+        return remoteExtStopWordDictFiles;
+    }
+
+    private String getDictRoot() {
+        return conf_dir.toAbsolutePath().toString();
+    }
+
+
+    /**
+     * 获取词典单子实例
+     *
+     * @return Dictionary 单例对象
+     */
+    public static Dictionary getSingleton() {
+        if (singleton == null) {
+            throw new IllegalStateException("词典尚未初始化，请先调用initial方法");
+        }
+        return singleton;
+    }
+
+
+    /**
+     * 批量加载新词条
+     *
+     * @param words
+     *            Collection<String>词条列表
+     */
+    public void addWords(Collection<String> words) {
+        if (words != null) {
+            for (String word : words) {
+                if (word != null) {
+                    // 批量加载词条到主内存词典中
+                    singleton._MainDict.fillSegment(word.trim().toCharArray());
+                }
+            }
+        }
+    }
+
+    /**
+     * 批量移除（屏蔽）词条
+     */
+    public void disableWords(Collection<String> words) {
+        if (words != null) {
+            for (String word : words) {
+                if (word != null) {
+                    // 批量屏蔽词条
+                    singleton._MainDict.disableSegment(word.trim().toCharArray());
+                }
+            }
+        }
+    }
+
+    /**
+     * 检索匹配主词典
+     *
+     * @return Hit 匹配结果描述
+     */
+    public Hit matchInMainDict(char[] charArray) {
+        return singleton._MainDict.match(charArray);
+    }
+
+    /**
+     * 检索匹配主词典
+     *
+     * @return Hit 匹配结果描述
+     */
+    public Hit matchInMainDict(char[] charArray, int begin, int length) {
+        return singleton._MainDict.match(charArray, begin, length);
+    }
+
+    /**
+     * 检索匹配量词词典
+     *
+     * @return Hit 匹配结果描述
+     */
+    public Hit matchInQuantifierDict(char[] charArray, int begin, int length) {
+        return singleton._QuantifierDict.match(charArray, begin, length);
+    }
+
+    /**
+     * 从已匹配的Hit中直接取出DictSegment，继续向下匹配
+     *
+     * @return Hit
+     */
+    public Hit matchWithHit(char[] charArray, int currentIndex, Hit matchedHit) {
+        DictSegment ds = matchedHit.getMatchedDictSegment();
+        return ds.match(charArray, currentIndex, 1, matchedHit);
+    }
+
+    /**
+     * 判断是否是停止词
+     *
+     * @return boolean
+     */
+    public boolean isStopWord(char[] charArray, int begin, int length) {
+        return singleton._StopWords.match(charArray, begin, length).isMatch();
+    }
+
+    /**
+     * 加载主词典及扩展词典
+     */
+    private void loadMainDict() {
+        // 建立一个主词典实例
+        _MainDict = new DictSegment((char) 0);
+
+        // 读取主词典文件
+        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_MAIN);
+        loadDictFile(_MainDict, file, false, "Main Dict");
+        // 加载扩展词典
+        this.loadExtDict();
+    }
+
+    /**
+     * 加载用户配置的扩展词典到主词库表
+     */
+    private void loadExtDict() {
+        // 加载扩展词典配置
+        List<String> extDictFiles = getExtDictionarys();
+        if (extDictFiles != null) {
+            for (String extDictName : extDictFiles) {
+                // 读取扩展词典文件
+                log.info("[Dict Loading] " + extDictName);
+                Path file = Path.of(extDictName);
+                loadDictFile(_MainDict, file, false, "Extra Dict");
+            }
+        }
+    }
+
+    /**
+     * 加载用户扩展的停止词词典
+     */
+    private void loadStopWordDict() {
+        // 建立主词典实例
+        _StopWords = new DictSegment((char) 0);
+
+        // 读取主词典文件
+        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_STOP);
+        loadDictFile(_StopWords, file, false, "Main Stopwords");
+
+        // 加载扩展停止词典
+        List<String> extStopWordDictFiles = getExtStopWordDictionarys();
+        if (extStopWordDictFiles != null) {
+            for (String extStopWordDictName : extStopWordDictFiles) {
+                log.info("[Dict Loading] " + extStopWordDictName);
+
+                // 读取扩展词典文件
+                file = Path.of(extStopWordDictName);
+                loadDictFile(_StopWords, file, false, "Extra Stopwords");
+            }
+        }
+    }
+
+    /**
+     * 加载量词词典
+     */
+    private void loadQuantifierDict() {
+        // 建立一个量词典实例
+        _QuantifierDict = new DictSegment((char) 0);
+        // 读取量词词典文件
+        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_QUANTIFIER);
+        loadDictFile(_QuantifierDict, file, false, "Quantifier");
+    }
+
+    private void loadSurnameDict() {
+        DictSegment _SurnameDict = new DictSegment((char) 0);
+        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_SURNAME);
+        loadDictFile(_SurnameDict, file, true, "Surname");
+    }
+
+    private void loadSuffixDict() {
+        DictSegment _SuffixDict = new DictSegment((char) 0);
+        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_SUFFIX);
+        loadDictFile(_SuffixDict, file, true, "Suffix");
+    }
+
+    private void loadPrepDict() {
+        DictSegment _PrepDict = new DictSegment((char) 0);
+        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_PREP);
+        loadDictFile(_PrepDict, file, true, "Preposition");
+    }
+
+    void reLoadMainDict() {
+        log.info("重新加载词典...");
+        // 新开一个实例加载词典，减少加载过程对当前词典使用的影响
+        Dictionary tmpDict = new Dictionary(configuration);
+        tmpDict.configuration = getSingleton().configuration;
+        tmpDict.loadMainDict();
+        tmpDict.loadStopWordDict();
+        _MainDict = tmpDict._MainDict;
+        _StopWords = tmpDict._StopWords;
+        log.info("重新加载词典完毕...");
+    }
+
+}

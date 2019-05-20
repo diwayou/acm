@@ -1,7 +1,7 @@
 package com.diwayou.db.lucene;
 
+import com.diwayou.db.lucene.ik.IKAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -21,7 +21,7 @@ public class ChineseTest {
         String indexPath = "D:/tmp/index";
         Directory dir = FSDirectory.open(Paths.get(indexPath));
 
-        Analyzer analyzer = new SmartChineseAnalyzer();
+        Analyzer analyzer = new IKAnalyzer();
         IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
         iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 

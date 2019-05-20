@@ -1,12 +1,12 @@
 package com.diwayou.web.store;
 
+import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.UrlUtil;
 import com.google.common.base.Preconditions;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -47,7 +47,7 @@ public class LucenePageStore implements PageStore, Closeable {
 
         this.filePageStore = filePageStore;
         this.indexPath = indexPath;
-        this.analyzer = new SmartChineseAnalyzer();
+        this.analyzer = new IKAnalyzer();
 
         init();
     }

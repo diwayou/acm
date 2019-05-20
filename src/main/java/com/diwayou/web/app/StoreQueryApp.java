@@ -1,10 +1,10 @@
 package com.diwayou.web.app;
 
+import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.store.LucenePageStoreQuery;
 import com.diwayou.web.store.QueryResult;
 import com.diwayou.web.store.StoreQuery;
 import com.google.common.base.Strings;
-import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class StoreQueryApp {
     public static void main(String[] args) throws IOException {
-        QueryParser parser = new QueryParser("content", new SmartChineseAnalyzer());
+        QueryParser parser = new QueryParser("content", new IKAnalyzer());
 
         int pageSize = 10;
         Scanner in = new Scanner(System.in);

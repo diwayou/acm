@@ -1,12 +1,12 @@
 package com.diwayou.web.ui.query;
 
+import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.image.ImageUtil;
 import com.diwayou.web.store.IndexFieldName;
 import com.diwayou.web.store.LucenePageStoreQuery;
 import com.diwayou.web.store.QueryResult;
 import com.diwayou.web.store.StoreQuery;
 import com.diwayou.web.ui.spider.SpiderSingleton;
-import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -34,7 +34,7 @@ public class ResultSearcher implements Closeable {
     }
 
     public void search(String type, String keyword) throws ParseException, IOException {
-        QueryParser parser = new QueryParser("content", new SmartChineseAnalyzer());
+        QueryParser parser = new QueryParser("content", new IKAnalyzer());
         IndexFieldName indexFieldName = IndexFieldName.from(type);
 
         String queryText = indexFieldName.name() + ":" + keyword;

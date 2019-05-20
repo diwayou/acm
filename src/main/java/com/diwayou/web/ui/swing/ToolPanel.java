@@ -67,7 +67,7 @@ public class ToolPanel extends JPanel {
     }
 
     private void addUrlInput(RobotMainFrame mainFrame) {
-        JTextField urlInputField = new JTextField("input a url", 50);
+        JTextField urlInputField = new JTextField("", 50);
         urlInputField.setFocusTraversalKeysEnabled(false);
 
         Autocomplete autoComplete = new Autocomplete(urlInputField, UrlDict.WEBSITE_PROPOSALS);
