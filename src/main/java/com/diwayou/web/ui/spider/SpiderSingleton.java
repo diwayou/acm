@@ -8,6 +8,7 @@ import com.diwayou.web.log.AppLog;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SpiderSingleton {
@@ -24,7 +25,12 @@ public class SpiderSingleton {
     public static synchronized SpiderSingleton one() {
         if (instance == null) {
             instance = new SpiderSingleton();
-            instance.init();
+            try {
+                instance.init();
+            } catch (Exception e) {
+                log.log(Level.WARNING, "", e);
+                throw new RuntimeException(e);
+            }
         }
 
         return instance;

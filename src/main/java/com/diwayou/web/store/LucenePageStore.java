@@ -66,7 +66,7 @@ public class LucenePageStore implements PageStore, Closeable {
             } catch (IOException e) {
                 log.log(Level.WARNING, "", e);
             }
-        }, 5, 3, TimeUnit.SECONDS);
+        }, 10, 10, TimeUnit.SECONDS);
     }
 
     @Override

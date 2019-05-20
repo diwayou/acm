@@ -17,7 +17,7 @@ Document d = doc
 
 if (h.isImage()) {
     if (h.contentLength() > 20 * 1000) {
-        h.store()
+        h.storeWithIndex()
     }
     return
 }

@@ -25,15 +25,9 @@ package com.diwayou.db.lucene.ik.dic;
 
 import com.diwayou.db.lucene.ik.cfg.Configuration;
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.support.FilenameUtil;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
@@ -76,32 +70,27 @@ public class Dictionary {
     private final static String EXT_STOP = "ext_stopwords";
     private final static String REMOTE_EXT_STOP = "remote_ext_stopwords";
 
-    private Path conf_dir;
+    private String confDir;
     private Properties props;
 
     private Dictionary(Configuration cfg) {
         this.configuration = cfg;
         this.props = new Properties();
-        try {
-            this.conf_dir = Path.of(ClassLoader.getSystemResource("config").toURI());
-        } catch (URISyntaxException e) {
-            log.log(Level.SEVERE, "", e);
-            throw new RuntimeException(e);
-        }
+        this.confDir = "config";
 
-        Path configFile = conf_dir.resolve(FILE_NAME);
+        String configFile = FilenameUtil.path(confDir, FILE_NAME);
 
         InputStream input = null;
         try {
             log.log(Level.INFO, "try load config from {}", configFile);
-            input = new FileInputStream(configFile.toFile());
+            input = getInputStream(configFile);
         } catch (FileNotFoundException e) {
             // TODO
-            conf_dir = Path.of("config");
-            configFile = conf_dir.resolve(FILE_NAME);
+            confDir = "config";
+            configFile = FilenameUtil.path(confDir, FILE_NAME);
             try {
                 log.log(Level.INFO, "try load config from {}", configFile);
-                input = new FileInputStream(configFile.toFile());
+                input = getInputStream(configFile);
             } catch (FileNotFoundException ex) {
                 // We should report origin exception
                 log.log(Level.WARNING, "ik-analyzer", e);
@@ -114,6 +103,15 @@ public class Dictionary {
                 log.log(Level.WARNING, "ik-analyzer", e);
             }
         }
+    }
+
+    private InputStream getInputStream(String path) throws FileNotFoundException {
+        InputStream inputStream = ClassLoader.getSystemResourceAsStream(path);
+        if (inputStream == null) {
+            throw new FileNotFoundException("没有找到配置文件path=" + path);
+        }
+
+        return inputStream;
     }
 
     private String getProperty(String key) {
@@ -146,33 +144,8 @@ public class Dictionary {
         }
     }
 
-    private void walkFileTree(List<String> files, Path path) {
-        if (Files.isRegularFile(path)) {
-            files.add(path.toString());
-        } else if (Files.isDirectory(path)) try {
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-                    files.add(file.toString());
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFileFailed(Path file, IOException e) {
-                    log.log(Level.WARNING, "[Ext Loading] listing files", e);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } catch (IOException e) {
-            log.log(Level.WARNING, "[Ext Loading] listing files", e);
-        }
-        else {
-            log.log(Level.WARNING, "[Ext Loading] file not found: " + path);
-        }
-    }
-
-    private void loadDictFile(DictSegment dict, Path file, boolean critical, String name) {
-        try (InputStream is = new FileInputStream(file.toFile())) {
+    private void loadDictFile(DictSegment dict, String file, boolean critical, String name) {
+        try (InputStream is = getInputStream(file)) {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(is, "UTF-8"), 512);
             String word = br.readLine();
@@ -193,74 +166,8 @@ public class Dictionary {
         }
     }
 
-    private List<String> getExtDictionarys() {
-        List<String> extDictFiles = new ArrayList<String>(2);
-        String extDictCfg = getProperty(EXT_DICT);
-        if (extDictCfg != null) {
-
-            String[] filePaths = extDictCfg.split(";");
-            for (String filePath : filePaths) {
-                if (filePath != null && !"".equals(filePath.trim())) {
-                    Path file = Path.of(getDictRoot(), filePath.trim());
-                    walkFileTree(extDictFiles, file);
-
-                }
-            }
-        }
-        return extDictFiles;
-    }
-
-    private List<String> getRemoteExtDictionarys() {
-        List<String> remoteExtDictFiles = new ArrayList<String>(2);
-        String remoteExtDictCfg = getProperty(REMOTE_EXT_DICT);
-        if (remoteExtDictCfg != null) {
-
-            String[] filePaths = remoteExtDictCfg.split(";");
-            for (String filePath : filePaths) {
-                if (filePath != null && !"".equals(filePath.trim())) {
-                    remoteExtDictFiles.add(filePath);
-
-                }
-            }
-        }
-        return remoteExtDictFiles;
-    }
-
-    private List<String> getExtStopWordDictionarys() {
-        List<String> extStopWordDictFiles = new ArrayList<String>(2);
-        String extStopWordDictCfg = getProperty(EXT_STOP);
-        if (extStopWordDictCfg != null) {
-
-            String[] filePaths = extStopWordDictCfg.split(";");
-            for (String filePath : filePaths) {
-                if (filePath != null && !"".equals(filePath.trim())) {
-                    Path file = Path.of(getDictRoot(), filePath.trim());
-                    walkFileTree(extStopWordDictFiles, file);
-
-                }
-            }
-        }
-        return extStopWordDictFiles;
-    }
-
-    private List<String> getRemoteExtStopWordDictionarys() {
-        List<String> remoteExtStopWordDictFiles = new ArrayList<String>(2);
-        String remoteExtStopWordDictCfg = getProperty(REMOTE_EXT_STOP);
-        if (remoteExtStopWordDictCfg != null) {
-
-            String[] filePaths = remoteExtStopWordDictCfg.split(";");
-            for (String filePath : filePaths) {
-                if (filePath != null && !"".equals(filePath.trim())) {
-                    remoteExtStopWordDictFiles.add(filePath);
-
-                }
-            }
-        }
-        return remoteExtStopWordDictFiles;
-    }
-
     private String getDictRoot() {
-        return conf_dir.toAbsolutePath().toString();
+        return confDir;
     }
 
 
@@ -280,8 +187,7 @@ public class Dictionary {
     /**
      * 批量加载新词条
      *
-     * @param words
-     *            Collection<String>词条列表
+     * @param words Collection<String>词条列表
      */
     public void addWords(Collection<String> words) {
         if (words != null) {
@@ -362,7 +268,7 @@ public class Dictionary {
         _MainDict = new DictSegment((char) 0);
 
         // 读取主词典文件
-        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_MAIN);
+        String file = FilenameUtil.path(getDictRoot(), Dictionary.PATH_DIC_MAIN);
         loadDictFile(_MainDict, file, false, "Main Dict");
         // 加载扩展词典
         this.loadExtDict();
@@ -378,10 +284,14 @@ public class Dictionary {
             for (String extDictName : extDictFiles) {
                 // 读取扩展词典文件
                 log.info("[Dict Loading] " + extDictName);
-                Path file = Path.of(extDictName);
+                String file = FilenameUtil.path(extDictName);
                 loadDictFile(_MainDict, file, false, "Extra Dict");
             }
         }
+    }
+
+    private List<String> getExtDictionarys() {
+        return null;
     }
 
     /**
@@ -392,20 +302,8 @@ public class Dictionary {
         _StopWords = new DictSegment((char) 0);
 
         // 读取主词典文件
-        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_STOP);
+        String file = FilenameUtil.path(getDictRoot(), Dictionary.PATH_DIC_STOP);
         loadDictFile(_StopWords, file, false, "Main Stopwords");
-
-        // 加载扩展停止词典
-        List<String> extStopWordDictFiles = getExtStopWordDictionarys();
-        if (extStopWordDictFiles != null) {
-            for (String extStopWordDictName : extStopWordDictFiles) {
-                log.info("[Dict Loading] " + extStopWordDictName);
-
-                // 读取扩展词典文件
-                file = Path.of(extStopWordDictName);
-                loadDictFile(_StopWords, file, false, "Extra Stopwords");
-            }
-        }
     }
 
     /**
@@ -415,25 +313,25 @@ public class Dictionary {
         // 建立一个量词典实例
         _QuantifierDict = new DictSegment((char) 0);
         // 读取量词词典文件
-        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_QUANTIFIER);
+        String file = FilenameUtil.path(getDictRoot(), Dictionary.PATH_DIC_QUANTIFIER);
         loadDictFile(_QuantifierDict, file, false, "Quantifier");
     }
 
     private void loadSurnameDict() {
         DictSegment _SurnameDict = new DictSegment((char) 0);
-        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_SURNAME);
+        String file = FilenameUtil.path(getDictRoot(), Dictionary.PATH_DIC_SURNAME);
         loadDictFile(_SurnameDict, file, true, "Surname");
     }
 
     private void loadSuffixDict() {
         DictSegment _SuffixDict = new DictSegment((char) 0);
-        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_SUFFIX);
+        String file = FilenameUtil.path(getDictRoot(), Dictionary.PATH_DIC_SUFFIX);
         loadDictFile(_SuffixDict, file, true, "Suffix");
     }
 
     private void loadPrepDict() {
         DictSegment _PrepDict = new DictSegment((char) 0);
-        Path file = Path.of(getDictRoot(), Dictionary.PATH_DIC_PREP);
+        String file = FilenameUtil.path(getDictRoot(), Dictionary.PATH_DIC_PREP);
         loadDictFile(_PrepDict, file, true, "Preposition");
     }
 

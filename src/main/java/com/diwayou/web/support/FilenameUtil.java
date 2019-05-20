@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public class FilenameUtil {
 
+    private static final String sep = "/";
+
     /**
      * 生成图片的路径，根据file的扩展名生成文件类型，路径包含日期信息
      * 例如prefix="image" file="/tmp/abc.png"，返回结果是panorama/2018/09/30/B8E36A0B-1798-4B63-9D0E-BE483DB5AEDB.png
@@ -45,5 +47,23 @@ public class FilenameUtil {
 
     public static String getNameWithoutExt(String path) {
         return Files.getNameWithoutExtension(path);
+    }
+
+    public static String path(String first, String... more) {
+        if (more.length == 0) {
+            return first;
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(first);
+        result.append(sep);
+
+        for (String p : more) {
+            result.append(p);
+            result.append(sep);
+        }
+        result.delete(result.length() - 1, result.length());
+
+        return result.toString();
     }
 }

@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ * java -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y -jar acm-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+ */
 public class RobotBrowser {
 
     public static void main(String[] args) throws IOException {
