@@ -7,7 +7,6 @@ import com.diwayou.web.ui.query.QueryFrame;
 import com.diwayou.web.ui.script.ScriptFrame;
 import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.diwayou.web.url.UrlDict;
-import org.pushingpixels.substance.api.SubstanceCortex;
 import org.w3c.dom.html.HTMLDocument;
 
 import javax.swing.*;
@@ -70,7 +69,6 @@ public class ToolPanel extends JPanel {
     private void addUrlInput(RobotMainFrame mainFrame) {
         JTextField urlInputField = new JTextField("input a url", 50);
         urlInputField.setFocusTraversalKeysEnabled(false);
-        SubstanceCortex.ComponentOrParentChainScope.setSelectTextOnFocus(urlInputField, true);
 
         Autocomplete autoComplete = new Autocomplete(urlInputField, UrlDict.WEBSITE_PROPOSALS);
         urlInputField.getDocument().addDocumentListener(autoComplete);

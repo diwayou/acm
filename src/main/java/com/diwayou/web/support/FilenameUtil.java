@@ -1,7 +1,7 @@
 package com.diwayou.web.support;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.io.FilenameUtils;
+import com.google.common.io.Files;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +18,7 @@ public class FilenameUtil {
      * @return 图片的路径
      */
     public static String genPath(String prefix, String name) {
-        return path(prefix, randFileName(FilenameUtils.getExtension(name)));
+        return path(prefix, randFileName(Files.getFileExtension(name)));
     }
 
     public static String genPathWithExt(String prefix, String ext) {
@@ -37,5 +37,13 @@ public class FilenameUtil {
         String datePath = sdf.format(new Date());
 
         return prefix + datePath + fileName;
+    }
+
+    public static String getExt(String path) {
+        return Files.getFileExtension(path);
+    }
+
+    public static String getNameWithoutExt(String path) {
+        return Files.getNameWithoutExtension(path);
     }
 }

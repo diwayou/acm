@@ -4,9 +4,9 @@ import com.diwayou.web.http.driver.FxRobotDriver;
 import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.Pool;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.sun.webkit.LoadListenerClient;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.html.HTMLDocument;
 
 import java.io.Closeable;
@@ -49,7 +49,7 @@ public class HttpRobot implements Closeable {
     }
 
     public DocumentInfo get(String url, long timeOutInSeconds, PageLoadReady<RobotDriver> pageLoadReady) throws Exception {
-        Preconditions.checkArgument(StringUtils.isNotBlank(url), "url不能为空");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(url), "url不能为空");
         Preconditions.checkNotNull(pageLoadReady, "pageLoadReady不能为空");
 
         driver.get(url);

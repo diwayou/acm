@@ -1,6 +1,6 @@
 package com.diwayou.web.url;
 
-import org.apache.commons.io.FilenameUtils;
+import com.diwayou.web.support.FilenameUtil;
 
 import java.net.URI;
 
@@ -40,7 +40,7 @@ public class UrlUtil {
     }
 
     public static boolean isImage(String url) {
-        String ext = FilenameUtils.getExtension(url);
+        String ext = FilenameUtil.getExt(url);
 
         return ext.equalsIgnoreCase("jpg") ||
                 ext.equalsIgnoreCase("png") ||
@@ -52,6 +52,6 @@ public class UrlUtil {
     }
 
     public static boolean hasExtension(String url) {
-        return !FilenameUtils.getExtension(url).isBlank();
+        return !FilenameUtil.getExt(url).isBlank();
     }
 }

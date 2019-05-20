@@ -4,7 +4,6 @@ import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
-import org.apache.commons.io.FilenameUtils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -85,8 +84,8 @@ public class PageUtil {
                 MediaType mediaType = MediaType.parse(contentType);
                 ext = mediaType.subtype();
                 if (ext == null || ext.isBlank()) {
-                    ext = FilenameUtils.getExtension(page.getRequest().getUrl());
-                    if (ext == null || ext.isBlank()) {
+                    ext = FilenameUtil.getExt(page.getRequest().getUrl());
+                    if (ext.isBlank()) {
                         ext = "txt";
                     }
                 }

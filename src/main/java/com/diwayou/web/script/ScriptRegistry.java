@@ -2,19 +2,18 @@ package com.diwayou.web.script;
 
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.support.FilenameUtil;
 import com.diwayou.web.url.UrlUtil;
 import com.google.common.collect.Maps;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.script.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -121,15 +120,15 @@ public class ScriptRegistry {
 
         TreeMap<String, CrawlScript> domainScriptMap = Files.list(dir.toPath())
                 .map(this::pathToScriptPair)
-                .collect(Collectors.toMap(Pair::getKey, Pair::getValue, (a, b) -> a, TreeMap::new));
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a, b) -> a, TreeMap::new));
 
         load(domainScriptMap);
     }
 
-    private Pair<String, CrawlScript> pathToScriptPair(Path path) {
-        String domain = FilenameUtils.getBaseName(path.getFileName().toString()).replace("_", ".");
+    private Map.Entry<String, CrawlScript> pathToScriptPair(Path path) {
+        String domain = FilenameUtil.getNameWithoutExt(path.toString()).replace("_", ".");
 
-        return new ImmutablePair<>(domain, new CrawlScript(path.toFile()));
+        return new AbstractMap.SimpleImmutableEntry<>(domain, new CrawlScript(path.toFile()));
     }
 
     /**

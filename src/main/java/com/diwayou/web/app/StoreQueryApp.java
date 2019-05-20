@@ -3,7 +3,7 @@ package com.diwayou.web.app;
 import com.diwayou.web.store.LucenePageStoreQuery;
 import com.diwayou.web.store.QueryResult;
 import com.diwayou.web.store.StoreQuery;
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -23,7 +23,7 @@ public class StoreQueryApp {
             while (true) {
                 System.out.println("查询：");
                 String text = in.nextLine();
-                if (StringUtils.isBlank(text)) {
+                if (Strings.isNullOrEmpty(text)) {
                     System.out.println("查询语句不能为空!");
                     continue;
                 }

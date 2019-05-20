@@ -3,7 +3,6 @@ package com.diwayou.web.ui.query;
 import com.diwayou.web.log.AppLog;
 import com.diwayou.web.ui.component.ImageFrame;
 import com.diwayou.web.ui.component.TextFrame;
-import org.pushingpixels.substance.api.SubstanceCortex;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -134,7 +133,6 @@ public class QueryFrame extends JFrame {
     private void addSearchInput(JPanel searchPanel) {
         JTextField searchInputField = new JTextField("输入查询关键字", 50);
         searchInputField.setFocusTraversalKeysEnabled(false);
-        SubstanceCortex.ComponentOrParentChainScope.setSelectTextOnFocus(searchInputField, true);
 
         searchInputField.addActionListener(ae -> {
             String keyword = ae.getActionCommand();
