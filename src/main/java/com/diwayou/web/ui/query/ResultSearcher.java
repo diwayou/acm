@@ -1,7 +1,6 @@
 package com.diwayou.web.ui.query;
 
 import com.diwayou.db.lucene.ik.IKAnalyzer;
-import com.diwayou.image.ImageUtil;
 import com.diwayou.web.store.IndexFieldName;
 import com.diwayou.web.store.LucenePageStoreQuery;
 import com.diwayou.web.store.QueryResult;
@@ -38,6 +37,12 @@ public class ResultSearcher implements Closeable {
         IndexFieldName indexFieldName = IndexFieldName.from(type);
 
         String queryText = indexFieldName.name() + ":" + keyword;
+
+        // 输入构造查询语法
+        if (keyword.startsWith("!")) {
+            queryText = keyword.substring(1);
+        }
+
         Query q = parser.parse(queryText);
 
         query = StoreQuery.create(q);
@@ -98,15 +103,10 @@ public class ResultSearcher implements Closeable {
         tableModel.setValueAt(doc.get(IndexFieldName.url.name()), row, 1);
         String type = doc.get(IndexFieldName.type.name());
         tableModel.setValueAt(type, row, 2);
+        String ext = doc.get(IndexFieldName.ext.name());
+        tableModel.setValueAt(ext, row, 3);
         String content = doc.get(IndexFieldName.content.name());
-        tableModel.setValueAt(content, row, 3);
-
-        if (type.equalsIgnoreCase("image")) {
-            ImageIcon image = new ImageIcon(content);
-            tableModel.setValueAt(new ImageIcon(ImageUtil.getScaledImage(image.getImage(), 32, 32)), row, 4);
-        } else {
-            tableModel.setValueAt(null, row, 4);
-        }
+        tableModel.setValueAt(content, row, 4);
     }
 
     private void removeRow(int row) {

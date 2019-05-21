@@ -1,6 +1,5 @@
 package com.diwayou.web.ui.query;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 public class ResultTableModel extends AbstractTableModel {
@@ -23,9 +22,9 @@ public class ResultTableModel extends AbstractTableModel {
     /**
      * The table column classes.
      */
-    private Class<?>[] columns = new Class<?>[] { String.class, String.class, String.class, String.class, ImageIcon.class };
+    private Class<?>[] columns = new Class<?>[] { String.class, String.class, String.class, String.class, String.class };
 
-    private String[] columnNames = new String[] {"父链接", "链接", "类型", "内容", "图片"};
+    private String[] columnNames = new String[] {"父链接", "链接", "类型", "后缀", "内容"};
 
     public ResultTableModel(int rows) {
         this.rows = rows;

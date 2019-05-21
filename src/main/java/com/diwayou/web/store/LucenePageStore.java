@@ -66,27 +66,32 @@ public class LucenePageStore implements PageStore, Closeable {
             } catch (IOException e) {
                 log.log(Level.WARNING, "", e);
             }
-        }, 10, 10, TimeUnit.SECONDS);
+        }, 5, 5, TimeUnit.SECONDS);
     }
 
     @Override
-    public StoreResult store(Page page, PageStoreContext context) {
+    public StoreResult store(Page page) {
         Document doc = new Document();
         doc.add(new TextField(IndexFieldName.parentUrl.name(), UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
         doc.add(new TextField(IndexFieldName.url.name(), UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
 
         if (PageUtil.isHtml(page)) {
-            doc.add(new StringField(IndexFieldName.type.name(), "html", Field.Store.YES));
+            doc.add(new StringField(IndexFieldName.type.name(), IndexType.html.name(), Field.Store.YES));
+            doc.add(new StringField(IndexFieldName.ext.name(), IndexType.html.name(), Field.Store.YES));
 
             String text = Jsoup.parse(page.bodyAsString()).text();
             doc.add(new TextField(IndexFieldName.content.name(), text, Field.Store.YES));
         } if (PageUtil.isImage(page)) {
-            doc.add(new StringField(IndexFieldName.type.name(), "image", Field.Store.YES));
-            StoreResult result = filePageStore.store(page, context);
+            doc.add(new StringField(IndexFieldName.type.name(), IndexType.image.name(), Field.Store.YES));
+            doc.add(new StringField(IndexFieldName.ext.name(), PageUtil.getExt(page), Field.Store.YES));
+
+            StoreResult result = filePageStore.store(page);
             doc.add(new TextField(IndexFieldName.content.name(), result.getPath(), Field.Store.YES));
         } else {
-            doc.add(new StringField(IndexFieldName.type.name(), PageUtil.getExt(page), Field.Store.YES));
-            StoreResult result = filePageStore.store(page, context);
+            doc.add(new StringField(IndexFieldName.type.name(), IndexType.doc.name(), Field.Store.YES));
+            doc.add(new StringField(IndexFieldName.ext.name(), PageUtil.getExt(page), Field.Store.YES));
+
+            StoreResult result = filePageStore.store(page);
             doc.add(new TextField(IndexFieldName.content.name(), result.getPath(), Field.Store.YES));
         }
 

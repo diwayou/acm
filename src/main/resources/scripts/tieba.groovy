@@ -1,4 +1,4 @@
-package spider
+package scripts
 
 import com.diwayou.web.domain.FetcherType
 import com.diwayou.web.domain.Request

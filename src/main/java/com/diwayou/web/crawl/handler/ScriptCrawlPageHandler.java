@@ -7,19 +7,18 @@ import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.log.AppLog;
-import com.diwayou.web.script.CrawlScript;
-import com.diwayou.web.script.ScriptRegistry;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
 import com.diwayou.web.url.UrlUtil;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -40,33 +39,17 @@ public class ScriptCrawlPageHandler implements PageHandler {
 
         log.info("处理url=" + page.getRequest().getUrl());
 
-        CrawlScript crawlScript = ScriptRegistry.one().match(page);
-        if (crawlScript == null) {
-            log.warning("没有配置处理脚本url=" + page.getRequest().getUrl());
-            return;
-        }
-
-        Map<String, Object> bindings = Maps.newHashMap();
-        ScriptHelper helper = new ScriptHelper(spider, page);
-        bindings.put("helper", helper);
-
         if (PageUtil.isHtml(page)) {
+            spider.getLucenePageStore().store(page);
+
             String content = page.bodyAsString();
             Document document = Jsoup.parse(content);
-            bindings.put("doc", document);
 
             Set<String> urls = allUrls(document, page);
-            bindings.put("urls", urls);
-        } else {
-            bindings.put("doc", null);
-            bindings.put("urls", Collections.emptySet());
-        }
 
-        Object scriptResult = ScriptRegistry.one().execute(page, bindings);
-        if (scriptResult != null) {
-            if (scriptResult instanceof Set) {
-                submit((Set<String>) scriptResult, spider, page);
-            }
+            submit(urls, spider, page);
+        } else {
+            spider.getLucenePageStore().store(page);
         }
     }
 

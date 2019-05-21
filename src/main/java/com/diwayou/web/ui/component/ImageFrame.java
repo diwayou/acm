@@ -4,6 +4,8 @@ import com.diwayou.web.log.AppLog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
 public class ImageFrame extends JFrame {
@@ -20,6 +22,15 @@ public class ImageFrame extends JFrame {
         photographLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(photographLabel, BorderLayout.CENTER);
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    ImageFrame.this.dispose();
+                }
+            }
+        });
 
         ImageIcon image = new ImageIcon(path);
         photographLabel.setIcon(image);

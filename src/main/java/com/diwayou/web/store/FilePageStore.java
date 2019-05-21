@@ -26,13 +26,8 @@ public class FilePageStore implements PageStore {
     }
 
     @Override
-    public StoreResult store(Page page, PageStoreContext context) {
-        File userDir = (File) context.get(DIR);
-        if (userDir == null) {
-            userDir = this.dir;
-        }
-
-        if (userDir == null) {
+    public StoreResult store(Page page) {
+        if (dir == null) {
             log.warning("dir为空，不能保存文件url=" + page.getRequest().getUrl());
             return StoreResult.empty;
         }
@@ -40,7 +35,7 @@ public class FilePageStore implements PageStore {
         try {
             String urlPath = UrlUtil.urlToFilename(page.getRequest().getParentUrl());
 
-            Path fileDirPath = Path.of(userDir.getAbsolutePath(), urlPath);
+            Path fileDirPath = Path.of(dir.getAbsolutePath(), urlPath);
             if (!Files.exists(fileDirPath)) {
                 Files.createDirectories(fileDirPath);
             }

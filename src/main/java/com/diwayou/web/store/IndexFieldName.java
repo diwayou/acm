@@ -4,6 +4,7 @@ public enum IndexFieldName {
     parentUrl("父链接"),
     url("链接"),
     type("类型"),
+    ext("后缀"),
     content("内容"),
     /**
      * 该值目前只是展示用，索引没使用

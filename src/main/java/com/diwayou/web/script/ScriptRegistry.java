@@ -114,8 +114,9 @@ public class ScriptRegistry {
      * 加载目录下的所有脚本，文件名就是注册的域名
      */
     public void load(File dir) throws IOException, ScriptException {
-        if (dir == null || !dir.isDirectory()) {
-            throw new RuntimeException("脚本目录格式不正确!");
+        if (dir == null || !dir.exists() || !dir.isDirectory()) {
+            log.info("脚本目录不存在，不加载脚本!");
+            return;
         }
 
         TreeMap<String, CrawlScript> domainScriptMap = Files.list(dir.toPath())

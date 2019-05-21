@@ -1,6 +1,7 @@
 package com.diwayou.web.ui.query;
 
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.store.IndexType;
 import com.diwayou.web.ui.component.ImageFrame;
 import com.diwayou.web.ui.component.TextFrame;
 
@@ -104,12 +105,17 @@ public class QueryFrame extends JFrame {
                     return;
                 }
 
-                if (content instanceof String) {
-                    new TextFrame(QueryFrame.this, "文本", (String) content)
-                            .setVisible(true);
-                } else if (content instanceof ImageIcon) {
-                    new ImageFrame(QueryFrame.this, "图片", (String) tableModel.getValueAt(row, col - 1))
-                            .setVisible(true);
+                String type = (String) tableModel.getValueAt(row, 2);
+                if (type.equalsIgnoreCase(IndexType.html.name()) || type.equalsIgnoreCase(IndexType.doc.name())) {
+                    SwingUtilities.invokeLater(() -> {
+                        new TextFrame(QueryFrame.this, "文本", (String) content)
+                                .setVisible(true);
+                    });
+                } else if (col == 4) {
+                    SwingUtilities.invokeLater(() -> {
+                        new ImageFrame(QueryFrame.this, "图片", (String) content)
+                                .setVisible(true);
+                    });
                 }
             }
         });
@@ -131,7 +137,7 @@ public class QueryFrame extends JFrame {
     }
 
     private void addSearchInput(JPanel searchPanel) {
-        JTextField searchInputField = new JTextField("输入查询关键字", 50);
+        JTextField searchInputField = new JTextField("", 50);
         searchInputField.setFocusTraversalKeysEnabled(false);
 
         searchInputField.addActionListener(ae -> {

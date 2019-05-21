@@ -4,5 +4,5 @@ import com.diwayou.web.domain.Page;
 
 public interface PageStore {
 
-    StoreResult store(Page page, PageStoreContext context);
+    StoreResult store(Page page);
 }

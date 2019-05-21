@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * java -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y -jar acm-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+ * C:\Java\jdk-12\bin\java -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y -jar acm-0.0.1-SNAPSHOT-jar-with-dependencies.jar
  */
 public class RobotBrowser {
 

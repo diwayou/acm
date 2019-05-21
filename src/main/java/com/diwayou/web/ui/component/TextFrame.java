@@ -7,6 +7,8 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
 public class TextFrame extends JFrame {
@@ -19,12 +21,21 @@ public class TextFrame extends JFrame {
         RSyntaxTextArea textArea = new RSyntaxTextArea(35, 120);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
         textArea.setCodeFoldingEnabled(true);
+        textArea.setLineWrap(true);
 
         textArea.setText(content);
 
         RTextScrollPane sp = new RTextScrollPane(textArea);
         cp.add(sp, BorderLayout.CENTER);
 
+        textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    TextFrame.this.dispose();
+                }
+            }
+        });
 
         setContentPane(cp);
         setTitle(title);
