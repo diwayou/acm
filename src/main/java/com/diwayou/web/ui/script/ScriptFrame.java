@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
@@ -78,7 +79,7 @@ public class ScriptFrame extends JFrame {
 
         try (InputStream inputStream = ClassLoader.getSystemResourceAsStream("scripts/demo.groovy")) {
             if (inputStream != null) {
-                String script = CharStreams.toString(new InputStreamReader(inputStream));
+                String script = CharStreams.toString(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
                 if (!script.isBlank()) {
                     demoScript = script;
                 }
