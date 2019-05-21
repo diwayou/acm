@@ -52,7 +52,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
 
             submit(urls, spider, page);
         } else if (PageUtil.isImage(page)) {
-            if (AppConfig.isStoreImage() && AppConfig.getImageLength() >= PageUtil.getContentLength(page)) {
+            if (AppConfig.isStoreImage() && PageUtil.getContentLength(page) >= AppConfig.getImageLength()) {
                 spider.getLucenePageStore().store(page);
             }
         } else if (AppConfig.isStoreDoc()) {
