@@ -2,6 +2,7 @@ package com.diwayou.web.ui.settings;
 
 import com.diwayou.web.config.AppConfig;
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.ui.component.IntTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,7 @@ public class SettingsFrame extends JFrame {
     }
 
     private void addSettingsPanel() {
-        JPanel settingsPanel = new JPanel(new GridLayout(3, 1));
+        JPanel settingsPanel = new JPanel(new GridLayout(4, 1));
 
         addSetting(settingsPanel, "图片", AppConfig.isStoreImage(), ie -> {
             if (ie.getStateChange() == ItemEvent.SELECTED) {
@@ -50,7 +51,24 @@ public class SettingsFrame extends JFrame {
             }
         });
 
+        addImageLength(settingsPanel);
+
         add(settingsPanel, BorderLayout.CENTER);
+    }
+
+    private void addImageLength(JPanel settingsPanel) {
+        JPanel imageLengthPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        JLabel label = new JLabel("抓取图片大小限制(字节): ");
+        imageLengthPanel.add(label);
+
+        IntTextField textField = new IntTextField(AppConfig.getImageLength(), 10);
+        textField.addActionListener(ae -> {
+            AppConfig.setImageLengthLimit(textField.getValue());
+        });
+        imageLengthPanel.add(textField);
+
+        settingsPanel.add(imageLengthPanel);
     }
 
     private void addSetting(JPanel settingsPanel, String title, boolean state, ItemListener listener) {

@@ -6,19 +6,20 @@ public class AppConfig {
     private static final String IMAGE_KEY = "image.store";
     private static final String HTML_KEY = "html.store";
     private static final String DOC_KEY = "doc.store";
+    private static final String IMAGE_LENGTH_KEY = "image.length";
 
     private static final String NODE = "com/diwayou/browser";
 
     private static volatile boolean storeImage;
-
     private static volatile boolean storeHtml;
-
     private static volatile boolean storeDoc;
+    private static volatile int imageLength;
 
     static {
         storeImage = Preferences.userRoot().node(NODE).getBoolean(IMAGE_KEY, true);
         storeHtml = Preferences.userRoot().node(NODE).getBoolean(HTML_KEY, false);
         storeDoc = Preferences.userRoot().node(NODE).getBoolean(DOC_KEY, false);
+        imageLength = Preferences.userRoot().node(NODE).getInt(IMAGE_LENGTH_KEY, 10 * 1024);
     }
 
     public static synchronized void toggleImage(boolean isStore) {
@@ -36,6 +37,11 @@ public class AppConfig {
         Preferences.userRoot().node(NODE).putBoolean(DOC_KEY, isStore);
     }
 
+    public static synchronized void setImageLengthLimit(int length) {
+        imageLength = length;
+        Preferences.userRoot().node(NODE).putInt(IMAGE_LENGTH_KEY, length);
+    }
+
     public static boolean isStoreImage() {
         return storeImage;
     }
@@ -46,5 +52,9 @@ public class AppConfig {
 
     public static boolean isStoreDoc() {
         return storeDoc;
+    }
+
+    public static int getImageLength() {
+        return imageLength;
     }
 }

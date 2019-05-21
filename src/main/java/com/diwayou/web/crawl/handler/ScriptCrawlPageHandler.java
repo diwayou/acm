@@ -41,7 +41,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
         log.info("处理url=" + page.getRequest().getUrl());
 
         if (PageUtil.isHtml(page)) {
-            if (AppConfig.isStoreHtml()) {
+            if (AppConfig.isStoreHtml() && AppConfig.getImageLength() >= PageUtil.getContentLength(page)) {
                 spider.getLucenePageStore().store(page);
             }
 
