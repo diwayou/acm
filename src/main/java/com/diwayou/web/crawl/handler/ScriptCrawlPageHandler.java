@@ -41,7 +41,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
         log.info("处理url=" + page.getRequest().getUrl());
 
         if (PageUtil.isHtml(page)) {
-            if (AppConfig.isStoreHtml() && AppConfig.getImageLength() >= PageUtil.getContentLength(page)) {
+            if (AppConfig.isStoreHtml()) {
                 spider.getLucenePageStore().store(page);
             }
 
@@ -52,7 +52,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
 
             submit(urls, spider, page);
         } else if (PageUtil.isImage(page)) {
-            if (AppConfig.isStoreImage()) {
+            if (AppConfig.isStoreImage() && AppConfig.getImageLength() >= PageUtil.getContentLength(page)) {
                 spider.getLucenePageStore().store(page);
             }
         } else if (AppConfig.isStoreDoc()) {
