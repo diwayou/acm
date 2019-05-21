@@ -5,6 +5,7 @@ import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.ui.query.QueryFrame;
 import com.diwayou.web.ui.script.ScriptFrame;
+import com.diwayou.web.ui.settings.SettingsFrame;
 import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.diwayou.web.url.UrlDict;
 import org.w3c.dom.html.HTMLDocument;
@@ -25,6 +26,18 @@ public class ToolPanel extends JPanel {
         addScript(mainFrame);
 
         addQuery(mainFrame);
+
+        addSettings(mainFrame);
+    }
+
+    private void addSettings(RobotMainFrame mainFrame) {
+        JButton settingsButton = new JButton("设置");
+        settingsButton.addActionListener(ae -> {
+            new SettingsFrame(mainFrame)
+                    .setVisible(true);
+        });
+
+        this.add(settingsButton);
     }
 
     private void addQuery(RobotMainFrame mainFrame) {

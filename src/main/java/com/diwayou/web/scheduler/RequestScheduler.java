@@ -101,7 +101,7 @@ public class RequestScheduler implements Scheduler<Request> {
             } catch (Exception e) {
                 log.log(Level.WARNING, "", e);
             }
-        }, 1, 1, TimeUnit.SECONDS);
+        }, 2, 2, TimeUnit.SECONDS);
     }
 
     private byte[] genValue(Request request) {
@@ -151,8 +151,8 @@ public class RequestScheduler implements Scheduler<Request> {
 
     @Override
     public void close() throws IOException {
-        requestScheduledService.shutdownNow();
         threadPool.shutdownNow();
+        requestScheduledService.shutdownNow();
         requestStore.close();
     }
 }

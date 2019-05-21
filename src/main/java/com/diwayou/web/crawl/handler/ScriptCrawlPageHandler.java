@@ -1,5 +1,6 @@
 package com.diwayou.web.crawl.handler;
 
+import com.diwayou.web.config.AppConfig;
 import com.diwayou.web.crawl.PageHandler;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.FetcherType;
@@ -40,7 +41,9 @@ public class ScriptCrawlPageHandler implements PageHandler {
         log.info("处理url=" + page.getRequest().getUrl());
 
         if (PageUtil.isHtml(page)) {
-            spider.getLucenePageStore().store(page);
+            if (AppConfig.isStoreHtml()) {
+                spider.getLucenePageStore().store(page);
+            }
 
             String content = page.bodyAsString();
             Document document = Jsoup.parse(content);
@@ -48,7 +51,11 @@ public class ScriptCrawlPageHandler implements PageHandler {
             Set<String> urls = allUrls(document, page);
 
             submit(urls, spider, page);
-        } else {
+        } else if (PageUtil.isImage(page)) {
+            if (AppConfig.isStoreImage()) {
+                spider.getLucenePageStore().store(page);
+            }
+        } else if (AppConfig.isStoreDoc()) {
             spider.getLucenePageStore().store(page);
         }
     }

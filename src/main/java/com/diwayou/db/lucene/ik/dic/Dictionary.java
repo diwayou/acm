@@ -80,29 +80,19 @@ public class Dictionary {
 
         String configFile = FilenameUtil.path(confDir, FILE_NAME);
 
-        InputStream input = null;
-        try {
-            log.log(Level.INFO, "try load config from {}", configFile);
-            input = getInputStream(configFile);
-        } catch (FileNotFoundException e) {
-            // TODO
-            confDir = "config";
-            configFile = FilenameUtil.path(confDir, FILE_NAME);
-            try {
-                log.log(Level.INFO, "try load config from {}", configFile);
-                input = getInputStream(configFile);
-            } catch (FileNotFoundException ex) {
-                // We should report origin exception
-                log.log(Level.WARNING, "ik-analyzer", e);
+        log.log(Level.INFO, String.format("try load config from %s", configFile));
+        try (InputStream input = getInputStream(configFile)) {
+            if (input != null) {
+                try {
+                    props.loadFromXML(input);
+                } catch (IOException e) {
+                    log.log(Level.WARNING, "ik-analyzer", e);
+                }
             }
+        } catch (Exception e) {
+            log.log(Level.WARNING, "", e);
         }
-        if (input != null) {
-            try {
-                props.loadFromXML(input);
-            } catch (IOException e) {
-                log.log(Level.WARNING, "ik-analyzer", e);
-            }
-        }
+
     }
 
     private InputStream getInputStream(String path) throws FileNotFoundException {

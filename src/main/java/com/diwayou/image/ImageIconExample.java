@@ -1,4 +1,4 @@
-package com.diwayou.web.ui.image;
+package com.diwayou.image;
 
 import com.diwayou.web.http.robot.HttpRobot;
 import com.diwayou.web.support.DocumentUtil;
