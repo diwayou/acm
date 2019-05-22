@@ -1,6 +1,7 @@
 package com.diwayou.web.ui.query;
 
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.store.IndexType;
 import com.diwayou.web.ui.component.ImageFrame;
 import com.diwayou.web.ui.component.TextFrame;
 import com.diwayou.web.ui.swing.RobotMainFrame;
@@ -132,15 +133,17 @@ public class QueryFrame extends JFrame {
                         JOptionPane.showInternalMessageDialog(null, "加载失败e=" + ex.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else if (col == 2 || col == 3) {
-                    SwingUtilities.invokeLater(() -> {
-                        new TextFrame(QueryFrame.this, "文本", (String) content)
-                                .setVisible(true);
-                    });
+                    SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", (String) content).setVisible(true));
                 } else if (col == 4) {
-                    SwingUtilities.invokeLater(() -> {
-                        new ImageFrame(QueryFrame.this, "图片", (String) content)
-                                .setVisible(true);
-                    });
+                    String type = (String) tableModel.getValueAt(row, 2);
+                    if (type.equalsIgnoreCase(IndexType.image.name())) {
+                        SwingUtilities.invokeLater(() -> {
+                            new ImageFrame(QueryFrame.this, "图片", (String) content)
+                                    .setVisible(true);
+                        });
+                    } else {
+                        SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", (String) content).setVisible(true));
+                    }
                 }
             }
         });
