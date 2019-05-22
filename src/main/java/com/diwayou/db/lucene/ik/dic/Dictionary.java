@@ -28,9 +28,8 @@ import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.FilenameUtil;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,9 +65,7 @@ public class Dictionary {
 
     private final static String FILE_NAME = "IKAnalyzer.cfg.xml";
     private final static String EXT_DICT = "ext_dict";
-    private final static String REMOTE_EXT_DICT = "remote_ext_dict";
     private final static String EXT_STOP = "ext_stopwords";
-    private final static String REMOTE_EXT_STOP = "remote_ext_stopwords";
 
     private String confDir;
     private Properties props;
@@ -82,17 +79,10 @@ public class Dictionary {
 
         log.log(Level.INFO, String.format("try load config from %s", configFile));
         try (InputStream input = getInputStream(configFile)) {
-            if (input != null) {
-                try {
-                    props.loadFromXML(input);
-                } catch (IOException e) {
-                    log.log(Level.WARNING, "ik-analyzer", e);
-                }
-            }
+            props.loadFromXML(input);
         } catch (Exception e) {
             log.log(Level.WARNING, "", e);
         }
-
     }
 
     private InputStream getInputStream(String path) throws FileNotFoundException {
@@ -136,8 +126,7 @@ public class Dictionary {
 
     private void loadDictFile(DictSegment dict, String file, boolean critical, String name) {
         try (InputStream is = getInputStream(file)) {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(is, "UTF-8"), 512);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8), 512);
             String word = br.readLine();
             if (word != null) {
                 if (word.startsWith("\uFEFF"))
@@ -269,19 +258,30 @@ public class Dictionary {
      */
     private void loadExtDict() {
         // 加载扩展词典配置
-        List<String> extDictFiles = getExtDictionarys();
-        if (extDictFiles != null) {
-            for (String extDictName : extDictFiles) {
-                // 读取扩展词典文件
-                log.info("[Dict Loading] " + extDictName);
-                String file = FilenameUtil.path(extDictName);
-                loadDictFile(_MainDict, file, false, "Extra Dict");
-            }
+        List<String> extDictFiles = getExtDictionarys(EXT_DICT);
+        for (String extDictName : extDictFiles) {
+            // 读取扩展词典文件
+            log.info("[Dict Loading] " + extDictName);
+            String file = FilenameUtil.path(getDictRoot(), extDictName);
+            loadDictFile(_MainDict, file, false, "Extra Dict");
         }
     }
 
-    private List<String> getExtDictionarys() {
-        return null;
+    private List<String> getExtDictionarys(String type) {
+        String extDictCfg = getProperty(type);
+        if (extDictCfg == null) {
+            return Collections.emptyList();
+        }
+
+        String[] fileNames = extDictCfg.split(";");
+        List<String> extDictFiles = new ArrayList<>(fileNames.length);
+        for (String fileName : fileNames) {
+            if (fileName != null && !"".equals(fileName.trim())) {
+                extDictFiles.add(fileName);
+            }
+        }
+
+        return extDictFiles;
     }
 
     /**
@@ -294,6 +294,14 @@ public class Dictionary {
         // 读取主词典文件
         String file = FilenameUtil.path(getDictRoot(), Dictionary.PATH_DIC_STOP);
         loadDictFile(_StopWords, file, false, "Main Stopwords");
+
+        List<String> extStopFiles = getExtDictionarys(EXT_STOP);
+        for (String extDictName : extStopFiles) {
+            // 读取扩展词典文件
+            log.info("[Dict Loading] " + extDictName);
+            file = FilenameUtil.path(getDictRoot(), extDictName);
+            loadDictFile(_StopWords, file, false, "Extra Stop Dict");
+        }
     }
 
     /**

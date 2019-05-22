@@ -1,9 +1,10 @@
 package com.diwayou.web.ui.query;
 
 import com.diwayou.web.log.AppLog;
-import com.diwayou.web.store.IndexType;
 import com.diwayou.web.ui.component.ImageFrame;
 import com.diwayou.web.ui.component.TextFrame;
+import com.diwayou.web.ui.swing.RobotMainFrame;
+import com.diwayou.web.ui.swing.ToolPanel;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -25,13 +26,21 @@ public class QueryFrame extends JFrame {
 
     private JComboBox<String> typeCombo;
 
-    public QueryFrame(JFrame mainFrame) {
+    private JLabel searchTotalLabel;
+
+    private RobotMainFrame mainFrame;
+
+    private ToolPanel toolPanel;
+
+    public QueryFrame(RobotMainFrame mainFrame, ToolPanel toolPanel) {
+        this.mainFrame = mainFrame;
+        this.toolPanel = toolPanel;
         this.tableModel = new ResultTableModel(20);
         this.table = new JTable(tableModel);
         initTable();
 
         try {
-            this.searcher = new ResultSearcher(this.tableModel);
+            this.searcher = new ResultSearcher(this.tableModel, this);
         } catch (IOException e) {
             log.log(Level.WARNING, "", e);
 
@@ -80,12 +89,20 @@ public class QueryFrame extends JFrame {
 
         buttonPanel.add(nextButton);
 
+        searchTotalLabel = new JLabel("总数: 0");
+        buttonPanel.add(searchTotalLabel);
+
         add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    public void updateTotal(int total) {
+        SwingUtilities.invokeLater(() -> searchTotalLabel.setText(String.format("总数: %d", total)));
     }
 
     private void initTable() {
         this.table.setDragEnabled(false);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.setCellSelectionEnabled(true);
         this.table.setTableHeader(new JTableHeader(this.table.getColumnModel()));
 
         table.addMouseListener(new MouseAdapter() {
@@ -105,8 +122,16 @@ public class QueryFrame extends JFrame {
                     return;
                 }
 
-                String type = (String) tableModel.getValueAt(row, 2);
-                if (type.equalsIgnoreCase(IndexType.html.name()) || type.equalsIgnoreCase(IndexType.doc.name())) {
+                // 父子链接调用主窗口浏览器浏览
+                if (col == 0 || col == 1) {
+                    try {
+                        mainFrame.getRobot().get((String)content, 10);
+                        toolPanel.updateUrl((String) content);
+                    } catch (Exception ex) {
+                        log.log(Level.WARNING, "", e);
+                        JOptionPane.showInternalMessageDialog(null, "加载失败e=" + ex.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else if (col == 2 || col == 3) {
                     SwingUtilities.invokeLater(() -> {
                         new TextFrame(QueryFrame.this, "文本", (String) content)
                                 .setVisible(true);
@@ -168,13 +193,5 @@ public class QueryFrame extends JFrame {
             } catch (IOException ignore) {
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new QueryFrame(null);
-            frame.setVisible(true);
-            frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        });
     }
 }

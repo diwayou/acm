@@ -17,7 +17,7 @@ public class RobotMainFrame extends JFrame {
         this.setLayout(new BorderLayout());
 
         robot = FetcherFactory.one().getFxWebviewFetcher().getRobot();
-        this.add(robot.getDriver().getPanel(), BorderLayout.CENTER);
+        this.add(robot.getPanel(), BorderLayout.CENTER);
 
         toolPanel = new ToolPanel(this);
         this.add(toolPanel, BorderLayout.NORTH);

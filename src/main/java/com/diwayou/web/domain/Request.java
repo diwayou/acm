@@ -30,7 +30,7 @@ public class Request {
     /**
      * 父网址
      */
-    private String parentUrl;
+    private String parentUrl = "";
 
     /**
      * 爬取最大深度

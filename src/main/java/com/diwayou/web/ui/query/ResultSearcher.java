@@ -27,8 +27,11 @@ public class ResultSearcher implements Closeable {
 
     private boolean hasNextPage = false;
 
-    public ResultSearcher(ResultTableModel tableModel) throws IOException {
+    private QueryFrame queryFrame;
+
+    public ResultSearcher(ResultTableModel tableModel, QueryFrame queryFrame) throws IOException {
         this.tableModel = tableModel;
+        this.queryFrame = queryFrame;
         this.lucenePageStoreQuery = new LucenePageStoreQuery(SpiderSingleton.one().getIndexPath());
     }
 
@@ -61,6 +64,7 @@ public class ResultSearcher implements Closeable {
             hasNextPage = false;
         }
 
+        queryFrame.updateTotal(total);
         display(result);
     }
 
@@ -99,20 +103,24 @@ public class ResultSearcher implements Closeable {
     }
 
     private void setRow(Document doc, int row) {
-        tableModel.setValueAt(doc.get(IndexFieldName.parentUrl.name()), row, 0);
-        tableModel.setValueAt(doc.get(IndexFieldName.url.name()), row, 1);
-        String type = doc.get(IndexFieldName.type.name());
-        tableModel.setValueAt(type, row, 2);
-        String ext = doc.get(IndexFieldName.ext.name());
-        tableModel.setValueAt(ext, row, 3);
-        String content = doc.get(IndexFieldName.content.name());
-        tableModel.setValueAt(content, row, 4);
+        SwingUtilities.invokeLater(() -> {
+            tableModel.setValueAt(doc.get(IndexFieldName.parentUrl.name()), row, 0);
+            tableModel.setValueAt(doc.get(IndexFieldName.url.name()), row, 1);
+            String type = doc.get(IndexFieldName.type.name());
+            tableModel.setValueAt(type, row, 2);
+            String ext = doc.get(IndexFieldName.ext.name());
+            tableModel.setValueAt(ext, row, 3);
+            String content = doc.get(IndexFieldName.content.name());
+            tableModel.setValueAt(content, row, 4);
+        });
     }
 
     private void removeRow(int row) {
-        for (int col = 0; col < tableModel.getColumnCount(); col++) {
-            tableModel.setValueAt(null, row, col);
-        }
+        SwingUtilities.invokeLater(() -> {
+            for (int col = 0; col < tableModel.getColumnCount(); col++) {
+                tableModel.setValueAt(null, row, col);
+            }
+        });
     }
 
     @Override

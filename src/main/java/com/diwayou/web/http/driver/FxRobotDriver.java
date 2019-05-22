@@ -60,8 +60,7 @@ public class FxRobotDriver implements RobotDriver {
     }
 
     public String getUrl() {
-        HTMLDocument doc = getDocument();
-        return doc == null ? null : doc.getURL();
+        return AppThread.exec(() -> engine.get().getLocation());
     }
 
     @Override

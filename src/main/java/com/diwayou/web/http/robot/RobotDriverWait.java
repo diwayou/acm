@@ -5,10 +5,10 @@ import com.diwayou.web.support.Sleeper;
 
 import java.time.Duration;
 
-public class RobotDriverWait extends FluentWait<RobotDriver> {
-    private final RobotDriver driver;
+public class RobotDriverWait extends FluentWait<HttpRobot> {
+    private final HttpRobot driver;
 
-    public RobotDriverWait(RobotDriver driver, long timeOutInSeconds) {
+    public RobotDriverWait(HttpRobot driver, long timeOutInSeconds) {
         this(driver,
                 java.time.Clock.systemDefaultZone(),
                 Sleeper.SYSTEM_SLEEPER,
@@ -17,7 +17,7 @@ public class RobotDriverWait extends FluentWait<RobotDriver> {
     }
 
     public RobotDriverWait(
-            RobotDriver driver,
+            HttpRobot driver,
             java.time.Clock clock,
             Sleeper sleeper,
             long timeOutInSeconds,

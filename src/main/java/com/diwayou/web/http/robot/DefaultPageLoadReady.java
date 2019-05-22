@@ -1,25 +1,30 @@
 package com.diwayou.web.http.robot;
 
-import com.diwayou.web.support.Sleeper;
-
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class DefaultPageLoadReady<T> implements PageLoadReady<T> {
 
+    private HttpRobot httpRobot;
+
     private long timeOutInSeconds;
 
-    public DefaultPageLoadReady(long timeOutInSeconds) {
+    private long createTime = System.currentTimeMillis();
+
+    public DefaultPageLoadReady(HttpRobot httpRobot, long timeOutInSeconds) {
+        this.httpRobot = httpRobot;
         this.timeOutInSeconds = timeOutInSeconds;
     }
 
     @Override
     public Boolean apply(T webDriver) {
-        try {
-            Sleeper.SYSTEM_SLEEPER.sleep(Duration.ofSeconds(timeOutInSeconds));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - createTime) >= timeOutInSeconds) {
+            return Boolean.TRUE;
         }
 
-        return Boolean.TRUE;
+        if (httpRobot.getIsFinished().get()) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
     }
 }

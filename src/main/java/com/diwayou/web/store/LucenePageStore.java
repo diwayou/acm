@@ -4,7 +4,6 @@ import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.PageUtil;
-import com.diwayou.web.url.UrlUtil;
 import com.google.common.base.Preconditions;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -72,8 +71,8 @@ public class LucenePageStore implements PageStore, Closeable {
     @Override
     public StoreResult store(Page page) {
         Document doc = new Document();
-        doc.add(new TextField(IndexFieldName.parentUrl.name(), UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
-        doc.add(new TextField(IndexFieldName.url.name(), UrlUtil.urlToFilename(page.getRequest().getParentUrl()), Field.Store.YES));
+        doc.add(new TextField(IndexFieldName.parentUrl.name(), page.getRequest().getParentUrl(), Field.Store.YES));
+        doc.add(new TextField(IndexFieldName.url.name(), page.getRequest().getUrl(), Field.Store.YES));
 
         if (PageUtil.isHtml(page)) {
             doc.add(new StringField(IndexFieldName.type.name(), IndexType.html.name(), Field.Store.YES));

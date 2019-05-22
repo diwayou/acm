@@ -3,6 +3,7 @@ package com.diwayou.web.ui.swing;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.log.AppLog;
 import com.diwayou.web.ui.query.QueryFrame;
 import com.diwayou.web.ui.script.ScriptFrame;
 import com.diwayou.web.ui.settings.SettingsFrame;
@@ -12,9 +13,16 @@ import org.w3c.dom.html.HTMLDocument;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ToolPanel extends JPanel {
+    private static final Logger log = AppLog.getBrowser();
+
     private static final String COMMIT_ACTION = "commit";
+
+    private JTextField urlInputField;
 
     public ToolPanel(RobotMainFrame mainFrame) {
         super(new FlowLayout(FlowLayout.LEFT));
@@ -43,7 +51,7 @@ public class ToolPanel extends JPanel {
     private void addQuery(RobotMainFrame mainFrame) {
         JButton scriptButton = new JButton("查询");
         scriptButton.addActionListener(ae -> {
-            new QueryFrame(mainFrame)
+            new QueryFrame(mainFrame, this)
                     .setVisible(true);
         });
 
@@ -80,7 +88,7 @@ public class ToolPanel extends JPanel {
     }
 
     private void addUrlInput(RobotMainFrame mainFrame) {
-        JTextField urlInputField = new JTextField("", 50);
+        urlInputField = new JTextField("", 50);
         urlInputField.setFocusTraversalKeysEnabled(false);
 
         AutoComplete autoComplete = new AutoComplete(urlInputField, UrlDict.WEBSITE_PROPOSALS);
@@ -96,15 +104,23 @@ public class ToolPanel extends JPanel {
                 url = "http://" + url;
             }
 
-            try {
-                mainFrame.getRobot().clear();
+            final String fUrl = url;
+            mainFrame.getRobot().clear();
 
-                mainFrame.getRobot().get(url);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            ForkJoinPool.commonPool().execute(() -> {
+                try {
+                    mainFrame.getRobot().get(fUrl, 10);
+                    updateUrl(mainFrame.getRobot().getUrl());
+                } catch (Exception e) {
+                    log.log(Level.WARNING, "", e);
+                }
+            });
         });
 
         this.add(urlInputField);
+    }
+
+    public void updateUrl(String url) {
+        SwingUtilities.invokeLater(() -> urlInputField.setText(url));
     }
 }
