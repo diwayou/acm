@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -126,7 +127,7 @@ public class QueryFrame extends JFrame {
                 // 父子链接调用主窗口浏览器浏览
                 if (col == 0 || col == 1) {
                     try {
-                        mainFrame.getRobot().get((String)content, 10);
+                        mainFrame.getRobot().get((String) content, 10);
                         toolPanel.updateUrl((String) content);
                     } catch (Exception ex) {
                         log.log(Level.WARNING, "", e);
@@ -175,12 +176,15 @@ public class QueryFrame extends JFrame {
 
             String type = (String) typeCombo.getSelectedItem();
 
-            try {
-                searcher.search(type, keyword);
-            } catch (Exception e) {
-                log.log(Level.WARNING, "", e);
-                JOptionPane.showInternalMessageDialog(null, "搜索失败e=" + e.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
-            }
+            final String fKeyword = keyword;
+            ForkJoinPool.commonPool().execute(() -> {
+                try {
+                    searcher.search(type, fKeyword);
+                } catch (Exception e) {
+                    log.log(Level.WARNING, "", e);
+                    JOptionPane.showInternalMessageDialog(null, "搜索失败e=" + e.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
         });
 
         searchPanel.add(searchInputField);

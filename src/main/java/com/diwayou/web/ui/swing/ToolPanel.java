@@ -51,8 +51,8 @@ public class ToolPanel extends JPanel {
     private void addQuery(RobotMainFrame mainFrame) {
         JButton scriptButton = new JButton("查询");
         scriptButton.addActionListener(ae -> {
-            new QueryFrame(mainFrame, this)
-                    .setVisible(true);
+            SwingUtilities.invokeLater(() -> new QueryFrame(mainFrame, this)
+                    .setVisible(true));
         });
 
         this.add(scriptButton);
