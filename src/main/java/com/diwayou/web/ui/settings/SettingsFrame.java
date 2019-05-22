@@ -6,6 +6,8 @@ import com.diwayou.web.ui.component.IntTextField;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.logging.Logger;
@@ -65,6 +67,12 @@ public class SettingsFrame extends JFrame {
         IntTextField textField = new IntTextField(AppConfig.getImageLength(), 10);
         textField.addActionListener(ae -> {
             AppConfig.setImageLengthLimit(textField.getValue());
+        });
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                AppConfig.setImageLengthLimit(textField.getValue());
+            }
         });
         imageLengthPanel.add(textField);
 

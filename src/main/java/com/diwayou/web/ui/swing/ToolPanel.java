@@ -83,7 +83,7 @@ public class ToolPanel extends JPanel {
         JTextField urlInputField = new JTextField("", 50);
         urlInputField.setFocusTraversalKeysEnabled(false);
 
-        Autocomplete autoComplete = new Autocomplete(urlInputField, UrlDict.WEBSITE_PROPOSALS);
+        AutoComplete autoComplete = new AutoComplete(urlInputField, UrlDict.WEBSITE_PROPOSALS);
         urlInputField.getDocument().addDocumentListener(autoComplete);
 
         urlInputField.getInputMap().put(KeyStroke.getKeyStroke("TAB"), COMMIT_ACTION);

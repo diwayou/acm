@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Autocomplete implements DocumentListener {
+public class AutoComplete implements DocumentListener {
     private static enum Mode {
         INSERT,
         COMPLETION
@@ -21,7 +21,7 @@ public class Autocomplete implements DocumentListener {
     private final List<String> keywords;
     private Mode mode = Mode.INSERT;
 
-    public Autocomplete(JTextField textField, List<String> keywords) {
+    public AutoComplete(JTextField textField, List<String> keywords) {
         this.textField = textField;
         this.keywords = keywords.stream()
                 .map(k -> k.substring(k.indexOf(".") + 1))
@@ -50,25 +50,16 @@ public class Autocomplete implements DocumentListener {
             e.printStackTrace();
         }
 
-        // Find where the word starts
-        int w;
-        for (w = pos; w >= 0; w--) {
-            if (!Character.isLetterOrDigit(content.charAt(w))) {
-                break;
-            }
-        }
-
         // Too few chars
-        if (pos - w < 2)
+        if (pos < 2)
             return;
 
-        String prefix = content.substring(w + 1).toLowerCase();
-        int n = Collections.binarySearch(keywords, prefix);
+        int n = Collections.binarySearch(keywords, content);
         if (n < 0 && -n <= keywords.size()) {
             String match = keywords.get(-n - 1);
-            if (match.startsWith(prefix)) {
+            if (match.startsWith(content)) {
                 // A completion is found
-                String completion = match.substring(pos - w);
+                String completion = match.substring(pos + 1);
                 // We cannot modify Document from within notification,
                 // so we submit a task that does the change later
                 SwingUtilities.invokeLater(new CompletionTask(completion, pos + 1));
@@ -111,7 +102,12 @@ public class Autocomplete implements DocumentListener {
 
         public void run() {
             StringBuffer sb = new StringBuffer(textField.getText());
+            String sub = sb.substring(position);
+            if (completion.endsWith(sub)) {
+                sb.delete(position, sb.length());
+            }
             sb.insert(position, completion);
+
             textField.setText(sb.toString());
             textField.setCaretPosition(position + completion.length());
             textField.moveCaretPosition(position);
