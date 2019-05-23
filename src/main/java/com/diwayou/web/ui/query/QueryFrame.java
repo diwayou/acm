@@ -99,8 +99,8 @@ public class QueryFrame extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    public void updateTotal(int total) {
-        SwingUtilities.invokeLater(() -> searchTotalLabel.setText(String.format("总数: %d", total)));
+    public void updateTotal(int total, int pageNum) {
+        SwingUtilities.invokeLater(() -> searchTotalLabel.setText(String.format("第%d页 总数: %d", pageNum, total)));
     }
 
     private void initTable() {

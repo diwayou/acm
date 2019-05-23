@@ -70,7 +70,7 @@ public class ResultSearcher implements Closeable {
             hasNextPage = false;
         }
 
-        queryFrame.updateTotal(total);
+        queryFrame.updateTotal(total, query.getPageNum());
         display(result);
     }
 
