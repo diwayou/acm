@@ -12,7 +12,7 @@ public class ImageFrame extends JFrame {
 
     private static final Logger log = AppLog.getBrowser();
 
-    public ImageFrame(JFrame parentFrame, String title, String path) {
+    public ImageFrame(JFrame parentFrame, String path) {
         setLayout(new BorderLayout());
         JLabel photographLabel = new JLabel();
 
@@ -35,7 +35,7 @@ public class ImageFrame extends JFrame {
         ImageIcon image = new ImageIcon(path);
         photographLabel.setIcon(image);
 
-        setTitle(title);
+        setTitle(path);
         setSize(image.getIconWidth(), image.getIconHeight());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
