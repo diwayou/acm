@@ -68,7 +68,7 @@ public class ResultTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object value, int row, int col) {
-        if (col == 4) {
+        if (col == 4 && value != null) {
             this.data[row][col] = CONTENT_TIP;
             this.contentCache[row] = (String)value;
         } else {

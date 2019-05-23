@@ -25,6 +25,7 @@ public class IntTextField extends JTextField {
     }
 
     private static class IntTextDocument extends PlainDocument {
+        @Override
         public void insertString(int offs, String str, AttributeSet a)
                 throws BadLocationException {
             if (str == null)

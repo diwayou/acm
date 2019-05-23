@@ -18,7 +18,7 @@ public class TextFrame extends JFrame {
         JTextArea textArea = new JTextArea(35, 120);
         textArea.setLineWrap(true);
 
-        textArea.setText(content);
+        SwingUtilities.invokeLater(() -> textArea.setText(content));
 
         JScrollPane sp = new JScrollPane(textArea);
         cp.add(sp, BorderLayout.CENTER);
