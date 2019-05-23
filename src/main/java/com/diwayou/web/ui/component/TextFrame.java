@@ -1,9 +1,6 @@
 package com.diwayou.web.ui.component;
 
 import com.diwayou.web.log.AppLog;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,14 +15,12 @@ public class TextFrame extends JFrame {
     public TextFrame(JFrame parentFrame, String title, String content) {
         JPanel cp = new JPanel(new BorderLayout());
 
-        RSyntaxTextArea textArea = new RSyntaxTextArea(35, 120);
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
-        textArea.setCodeFoldingEnabled(true);
+        JTextArea textArea = new JTextArea(35, 120);
         textArea.setLineWrap(true);
 
         textArea.setText(content);
 
-        RTextScrollPane sp = new RTextScrollPane(textArea);
+        JScrollPane sp = new JScrollPane(textArea);
         cp.add(sp, BorderLayout.CENTER);
 
         textArea.addKeyListener(new KeyAdapter() {

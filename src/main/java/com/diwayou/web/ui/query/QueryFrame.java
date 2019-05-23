@@ -145,16 +145,18 @@ public class QueryFrame extends JFrame {
                                     .setVisible(true);
                         });
                     } else if (type.equalsIgnoreCase(IndexType.doc.name())) {
-                        String path = tableModel.getContent(row);
-                        String txt = "";
-                        try {
-                            txt = Files.readString(Path.of(path));
-                        } catch (IOException ex) {
-                            log.log(Level.WARNING, "", ex);
-                            JOptionPane.showInternalMessageDialog(null, "加载失败e=" + ex.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        final String fTxt = txt;
-                        SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", fTxt).setVisible(true));
+                        ForkJoinPool.commonPool().execute(() -> {
+                            String path = tableModel.getContent(row);
+                            String txt = "";
+                            try {
+                                txt = Files.readString(Path.of(path));
+                            } catch (IOException ex) {
+                                log.log(Level.WARNING, "", ex);
+                                JOptionPane.showInternalMessageDialog(null, "加载失败e=" + ex.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            final String fTxt = txt;
+                            SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", fTxt).setVisible(true));
+                        });
                     } else {
                         SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", tableModel.getContent(row)).setVisible(true));
                     }
