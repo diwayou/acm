@@ -113,6 +113,8 @@ public class HttpRobot implements Closeable {
         } else {
             quit();
         }
+
+        clear();
     }
 
     /**

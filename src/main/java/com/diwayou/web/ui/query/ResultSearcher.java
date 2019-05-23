@@ -9,6 +9,7 @@ import com.diwayou.web.ui.spider.SpiderSingleton;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 
 import javax.swing.*;
@@ -36,17 +37,22 @@ public class ResultSearcher implements Closeable {
     }
 
     public void search(String type, String keyword) throws ParseException, IOException {
-        QueryParser parser = new QueryParser("content", new IKAnalyzer());
-        IndexFieldName indexFieldName = IndexFieldName.from(type);
+        Query q;
+        if (keyword.isBlank()) {
+            q = new MatchAllDocsQuery();
+        } else {
+            QueryParser parser = new QueryParser("content", new IKAnalyzer());
+            IndexFieldName indexFieldName = IndexFieldName.from(type);
 
-        String queryText = indexFieldName.name() + ":" + keyword;
+            String queryText = indexFieldName.name() + ":" + keyword;
 
-        // 输入构造查询语法
-        if (keyword.startsWith("!")) {
-            queryText = keyword.substring(1);
+            // 输入构造查询语法
+            if (keyword.startsWith("!")) {
+                queryText = keyword.substring(1);
+            }
+
+            q = parser.parse(queryText);
         }
-
-        Query q = parser.parse(queryText);
 
         query = StoreQuery.create(q);
         query.setPageNum(1)

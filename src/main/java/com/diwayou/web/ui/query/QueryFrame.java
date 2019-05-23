@@ -139,11 +139,11 @@ public class QueryFrame extends JFrame {
                     String type = (String) tableModel.getValueAt(row, 2);
                     if (type.equalsIgnoreCase(IndexType.image.name())) {
                         SwingUtilities.invokeLater(() -> {
-                            new ImageFrame(QueryFrame.this, "图片", (String) content)
+                            new ImageFrame(QueryFrame.this, "图片", tableModel.getContent(row))
                                     .setVisible(true);
                         });
                     } else {
-                        SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", (String) content).setVisible(true));
+                        SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", tableModel.getContent(row)).setVisible(true));
                     }
                 }
             }

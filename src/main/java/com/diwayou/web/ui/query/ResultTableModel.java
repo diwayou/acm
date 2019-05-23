@@ -26,9 +26,14 @@ public class ResultTableModel extends AbstractTableModel {
 
     private String[] columnNames = new String[] {"父链接", "链接", "类型", "后缀", "内容"};
 
+    private String[] contentCache;
+
+    private static final String CONTENT_TIP = "点击获取详细内容";
+
     public ResultTableModel(int rows) {
         this.rows = rows;
         this.data = new Object[rows][this.cols];
+        this.contentCache = new String[rows];
     }
 
     @Override
@@ -63,8 +68,18 @@ public class ResultTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object value, int row, int col) {
-        this.data[row][col] = value;
+        if (col == 4) {
+            this.data[row][col] = CONTENT_TIP;
+            this.contentCache[row] = (String)value;
+        } else {
+            this.data[row][col] = value;
+        }
+
         this.fireTableCellUpdated(row, col);
+    }
+
+    public String getContent(int row) {
+        return this.contentCache[row];
     }
 
     public String[] getColumnNames() {
