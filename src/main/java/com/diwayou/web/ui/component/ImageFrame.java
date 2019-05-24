@@ -6,6 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ImageFrame extends JFrame {
@@ -28,6 +33,27 @@ public class ImageFrame extends JFrame {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     ImageFrame.this.dispose();
+                }
+            }
+        });
+
+        photographLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() != 2) {
+                    return;
+                }
+
+                JLabel imageLabel = (JLabel) me.getSource();
+                ImageIcon icon = (ImageIcon) imageLabel.getIcon();
+                if (icon == null) {
+                    return;
+                }
+
+                try {
+                    Desktop.getDesktop().open(new File(icon.getDescription()));
+                } catch (IOException e) {
+                    log.log(Level.WARNING, "", e);
                 }
             }
         });

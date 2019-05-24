@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +60,27 @@ public class ImageBrowser extends JFrame {
         photographLabel.setHorizontalTextPosition(JLabel.CENTER);
         photographLabel.setHorizontalAlignment(JLabel.CENTER);
         photographLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        photographLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() != 2) {
+                    return;
+                }
+
+                JLabel imageLabel = (JLabel) me.getSource();
+                ImageIcon icon = (ImageIcon) imageLabel.getIcon();
+                if (icon == null) {
+                    return;
+                }
+
+                try {
+                    Desktop.getDesktop().open(new File(icon.getDescription()));
+                } catch (IOException e) {
+                    log.log(Level.WARNING, "", e);
+                }
+            }
+        });
 
         buttonBar.setDoubleBuffered(true);
 
