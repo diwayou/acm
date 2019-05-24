@@ -58,7 +58,7 @@ public class ImageFrame extends JFrame {
             }
         });
 
-        ImageIcon image = new ImageIcon(path);
+        ImageIcon image = new ImageIcon(path, path);
         photographLabel.setIcon(image);
 
         setTitle(path);
