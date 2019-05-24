@@ -4,6 +4,7 @@ import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.ui.component.ImageBrowser;
 import com.diwayou.web.ui.query.QueryFrame;
 import com.diwayou.web.ui.script.ScriptFrame;
 import com.diwayou.web.ui.settings.SettingsFrame;
@@ -35,6 +36,8 @@ public class ToolPanel extends JPanel {
 
         addQuery(mainFrame);
 
+        addImageBrowser(mainFrame);
+
         addSettings(mainFrame);
     }
 
@@ -52,6 +55,16 @@ public class ToolPanel extends JPanel {
         JButton scriptButton = new JButton("查询");
         scriptButton.addActionListener(ae -> {
             SwingUtilities.invokeLater(() -> new QueryFrame(mainFrame, this)
+                    .setVisible(true));
+        });
+
+        this.add(scriptButton);
+    }
+
+    private void addImageBrowser(RobotMainFrame mainFrame) {
+        JButton scriptButton = new JButton("浏览图片");
+        scriptButton.addActionListener(ae -> {
+            SwingUtilities.invokeLater(() -> new ImageBrowser(mainFrame, 20)
                     .setVisible(true));
         });
 

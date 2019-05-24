@@ -51,7 +51,7 @@ public class AutoComplete implements DocumentListener {
         }
 
         // Too few chars
-        if (pos < 2)
+        if (pos < 1)
             return;
 
         int n = Collections.binarySearch(keywords, content);

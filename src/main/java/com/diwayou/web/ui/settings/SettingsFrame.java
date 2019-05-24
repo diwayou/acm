@@ -52,6 +52,13 @@ public class SettingsFrame extends JFrame {
                 AppConfig.toggleHtml(false);
             }
         });
+        addSetting(settingsPanel, "系统浏览器浏览图片", AppConfig.isSystemBrowser(), ie -> {
+            if (ie.getStateChange() == ItemEvent.SELECTED) {
+                AppConfig.toggleSystemBrowser(true);
+            } else {
+                AppConfig.toggleSystemBrowser(false);
+            }
+        });
 
         addImageLength(settingsPanel);
 

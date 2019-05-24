@@ -7,18 +7,21 @@ public class AppConfig {
     private static final String HTML_KEY = "html.store";
     private static final String DOC_KEY = "doc.store";
     private static final String IMAGE_LENGTH_KEY = "image.length";
+    private static final String IMAGE_BROWSER_KEY = "image.browser";
 
     private static final String NODE = "com/diwayou/browser";
 
     private static volatile boolean storeImage;
     private static volatile boolean storeHtml;
     private static volatile boolean storeDoc;
+    private static volatile boolean systemBrowser;
     private static volatile int imageLength;
 
     static {
         storeImage = Preferences.userRoot().node(NODE).getBoolean(IMAGE_KEY, true);
         storeHtml = Preferences.userRoot().node(NODE).getBoolean(HTML_KEY, false);
         storeDoc = Preferences.userRoot().node(NODE).getBoolean(DOC_KEY, false);
+        systemBrowser = Preferences.userRoot().node(NODE).getBoolean(IMAGE_BROWSER_KEY, true);
         imageLength = Preferences.userRoot().node(NODE).getInt(IMAGE_LENGTH_KEY, 10 * 1024);
     }
 
@@ -35,6 +38,11 @@ public class AppConfig {
     public static synchronized void toggleDoc(boolean isStore) {
         storeDoc = isStore;
         Preferences.userRoot().node(NODE).putBoolean(DOC_KEY, isStore);
+    }
+
+    public static synchronized void toggleSystemBrowser(boolean isSystemBrowser) {
+        systemBrowser = isSystemBrowser;
+        Preferences.userRoot().node(NODE).putBoolean(IMAGE_BROWSER_KEY, isSystemBrowser);
     }
 
     public static synchronized void setImageLengthLimit(int length) {
@@ -56,5 +64,9 @@ public class AppConfig {
 
     public static int getImageLength() {
         return imageLength;
+    }
+
+    public static boolean isSystemBrowser() {
+        return systemBrowser;
     }
 }
