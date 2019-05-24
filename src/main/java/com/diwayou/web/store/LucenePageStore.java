@@ -80,7 +80,7 @@ public class LucenePageStore implements PageStore, Closeable {
 
             String text = Jsoup.parse(page.bodyAsString()).text();
             doc.add(new TextField(IndexFieldName.content.name(), text, Field.Store.YES));
-        } if (PageUtil.isImage(page)) {
+        } else if (PageUtil.isImage(page)) {
             doc.add(new StringField(IndexFieldName.type.name(), IndexType.image.name(), Field.Store.YES));
             doc.add(new StringField(IndexFieldName.ext.name(), PageUtil.getExt(page), Field.Store.YES));
 
