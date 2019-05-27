@@ -33,8 +33,6 @@ public class QueryFrame extends JFrame {
 
     private ResultSearcher searcher;
 
-    private JComboBox<String> typeCombo;
-
     private JLabel searchTotalLabel;
 
     private RobotMainFrame mainFrame;
@@ -217,15 +215,8 @@ public class QueryFrame extends JFrame {
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         addSearchInput(searchPanel);
-        addSearchType(searchPanel);
 
         add(searchPanel, BorderLayout.NORTH);
-    }
-
-    private void addSearchType(JPanel searchPanel) {
-        typeCombo = new JComboBox<>(tableModel.getColumnNames());
-
-        searchPanel.add(typeCombo);
     }
 
     private void addSearchInput(JPanel searchPanel) {
@@ -237,12 +228,10 @@ public class QueryFrame extends JFrame {
 
             keyword = keyword == null ? "" : keyword;
 
-            String type = (String) typeCombo.getSelectedItem();
-
             final String fKeyword = keyword;
             ForkJoinPool.commonPool().execute(() -> {
                 try {
-                    searcher.search(type, fKeyword);
+                    searcher.search(fKeyword);
                 } catch (Exception e) {
                     log.log(Level.WARNING, "", e);
                     JOptionPane.showInternalMessageDialog(null, "搜索失败e=" + e.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);

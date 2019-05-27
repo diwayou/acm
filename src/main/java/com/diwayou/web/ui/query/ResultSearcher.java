@@ -3,13 +3,13 @@ package com.diwayou.web.ui.query;
 import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.store.*;
 import com.diwayou.web.ui.spider.SpiderSingleton;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.simple.SimpleQueryParser;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class ResultSearcher implements Closeable {
@@ -24,30 +24,35 @@ public class ResultSearcher implements Closeable {
 
     private BiConsumer<Page, QueryResult> displayCallback;
 
+    private Map<String, Float> weights;
+
     public ResultSearcher(int pageCount, BiConsumer<Page, QueryResult> displayCallback) throws IOException {
         this.pageCount = pageCount;
         this.displayCallback = displayCallback;
         this.lucenePageStoreQuery = new LucenePageStoreQuery(SpiderSingleton.one().getIndexPath());
+        this.weights = Map.of(
+                IndexFieldName.ext.name(), 10000F,
+                IndexFieldName.type.name(), 9000F,
+                IndexFieldName.url.name(), 600F,
+                IndexFieldName.parentUrl.name(), 400F,
+                IndexFieldName.content.name(), 1F
+                );
     }
 
-    public QueryResult search(String type, String keyword) throws ParseException, IOException {
+    public QueryResult search(String keyword) throws IOException {
         Query q;
         if (keyword.isBlank()) {
             q = new MatchAllDocsQuery();
         } else {
-            QueryParser parser = new QueryParser("content", new IKAnalyzer());
-            IndexFieldName indexFieldName = IndexFieldName.from(type);
+            SimpleQueryParser parser = new SimpleQueryParser(new IKAnalyzer(), weights);
 
-            String queryText = indexFieldName.name() + ":" + keyword;
-
-            // 输入构造查询语法
-            if (keyword.startsWith("!")) {
-                queryText = keyword.substring(1);
-            }
-
-            q = parser.parse(queryText);
+            q = parser.parse(keyword);
         }
 
+        return search(q);
+    }
+
+    public QueryResult search(Query q) throws IOException {
         query = StoreQuery.create(q);
         query.setPageNum(1)
                 .setPageSize(pageCount);

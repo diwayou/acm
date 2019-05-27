@@ -6,6 +6,9 @@ import com.diwayou.web.store.IndexType;
 import com.diwayou.web.store.QueryResult;
 import com.diwayou.web.ui.query.ResultSearcher;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -100,7 +103,8 @@ public class ImageBrowser extends JFrame {
 
         ForkJoinPool.commonPool().execute(() -> {
             try {
-                searcher.search(IndexFieldName.type.getDisplayName(), IndexType.image.name());
+                Query query = new TermQuery(new Term(IndexFieldName.type.name(), IndexType.image.name()));
+                searcher.search(query);
             } catch (Exception e) {
                 log.log(Level.WARNING, "", e);
 
