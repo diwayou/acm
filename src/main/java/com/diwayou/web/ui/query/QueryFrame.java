@@ -39,6 +39,8 @@ public class QueryFrame extends JFrame {
 
     private ToolPanel toolPanel;
 
+    private volatile String curSearchKeyword;
+
     public QueryFrame(RobotMainFrame mainFrame, ToolPanel toolPanel) {
         this.mainFrame = mainFrame;
         this.toolPanel = toolPanel;
@@ -175,7 +177,7 @@ public class QueryFrame extends JFrame {
                         JOptionPane.showInternalMessageDialog(null, "加载失败e=" + ex.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } else if (col == 2 || col == 3) {
-                    SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", (String) content).setVisible(true));
+                    SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, curSearchKeyword, (String) content).setVisible(true));
                 } else if (col == 4) {
                     String type = (String) tableModel.getValueAt(row, 2);
                     String path = tableModel.getContent(row);
@@ -201,10 +203,10 @@ public class QueryFrame extends JFrame {
                                 JOptionPane.showInternalMessageDialog(null, "加载失败e=" + ex.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);
                             }
                             final String fTxt = txt;
-                            SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", fTxt).setVisible(true));
+                            SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, curSearchKeyword, fTxt).setVisible(true));
                         });
                     } else {
-                        SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, "文本", path).setVisible(true));
+                        SwingUtilities.invokeLater(() -> new TextFrame(QueryFrame.this, curSearchKeyword, path).setVisible(true));
                     }
                 }
             }
@@ -224,11 +226,11 @@ public class QueryFrame extends JFrame {
         searchInputField.setFocusTraversalKeysEnabled(false);
 
         searchInputField.addActionListener(ae -> {
-            String keyword = ae.getActionCommand();
+            curSearchKeyword = ae.getActionCommand();
 
-            keyword = keyword == null ? "" : keyword;
+            curSearchKeyword = curSearchKeyword == null ? "" : curSearchKeyword;
 
-            final String fKeyword = keyword;
+            final String fKeyword = curSearchKeyword;
             ForkJoinPool.commonPool().execute(() -> {
                 try {
                     searcher.search(fKeyword);

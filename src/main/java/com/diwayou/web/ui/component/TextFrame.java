@@ -1,6 +1,10 @@
 package com.diwayou.web.ui.component;
 
 import com.diwayou.web.log.AppLog;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RTextAreaHighlighter;
+import org.fife.ui.rtextarea.SearchContext;
+import org.fife.ui.rtextarea.SearchEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +19,17 @@ public class TextFrame extends JFrame {
     public TextFrame(JFrame parentFrame, String title, String content) {
         JPanel cp = new JPanel(new BorderLayout());
 
-        JTextArea textArea = new JTextArea(35, 120);
-        textArea.setLineWrap(true);
+        RTextArea textArea = new RTextArea(35, 120);
 
-        SwingUtilities.invokeLater(() -> textArea.setText(content));
+        SwingUtilities.invokeLater(() -> {
+            textArea.setText(content);
+            RTextAreaHighlighter highlighter = new RTextAreaHighlighter();
+            textArea.setHighlighter(highlighter);
+
+            SearchContext context = new SearchContext(title);
+            context.setMarkAll(true);
+            SearchEngine.markAll(textArea, context);
+        });
 
         JScrollPane sp = new JScrollPane(textArea);
         cp.add(sp, BorderLayout.CENTER);
