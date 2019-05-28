@@ -4,6 +4,7 @@ import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.PageUtil;
+import com.diwayou.web.support.soup.ElementUtil;
 import com.google.common.base.Preconditions;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -78,7 +79,7 @@ public class LucenePageStore implements PageStore, Closeable {
             doc.add(new StringField(IndexFieldName.type.name(), IndexType.html.name(), Field.Store.YES));
             doc.add(new StringField(IndexFieldName.ext.name(), IndexType.html.name(), Field.Store.YES));
 
-            String text = Jsoup.parse(page.bodyAsString()).text();
+            String text = ElementUtil.text(Jsoup.parse(page.bodyAsString()));
             doc.add(new TextField(IndexFieldName.content.name(), text, Field.Store.YES));
         } else if (PageUtil.isImage(page)) {
             doc.add(new StringField(IndexFieldName.type.name(), IndexType.image.name(), Field.Store.YES));

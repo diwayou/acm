@@ -1,5 +1,7 @@
 package com.diwayou.web.ui.swing;
 
+import com.diwayou.web.log.AppLog;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -7,9 +9,14 @@ import javax.swing.text.BadLocationException;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class AutoComplete implements DocumentListener {
+
+    private static final Logger log = AppLog.getBrowser();
+
     private static enum Mode {
         INSERT,
         COMPLETION
@@ -47,7 +54,8 @@ public class AutoComplete implements DocumentListener {
         try {
             content = textField.getText(0, pos + 1);
         } catch (BadLocationException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "", e);
+            return;
         }
 
         // Too few chars
