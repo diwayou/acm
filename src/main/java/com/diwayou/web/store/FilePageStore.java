@@ -43,7 +43,7 @@ public class FilePageStore implements PageStore {
             String ext = PageUtil.getExt(page);
             String name = FilenameUtil.randFileName(ext);
 
-            Path path = fileDirPath.resolve(name);
+            Path path = fileDirPath.resolve(name).normalize();
             Files.copy(new ByteArrayInputStream(page.bodyAsByteArray()), path);
 
             return new StoreResult(path.toString());

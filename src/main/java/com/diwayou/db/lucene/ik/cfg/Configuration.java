@@ -15,7 +15,7 @@ public class Configuration {
 
 
     public Configuration() {
-        this(false, true);
+        this(true, true);
     }
 
     public Configuration(boolean useSmart, boolean enableLowercase) {
