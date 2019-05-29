@@ -5,6 +5,7 @@ import com.diwayou.web.http.driver.AppThread;
 import com.diwayou.web.log.AppLog;
 import com.diwayou.web.ui.fx.FxRobotMainFrame;
 import com.diwayou.web.ui.swing.RobotMainFrame;
+import com.sun.javafx.stage.StageHelper;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -33,6 +34,7 @@ public class RobotBrowser {
                 stage.setTitle("RobotBrowser");
                 stage.setScene(scene);
                 stage.sizeToScene();
+                StageHelper.setPrimary(stage, true);
                 stage.show();
                 stage.setOnCloseRequest(we -> {
                     Platform.exit();
