@@ -8,6 +8,7 @@ public class AppConfig {
     private static final String DOC_KEY = "doc.store";
     private static final String IMAGE_LENGTH_KEY = "image.length";
     private static final String IMAGE_BROWSER_KEY = "image.browser";
+    private static final String FX_RENDER_KEY = "render.fx";
 
     private static final String NODE = "com/diwayou/browser";
 
@@ -16,6 +17,7 @@ public class AppConfig {
     private static volatile boolean storeDoc;
     private static volatile boolean systemBrowser;
     private static volatile int imageLength;
+    private static volatile boolean fxRender;
 
     static {
         storeImage = Preferences.userRoot().node(NODE).getBoolean(IMAGE_KEY, true);
@@ -23,6 +25,7 @@ public class AppConfig {
         storeDoc = Preferences.userRoot().node(NODE).getBoolean(DOC_KEY, false);
         systemBrowser = Preferences.userRoot().node(NODE).getBoolean(IMAGE_BROWSER_KEY, true);
         imageLength = Preferences.userRoot().node(NODE).getInt(IMAGE_LENGTH_KEY, 10 * 1024);
+        fxRender = Preferences.userRoot().node(NODE).getBoolean(FX_RENDER_KEY, true);
     }
 
     public static synchronized void toggleImage(boolean isStore) {
@@ -50,6 +53,11 @@ public class AppConfig {
         Preferences.userRoot().node(NODE).putInt(IMAGE_LENGTH_KEY, length);
     }
 
+    public static synchronized void toggleFxRender(boolean isFxRender) {
+        fxRender = isFxRender;
+        Preferences.userRoot().node(NODE).putBoolean(FX_RENDER_KEY, isFxRender);
+    }
+
     public static boolean isStoreImage() {
         return storeImage;
     }
@@ -68,5 +76,9 @@ public class AppConfig {
 
     public static boolean isSystemBrowser() {
         return systemBrowser;
+    }
+
+    public static boolean isFxRender() {
+        return fxRender;
     }
 }

@@ -1,7 +1,13 @@
 package com.diwayou.web.ui;
 
+import com.diwayou.web.config.AppConfig;
+import com.diwayou.web.http.driver.AppThread;
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.ui.fx.FxRobotMainFrame;
 import com.diwayou.web.ui.swing.RobotMainFrame;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -14,14 +20,32 @@ public class RobotBrowser {
 
     public static void main(String[] args) throws IOException {
         AppLog.init(Paths.get("log"));
-        SwingUtilities.invokeLater(() -> {
+
+        Platform.startup(() -> AppLog.getBrowser().info("javafx初始化完成..."));
+
+        AppThread.async(() -> {
             JFrame.setDefaultLookAndFeelDecorated(true);
 
-            RobotMainFrame mainFrame = new RobotMainFrame();
-            mainFrame.setSize(1024, 768);
-            mainFrame.setLocationRelativeTo(null);
-            mainFrame.setVisible(true);
-            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            if (AppConfig.isFxRender()) {
+                Scene scene = new Scene(new FxRobotMainFrame());
+
+                Stage stage = new Stage();
+                stage.setTitle("RobotBrowser");
+                stage.setScene(scene);
+                stage.sizeToScene();
+                stage.show();
+                stage.setOnCloseRequest(we -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+            } else {
+                JFrame mainFrame;
+                mainFrame = new RobotMainFrame();
+                mainFrame.setSize(1024, 768);
+                mainFrame.setLocationRelativeTo(null);
+                mainFrame.setVisible(true);
+                mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            }
         });
     }
 }

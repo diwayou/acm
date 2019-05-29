@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LucenePageStoreQuery implements Closeable {
 
-    private static final int QUERY_LIMIT = 1000;
+    private static final int QUERY_LIMIT = 10000;
 
     private IndexSearcher indexSearcher;
 

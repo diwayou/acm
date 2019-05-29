@@ -1,8 +1,8 @@
 package com.diwayou.image;
 
 import com.diwayou.web.http.robot.HttpRobot;
-import com.diwayou.web.support.DocumentUtil;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.jsoup.nodes.Document;
 import org.w3c.dom.html.HTMLDocument;
 
@@ -109,7 +109,7 @@ public class ImageIconExample extends JFrame {
         protected Void doInBackground() throws Exception {
             HttpRobot robot = new HttpRobot();
             HTMLDocument htmlDocument = robot.get("http://m.51tiangou.com").getHtmlDocument();
-            String content = DocumentUtil.toString(htmlDocument);
+            String content = new W3CDom().asString(htmlDocument);
             Document document = Jsoup.parse(content);
 
             document.select("img[src]").stream()

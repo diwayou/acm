@@ -63,8 +63,8 @@ public class AutoComplete implements DocumentListener {
             return;
 
         int n = Collections.binarySearch(keywords, content);
-        if (n < 0 && -n <= keywords.size()) {
-            String match = keywords.get(-n - 1);
+        if (n < 0) {
+            String match = keywords.get(~n);
             if (match.startsWith(content)) {
                 // A completion is found
                 String completion = match.substring(pos + 1);

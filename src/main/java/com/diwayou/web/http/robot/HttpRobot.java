@@ -8,6 +8,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.sun.webkit.LoadListenerClient;
 import javafx.embed.swing.JFXPanel;
+import javafx.scene.web.WebView;
 import org.w3c.dom.html.HTMLDocument;
 
 import java.io.Closeable;
@@ -144,5 +145,9 @@ public class HttpRobot implements Closeable {
     public HttpRobot setPool(Pool<HttpRobot> pool) {
         this.pool = pool;
         return this;
+    }
+
+    public WebView getView() {
+        return driver.getView();
     }
 }

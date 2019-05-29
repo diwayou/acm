@@ -27,6 +27,8 @@ public class FxRobotDriver implements RobotDriver {
 
     private AtomicReference<WebPage> page = new AtomicReference<>();
 
+    private AtomicReference<WebView> view = new AtomicReference<>();
+
     static {
         // 启用CORS
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
@@ -35,6 +37,7 @@ public class FxRobotDriver implements RobotDriver {
     public FxRobotDriver() {
         ReflectiveOperationException re = AppThread.exec(() -> {
             WebView v = new WebView();
+            view.set(v);
             //v.setContextMenuEnabled(false);
 
             Scene s = new Scene(v);
@@ -99,5 +102,9 @@ public class FxRobotDriver implements RobotDriver {
             page.get().addLoadListenerClient(listener);
             return null;
         });
+    }
+
+    public WebView getView() {
+        return view.get();
     }
 }

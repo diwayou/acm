@@ -79,7 +79,6 @@ public class ToolPanel extends JPanel {
                 return;
             }
 
-
             Request request = new Request(doc.getURL())
                     .setFetcherType(FetcherType.FX_WEBVIEW)
                     .setPriority(Request.MAX_PRIORITY);

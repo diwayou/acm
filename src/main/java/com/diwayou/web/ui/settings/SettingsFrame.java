@@ -59,6 +59,13 @@ public class SettingsFrame extends JFrame {
                 AppConfig.toggleSystemBrowser(false);
             }
         });
+        addSetting(settingsPanel, "使用fx渲染界面(需重启)", AppConfig.isFxRender(), ie -> {
+            if (ie.getStateChange() == ItemEvent.SELECTED) {
+                AppConfig.toggleFxRender(true);
+            } else {
+                AppConfig.toggleFxRender(false);
+            }
+        });
 
         addImageLength(settingsPanel);
 

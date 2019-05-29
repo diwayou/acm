@@ -178,4 +178,12 @@ public class AppThread {
             }
         }
     }
+
+    public static void async(Runnable runnable) {
+        if (Platform.isFxApplicationThread()) {
+            runnable.run();
+        } else {
+            Platform.runLater(runnable);
+        }
+    }
 }

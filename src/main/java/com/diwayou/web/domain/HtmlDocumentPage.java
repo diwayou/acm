@@ -1,6 +1,6 @@
 package com.diwayou.web.domain;
 
-import com.diwayou.web.support.DocumentUtil;
+import org.jsoup.helper.W3CDom;
 import org.w3c.dom.html.HTMLDocument;
 
 import java.net.http.HttpHeaders;
@@ -21,7 +21,7 @@ public class HtmlDocumentPage extends Page {
         this.document = document;
         this.resourceUrls = resourceUrls;
         try {
-            this.html = DocumentUtil.toString(document);
+            this.html = new W3CDom().asString(document);
         } catch (Exception ignore) {
             this.html = "";
         }
