@@ -21,9 +21,8 @@ public class FxRobotMainFrame extends GridPane {
         layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
             toolPanel.setPrefWidth(newValue.getWidth());
             toolPanel.autosize();
-            robot.getView().setPrefWidth(newValue.getWidth());
+            robot.getView().setPrefSize(newValue.getWidth(), newValue.getHeight());
             robot.getView().autosize();
-            autosize();
         });
     }
 

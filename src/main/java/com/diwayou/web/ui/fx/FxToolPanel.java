@@ -5,8 +5,13 @@ import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.http.driver.AppThread;
 import com.diwayou.web.log.AppLog;
+import com.diwayou.web.ui.event.GlobalEventBus;
+import com.diwayou.web.ui.event.UpdateUrlEvent;
 import com.diwayou.web.ui.settings.FxSettingsFrame;
 import com.diwayou.web.ui.spider.SpiderSingleton;
+import com.diwayou.web.url.UrlDict;
+import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -38,6 +43,8 @@ public class FxToolPanel extends HBox {
         addImageBrowser(mainFrame);
 
         addSettings();
+
+        GlobalEventBus.one().register(this);
     }
 
     private void addSettings() {
@@ -80,7 +87,7 @@ public class FxToolPanel extends HBox {
     }
 
     private void addUrlInput(FxRobotMainFrame mainFrame) {
-        urlInputField = new TextField("");
+        urlInputField = new AutoCompletionTextField(Sets.newTreeSet(UrlDict.WEBSITE_PROPOSALS));
         setMargin(urlInputField, new Insets(5, 5, 5, 5));
         urlInputField.setPrefColumnCount(50);
 
@@ -97,7 +104,7 @@ public class FxToolPanel extends HBox {
             ForkJoinPool.commonPool().execute(() -> {
                 try {
                     mainFrame.getRobot().get(fUrl, 10);
-                    updateUrl(mainFrame.getRobot().getUrl());
+                    updateUrl(new UpdateUrlEvent().setUrl(mainFrame.getRobot().getUrl()));
                 } catch (Exception e) {
                     log.log(Level.WARNING, "", e);
                 }
@@ -107,7 +114,8 @@ public class FxToolPanel extends HBox {
         getChildren().add(urlInputField);
     }
 
-    public void updateUrl(String url) {
-        AppThread.async(() -> urlInputField.setText(url));
+    @Subscribe
+    public void updateUrl(UpdateUrlEvent event) {
+        AppThread.async(() -> urlInputField.setText(event.getUrl()));
     }
 }

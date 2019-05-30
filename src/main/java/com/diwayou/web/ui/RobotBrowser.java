@@ -28,7 +28,7 @@ public class RobotBrowser {
             JFrame.setDefaultLookAndFeelDecorated(true);
 
             if (AppConfig.isFxRender()) {
-                Scene scene = new Scene(new FxRobotMainFrame());
+                Scene scene = new Scene(new FxRobotMainFrame(), 1024, 768);
 
                 Stage stage = new Stage();
                 stage.setTitle("RobotBrowser");
