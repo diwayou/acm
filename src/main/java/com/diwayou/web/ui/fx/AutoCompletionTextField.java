@@ -103,7 +103,7 @@ public class AutoCompletionTextField extends TextField {
                 positionCaret(result.length());
                 entriesPopup.hide();
 
-                AutoCompletionTextField.this.fireEvent(new ActionEvent());
+                fireEvent(new ActionEvent());
             });
         }
 

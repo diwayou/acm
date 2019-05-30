@@ -7,6 +7,7 @@ import com.diwayou.web.http.driver.AppThread;
 import com.diwayou.web.log.AppLog;
 import com.diwayou.web.ui.event.GlobalEventBus;
 import com.diwayou.web.ui.event.UpdateUrlEvent;
+import com.diwayou.web.ui.query.FxQueryFrame;
 import com.diwayou.web.ui.settings.FxSettingsFrame;
 import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.diwayou.web.url.UrlDict;
@@ -16,8 +17,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import org.w3c.dom.html.HTMLDocument;
 
 import java.util.concurrent.ForkJoinPool;
@@ -36,27 +40,37 @@ public class FxToolPanel extends HBox {
 
         addSpider(mainFrame);
 
-        addScript(mainFrame);
-
-        addQuery(mainFrame);
-
-        addImageBrowser(mainFrame);
-
         addSettings();
+
+        addMore(mainFrame);
 
         GlobalEventBus.one().register(this);
     }
 
+    private void addMore(FxRobotMainFrame mainFrame) {
+        MenuButton button = new MenuButton("更多");
+        setMargin(button, new Insets(5, 5, 5, 5));
+
+        MenuItem scriptItem = new MenuItem("脚本");
+
+
+        MenuItem searchItem = new MenuItem("查询");
+        searchItem.setOnAction(ae -> {
+            FxQueryFrame stage = new FxQueryFrame(10);
+            stage.setTitle("查询");
+            stage.sizeToScene();
+            stage.setOnCloseRequest(we -> stage.close());
+            stage.show();
+        });
+
+        MenuItem imageItem = new MenuItem("浏览图片");
+
+        button.getItems().addAll(scriptItem, searchItem, imageItem);
+        getChildren().add(button);
+    }
+
     private void addSettings() {
         addButton("设置", ae -> new FxSettingsFrame().showAndWait());
-    }
-
-    private void addQuery(FxRobotMainFrame mainFrame) {
-
-    }
-
-    private void addImageBrowser(FxRobotMainFrame mainFrame) {
-
     }
 
     private void addSpider(FxRobotMainFrame mainFrame) {
@@ -74,21 +88,18 @@ public class FxToolPanel extends HBox {
         });
     }
 
-    private void addScript(FxRobotMainFrame mainFrame) {
-
-    }
-
     private void addButton(String text, EventHandler<ActionEvent> handler) {
         Button button = new Button(text);
+        setMargin(button, new Insets(5, 5, 5, 5));
         button.setOnAction(handler);
 
         getChildren().add(button);
-        setMargin(button, new Insets(5, 5, 5, 5));
     }
 
     private void addUrlInput(FxRobotMainFrame mainFrame) {
         urlInputField = new AutoCompletionTextField(Sets.newTreeSet(UrlDict.WEBSITE_PROPOSALS));
         setMargin(urlInputField, new Insets(5, 5, 5, 5));
+        setHgrow(urlInputField, Priority.ALWAYS);
         urlInputField.setPrefColumnCount(50);
 
         urlInputField.setOnAction(ae -> {
