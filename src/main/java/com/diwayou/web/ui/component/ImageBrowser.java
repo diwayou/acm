@@ -104,7 +104,7 @@ public class ImageBrowser extends JFrame {
         ForkJoinPool.commonPool().execute(() -> {
             try {
                 Query query = new TermQuery(new Term(IndexFieldName.type.name(), IndexType.image.name()));
-                searcher.search(query);
+                searcher.search(query, 1);
             } catch (Exception e) {
                 log.log(Level.WARNING, "", e);
 

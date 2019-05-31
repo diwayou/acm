@@ -56,7 +56,7 @@ public class FxToolPanel extends HBox {
 
         MenuItem searchItem = new MenuItem("查询");
         searchItem.setOnAction(ae -> {
-            FxQueryFrame stage = new FxQueryFrame(10);
+            FxQueryFrame stage = new FxQueryFrame(5);
             stage.setTitle("查询");
             stage.sizeToScene();
             stage.setOnCloseRequest(we -> stage.close());

@@ -233,7 +233,7 @@ public class QueryFrame extends JFrame {
             final String fKeyword = curSearchKeyword;
             ForkJoinPool.commonPool().execute(() -> {
                 try {
-                    searcher.search(fKeyword);
+                    searcher.search(fKeyword, 1);
                 } catch (Exception e) {
                     log.log(Level.WARNING, "", e);
                     JOptionPane.showInternalMessageDialog(null, "搜索失败e=" + e.getMessage(), "警告", JOptionPane.INFORMATION_MESSAGE);

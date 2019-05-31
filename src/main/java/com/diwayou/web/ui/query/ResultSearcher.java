@@ -39,7 +39,7 @@ public class ResultSearcher implements Closeable {
                 );
     }
 
-    public QueryResult search(String keyword) throws IOException {
+    public QueryResult search(String keyword, int pageNum) throws IOException {
         Query q;
         if (keyword.isBlank()) {
             q = new MatchAllDocsQuery();
@@ -49,12 +49,12 @@ public class ResultSearcher implements Closeable {
             q = parser.parse(keyword);
         }
 
-        return search(q);
+        return search(q, pageNum);
     }
 
-    public QueryResult search(Query q) throws IOException {
+    public QueryResult search(Query q, int pageNum) throws IOException {
         query = StoreQuery.create(q);
-        query.setPageNum(1)
+        query.setPageNum(pageNum)
                 .setPageSize(pageCount);
         return doQuery();
     }
