@@ -11,7 +11,6 @@ import com.diwayou.web.ui.query.FxQueryFrame;
 import com.diwayou.web.ui.settings.FxSettingsFrame;
 import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.diwayou.web.url.UrlDict;
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import org.controlsfx.control.textfield.TextFields;
 import org.w3c.dom.html.HTMLDocument;
 
 import java.util.concurrent.ForkJoinPool;
@@ -97,7 +97,9 @@ public class FxToolPanel extends HBox {
     }
 
     private void addUrlInput(FxRobotMainFrame mainFrame) {
-        urlInputField = new AutoCompletionTextField(Sets.newTreeSet(UrlDict.WEBSITE_PROPOSALS));
+        //urlInputField = new AutoCompletionTextField(Sets.newTreeSet(UrlDict.WEBSITE_PROPOSALS));
+        urlInputField = new TextField();
+        TextFields.bindAutoCompletion(urlInputField, UrlDict.WEBSITE_PROPOSALS);
         setMargin(urlInputField, new Insets(5, 5, 5, 5));
         setHgrow(urlInputField, Priority.ALWAYS);
         urlInputField.setPrefColumnCount(50);
