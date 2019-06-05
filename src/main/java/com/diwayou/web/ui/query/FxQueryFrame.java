@@ -207,6 +207,7 @@ public class FxQueryFrame extends Stage {
 
         if (IndexType.image.name().equalsIgnoreCase(type)) {
             ImageView imageView = new ImageView(Path.of(content.getText()).toUri().toString());
+            imageView.setPreserveRatio(true);
             row.setImage(imageView);
         }
     }
