@@ -98,7 +98,7 @@ public class FxToolPanel extends HBox {
 
     private void addUrlInput(FxRobotMainFrame mainFrame) {
         //urlInputField = new AutoCompletionTextField(Sets.newTreeSet(UrlDict.WEBSITE_PROPOSALS));
-        urlInputField = new TextField();
+        urlInputField = TextFields.createClearableTextField();
         TextFields.bindAutoCompletion(urlInputField, UrlDict.WEBSITE_PROPOSALS);
         setMargin(urlInputField, new Insets(5, 5, 5, 5));
         setHgrow(urlInputField, Priority.ALWAYS);

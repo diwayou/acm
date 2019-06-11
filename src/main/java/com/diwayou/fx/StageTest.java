@@ -8,7 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class StageTest extends Stage {
+public class StageTest {
     public static void main(String[] args) {
         Platform.startup(() -> System.out.println("开始启动"));
         AppThread.async(() -> new StageTest().initAndShow());

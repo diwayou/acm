@@ -8,9 +8,6 @@ import com.diwayou.web.script.ScriptRegistry;
 import com.diwayou.web.ui.spider.SpiderSingleton;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,10 +32,8 @@ public class ScriptFrame extends JFrame {
         Runtime.getRuntime().addShutdownHook(new Thread(threadPool::shutdownNow));
         JPanel cp = new JPanel(new BorderLayout());
 
-        RSyntaxTextArea textArea = new RSyntaxTextArea(35, 120);
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY);
-        textArea.setCodeFoldingEnabled(true);
-        RTextScrollPane sp = new RTextScrollPane(textArea);
+        JTextArea textArea = new JTextArea(35, 120);
+        JScrollPane sp = new JScrollPane(textArea);
         cp.add(sp, BorderLayout.CENTER);
 
         textArea.setText(loadDemoScript());
