@@ -74,6 +74,7 @@ public class LucenePageStore implements PageStore, Closeable {
         Document doc = new Document();
         doc.add(new TextField(IndexFieldName.parentUrl.name(), page.getRequest().getParentUrl(), Field.Store.YES));
         doc.add(new TextField(IndexFieldName.url.name(), page.getRequest().getUrl(), Field.Store.YES));
+        doc.add(new StringField("id", page.getRequest().getUrl(), Field.Store.YES));
 
         if (PageUtil.isHtml(page)) {
             doc.add(new StringField(IndexFieldName.type.name(), IndexType.html.name(), Field.Store.YES));

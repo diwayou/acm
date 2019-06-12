@@ -83,7 +83,7 @@ public class CompanyIndex implements AutoCloseable {
         doc.add(new TextField("address", address, Field.Store.YES));
 
         try {
-            indexWriter.updateDocument(new Term("id", uuid), doc);
+            indexWriter.updateDocument(new Term("uuid", uuid), doc);
 
         } catch (Exception e) {
             log.log(Level.WARNING, "", e);
@@ -91,10 +91,13 @@ public class CompanyIndex implements AutoCloseable {
     }
 
     private static long parseMoney(String regMoney) {
+        regMoney = regMoney.substring(1);
         StringBuilder money = new StringBuilder();
         for (char c : regMoney.toCharArray()) {
             if (Character.isDigit(c)) {
                 money.append(c);
+            } else {
+                break;
             }
         }
 
@@ -153,6 +156,11 @@ public class CompanyIndex implements AutoCloseable {
                 @Override
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
                     log.log(Level.INFO, "postVisitDirectory" + dir.toString(), exc);
+
+                    if (dir.equals(companyDataPath)) {
+                        return FileVisitResult.TERMINATE;
+                    }
+
                     return FileVisitResult.CONTINUE;
                 }
             });

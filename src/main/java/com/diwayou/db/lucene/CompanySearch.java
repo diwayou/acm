@@ -5,7 +5,7 @@ import com.diwayou.web.store.StoreQuery;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.SimpleAnalyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CompanySearch implements Closeable {
 
-    private static final int QUERY_LIMIT = 100000000;
+    private static final int QUERY_LIMIT = 100000;
 
     private IndexSearcher indexSearcher;
 
@@ -88,15 +88,16 @@ public class CompanySearch implements Closeable {
                 "city", Float.MAX_VALUE
                 //"address", 1F
         );
-        Analyzer analyzer = new SimpleAnalyzer();
+        Analyzer analyzer = new KeywordAnalyzer();
 
         try (CompanySearch search = new CompanySearch(indexPath); Scanner in = new Scanner(System.in)) {
-            QueryParser parser = new QueryParser("name", analyzer);
+            QueryParser parser = new CustomQueryParser("name", analyzer, "rmLong");
             //SimpleQueryParser parser = new SimpleQueryParser(new IKAnalyzer(), weights);
             Stopwatch stopwatch = Stopwatch.createUnstarted();
             do {
+                System.out.print("请输入查询条件:");
                 String keyword = in.nextLine();
-                if (keyword.equalsIgnoreCase("quit")) {
+                if (keyword.equalsIgnoreCase("q")) {
                     break;
                 }
 
@@ -107,14 +108,30 @@ public class CompanySearch implements Closeable {
                     q = parser.parse(keyword);
                 }
 
-                stopwatch.reset();
-                stopwatch.start();
-                QueryResult result = search.query(new StoreQuery<>(q));
-                stopwatch.stop();
+                StoreQuery<Query> query = new StoreQuery<>(q);
 
-                System.out.println(String.format("一共有%d条数据,消耗%d毫秒", result.getTotal(), stopwatch.elapsed(TimeUnit.MILLISECONDS)));
+                do {
+                    stopwatch.reset();
+                    stopwatch.start();
+                    QueryResult result = search.query(query);
+                    stopwatch.stop();
 
-                result.getDocs().forEach(CompanySearch::print);
+                    System.out.println(String.format("一共有%d条数据,消耗%d毫秒", result.getTotal(), stopwatch.elapsed(TimeUnit.MILLISECONDS)));
+
+                    result.getDocs().forEach(CompanySearch::print);
+
+                    if (result.getDocs().size() < query.getPageSize()) {
+                        System.out.println("已经最后一页!");
+                        break;
+                    }
+
+                    keyword = in.nextLine();
+                    if (keyword.equalsIgnoreCase("q")) {
+                        break;
+                    } else {
+                        query.setPageNum(query.getPageNum() + 1);
+                    }
+                } while (true);
             } while (true);
         }
     }
@@ -131,6 +148,6 @@ public class CompanySearch implements Closeable {
                 d.get("province"),
                 d.get("city"),
                 d.get("address")
-                ));
+        ));
     }
 }
