@@ -122,6 +122,7 @@ public class CompanyIndex implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
+        executorService.shutdownNow();
         if (this.indexWriter != null) {
             this.indexWriter.close();
         }
@@ -156,10 +157,6 @@ public class CompanyIndex implements AutoCloseable {
                 @Override
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
                     log.log(Level.INFO, "postVisitDirectory" + dir.toString(), exc);
-
-                    if (dir.equals(companyDataPath)) {
-                        return FileVisitResult.TERMINATE;
-                    }
 
                     return FileVisitResult.CONTINUE;
                 }
