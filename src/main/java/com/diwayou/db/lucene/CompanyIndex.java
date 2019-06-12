@@ -4,10 +4,7 @@ import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.log.AppLog;
 import com.google.common.base.Preconditions;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
+import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
@@ -20,6 +17,9 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -72,9 +72,11 @@ public class CompanyIndex implements AutoCloseable {
         doc.add(new TextField("name", name, Field.Store.YES));
         doc.add(new StringField("uuid", uuid, Field.Store.YES));
         doc.add(new StringField("regDate", regDate, Field.Store.YES));
+        doc.add(new StringField("regDateS", parseDate(regDate), Field.Store.YES));
         doc.add(new StringField("type", type, Field.Store.YES));
         doc.add(new StringField("people", people, Field.Store.YES));
         doc.add(new StringField("regMoney", regMoney, Field.Store.YES));
+        doc.add(new LongPoint("rmLong", parseMoney(regMoney)));
         doc.add(new TextField("content", content, Field.Store.YES));
         doc.add(new StringField("province", province, Field.Store.YES));
         doc.add(new StringField("city", city, Field.Store.YES));
@@ -85,6 +87,33 @@ public class CompanyIndex implements AutoCloseable {
 
         } catch (Exception e) {
             log.log(Level.WARNING, "", e);
+        }
+    }
+
+    private static long parseMoney(String regMoney) {
+        StringBuilder money = new StringBuilder();
+        for (char c : regMoney.toCharArray()) {
+            if (Character.isDigit(c)) {
+                money.append(c);
+            }
+        }
+
+        if (money.length() == 0) {
+            return 0;
+        }
+
+        return Long.parseLong(money.toString());
+    }
+
+    private static String parseDate(String regDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdfTo = new SimpleDateFormat("yyyyMMdd");
+        try {
+            Date date = sdf.parse(regDate);
+            return sdfTo.format(date);
+        } catch (ParseException e) {
+            log.log(Level.INFO, regDate, e);
+            return regDate;
         }
     }
 
@@ -124,7 +153,7 @@ public class CompanyIndex implements AutoCloseable {
                 @Override
                 public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
                     log.log(Level.INFO, "postVisitDirectory" + dir.toString(), exc);
-                    return null;
+                    return FileVisitResult.CONTINUE;
                 }
             });
         }

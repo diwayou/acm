@@ -1,13 +1,16 @@
 package com.diwayou.db.lucene;
 
-import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.store.QueryResult;
 import com.diwayou.web.store.StoreQuery;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.queryparser.simple.SimpleQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -18,10 +21,11 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class CompanySearch implements Closeable {
 
-    private static final int QUERY_LIMIT = 10000;
+    private static final int QUERY_LIMIT = 100000000;
 
     private IndexSearcher indexSearcher;
 
@@ -70,22 +74,26 @@ public class CompanySearch implements Closeable {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         Path indexPath = Path.of("/tmp/company");
         Map<String, Float> weights = Map.of(
-                "name", 10000F,
+                "name", 1F,
                 "uuid", 9000F,
                 "regDate", 600F,
                 "type", Float.MAX_VALUE / 10,
                 "people", Float.MAX_VALUE,
                 "regMoney", 1F,
-                "content", 1F,
+                //"content", 1F,
                 "province", Float.MAX_VALUE,
-                "city", Float.MAX_VALUE,
-                "address", Float.MAX_VALUE / 100
+                "city", Float.MAX_VALUE
+                //"address", 1F
         );
+        Analyzer analyzer = new SimpleAnalyzer();
 
         try (CompanySearch search = new CompanySearch(indexPath); Scanner in = new Scanner(System.in)) {
+            QueryParser parser = new QueryParser("name", analyzer);
+            //SimpleQueryParser parser = new SimpleQueryParser(new IKAnalyzer(), weights);
+            Stopwatch stopwatch = Stopwatch.createUnstarted();
             do {
                 String keyword = in.nextLine();
                 if (keyword.equalsIgnoreCase("quit")) {
@@ -96,12 +104,15 @@ public class CompanySearch implements Closeable {
                 if (keyword.isBlank()) {
                     q = new MatchAllDocsQuery();
                 } else {
-                    SimpleQueryParser parser = new SimpleQueryParser(new IKAnalyzer(), weights);
-
                     q = parser.parse(keyword);
                 }
 
+                stopwatch.reset();
+                stopwatch.start();
                 QueryResult result = search.query(new StoreQuery<>(q));
+                stopwatch.stop();
+
+                System.out.println(String.format("一共有%d条数据,消耗%d毫秒", result.getTotal(), stopwatch.elapsed(TimeUnit.MILLISECONDS)));
 
                 result.getDocs().forEach(CompanySearch::print);
             } while (true);
