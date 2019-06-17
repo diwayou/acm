@@ -3,6 +3,7 @@ package com.diwayou.db.lucene;
 import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.log.AppLog;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
@@ -17,9 +18,8 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -109,12 +109,10 @@ public class CompanyIndex implements AutoCloseable {
     }
 
     private static String parseDate(String regDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdfTo = new SimpleDateFormat("yyyyMMdd");
         try {
-            Date date = sdf.parse(regDate);
-            return sdfTo.format(date);
-        } catch (ParseException e) {
+            LocalDate date = LocalDate.parse(regDate, DateTimeFormatter.ISO_DATE);
+            return date.format(DateTimeFormatter.BASIC_ISO_DATE);
+        } catch (Exception e) {
             log.log(Level.INFO, regDate, e);
             return regDate;
         }
@@ -132,6 +130,7 @@ public class CompanyIndex implements AutoCloseable {
         Path indexPath = Path.of("/tmp/company");
         Path companyDataPath = Path.of("D:\\opensource\\Enterprise-Registration-Data-of-Chinese-Mainland\\Enterprise-Registration-Data\\csv");
         try (CompanyIndex index = new CompanyIndex(indexPath)) {
+            Stopwatch stopwatch = Stopwatch.createStarted();
             Files.walkFileTree(companyDataPath, new FileVisitor<Path>() {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
@@ -161,15 +160,22 @@ public class CompanyIndex implements AutoCloseable {
                     return FileVisitResult.CONTINUE;
                 }
             });
+            stopwatch.stop();
+            System.out.println("建立索引消耗" + stopwatch.elapsed(TimeUnit.SECONDS) + "秒");
         }
     }
 
-    private static void indexFile(CompanyIndex index, Path file) throws IOException {
-        Files.lines(file)
-                .skip(1)
-                .forEach(l -> {
-                    String[] cols = l.split(",");
-                    index.store(cols[0], cols[1], cols[2], cols[3], cols[4], cols[5], cols[6], cols[7], cols[8], cols[9]);
-                });
+    private static void indexFile(CompanyIndex index, Path file) {
+        try {
+            Files.lines(file)
+                    .skip(1)
+                    //.parallel()
+                    .forEach(l -> {
+                        String[] cols = l.split(",");
+                        index.store(cols[0], cols[1], cols[2], cols[3], cols[4], cols[5], cols[6], cols[7], cols[8], cols[9]);
+                    });
+        } catch (IOException e) {
+            log.log(Level.WARNING, "", e);
+        }
     }
 }
