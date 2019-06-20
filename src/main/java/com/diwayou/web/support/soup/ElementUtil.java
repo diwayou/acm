@@ -1,7 +1,7 @@
 package com.diwayou.web.support.soup;
 
 import org.jsoup.Jsoup;
-import org.jsoup.helper.StringUtil;
+import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.*;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;

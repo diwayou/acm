@@ -145,8 +145,7 @@ public final class StdIn {
     public static String readAll() {
         if (!scanner.hasNextLine()) return null;
 
-        // reference: http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
-        return scanner.useDelimiter("\\A").next();
+        return scanner.useDelimiter("\\z").next();
     }
 
     /**
