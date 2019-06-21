@@ -19,32 +19,36 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SubsetsII {
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
+    public static void main(String[] args) {
+        System.out.println(subsetsWithDup(new int[]{1, 2, 2}));
+    }
+
+    public static List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
 
         List<List<Integer>> result = new ArrayList<List<Integer>>();
 
-        if (nums.length == 0 || nums == null) {
+        if (nums.length == 0) {
             return result;
         }
 
-        helper(nums, new ArrayList<Integer>(), 0, result);
+        helper(nums, new ArrayList<>(), 0, result);
 
         return result;
     }
 
 
-    public void helper(int[] nums, ArrayList<Integer> current, int index, List<List<Integer>> result) {
-        result.add(current);
+    public static void helper(int[] nums, ArrayList<Integer> current, int index, List<List<Integer>> result) {
+        result.add(new ArrayList<>(current));
 
         for (int i = index; i < nums.length; i++) {
             if (i > index && nums[i] == nums[i - 1]) {
                 continue;
             }
 
-            ArrayList<Integer> newCurrent = new ArrayList<Integer>(current);
-            newCurrent.add(nums[i]);
-            helper(nums, newCurrent, i + 1, result);
+            current.add(nums[i]);
+            helper(nums, current, i + 1, result);
+            current.remove(current.size() - 1);
         }
     }
 }

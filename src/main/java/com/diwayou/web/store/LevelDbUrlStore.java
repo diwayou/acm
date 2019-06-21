@@ -1,6 +1,7 @@
 package com.diwayou.web.store;
 
-import java.io.IOException;
+import org.rocksdb.RocksDBException;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.logging.Level;
@@ -17,7 +18,7 @@ public class LevelDbUrlStore implements UrlStore {
     public LevelDbUrlStore(Path storePath) {
         try {
             this.requestStore = new LevelDbStore(storePath.resolve("urlVisited").toFile());
-        } catch (IOException e) {
+        } catch (RocksDBException e) {
             log.log(Level.WARNING, "", e);
             throw new RuntimeException(e);
         }
@@ -25,7 +26,12 @@ public class LevelDbUrlStore implements UrlStore {
 
     @Override
     public boolean contain(String url) {
-        return requestStore.get(URL_NAMESPACE, url.getBytes(StandardCharsets.UTF_8)) != null;
+        try {
+            return requestStore.get(URL_NAMESPACE, url.getBytes(StandardCharsets.UTF_8)) != null;
+        } catch (RocksDBException e) {
+            log.log(Level.WARNING, "", e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -34,7 +40,7 @@ public class LevelDbUrlStore implements UrlStore {
             requestStore.write(wb -> {
                 wb.put(URL_NAMESPACE, url.getBytes(StandardCharsets.UTF_8), new byte[]{0});
             });
-        } catch (IOException e) {
+        } catch (RocksDBException e) {
             log.log(Level.WARNING, "", e);
             throw new RuntimeException(e);
         }

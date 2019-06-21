@@ -11,8 +11,8 @@ import com.diwayou.web.log.AppLog;
 import com.diwayou.web.store.LevelDbQuery;
 import com.diwayou.web.store.LevelDbStore;
 import com.diwayou.web.store.StoreQuery;
+import org.rocksdb.RocksDBException;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -42,7 +42,7 @@ public class RequestScheduler implements Scheduler<Request> {
         this.threadPool = new FixedThreadPoolExecutor(threadPoolSize);
         try {
             this.requestStore = new LevelDbStore(spider.getStorePath().resolve("requests").toFile());
-        } catch (IOException e) {
+        } catch (RocksDBException e) {
             throw new RuntimeException(e);
         }
 
@@ -129,7 +129,7 @@ public class RequestScheduler implements Scheduler<Request> {
     private Request commitRequest(Request request) {
         try {
             requestStore.write(wb -> wb.delete(CRAWLING_NAMESPACE, genKey(request)));
-        } catch (IOException e) {
+        } catch (RocksDBException e) {
             throw new RuntimeException(e);
         }
 
@@ -144,13 +144,13 @@ public class RequestScheduler implements Scheduler<Request> {
                     wb.put(WAITING_NAMESPACE, genKey(request), genValue(request));
                 }
             });
-        } catch (IOException e) {
+        } catch (RocksDBException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         threadPool.shutdownNow();
         requestScheduledService.shutdownNow();
         requestStore.close();

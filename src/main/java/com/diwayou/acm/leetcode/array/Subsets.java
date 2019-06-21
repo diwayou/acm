@@ -1,4 +1,6 @@
-package com.diwayou.acm.leetcode.array;// Given a set of distinct integers, nums, return all possible subsets.
+package com.diwayou.acm.leetcode.array;
+
+// Given a set of distinct integers, nums, return all possible subsets.
 
 // Note: The solution set must not contain duplicate subsets.
 
@@ -21,7 +23,11 @@ import java.util.List;
 import java.util.Stack;
 
 public class Subsets {
-    public List<List<Integer>> subsets(int[] nums) {
+    public static void main(String[] args) {
+        System.out.println(subsets(new int[]{1, 2, 3}));
+    }
+
+    public static List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
 
         recurse(result, nums, new Stack<>(), 0);
@@ -29,7 +35,7 @@ public class Subsets {
         return result;
     }
 
-    private void recurse(List<List<Integer>> result, int[] nums, Stack path, int position) {
+    private static void recurse(List<List<Integer>> result, int[] nums, Stack<Integer> path, int position) {
         if (position == nums.length) {
             result.add(new ArrayList<>(path));
             return;

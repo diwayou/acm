@@ -1,40 +1,50 @@
 package com.diwayou.web.store;
 
+import com.diwayou.web.log.AppLog;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
-import org.iq80.leveldb.*;
-import org.iq80.leveldb.impl.Iq80DBFactory;
-import org.iq80.leveldb.util.Closeables;
-import org.iq80.leveldb.util.FileUtils;
+import org.rocksdb.*;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 public class LevelDbStore implements Closeable {
+
+    private static final Logger log = AppLog.getCrawl();
+
+    static {
+        RocksDB.loadLibrary();
+    }
 
     private LevelDbConfig config;
 
     private File databaseDir;
 
-    private DBFactory factory;
+    private RocksDB db;
 
-    private DB db;
+    private Options options;
 
-    public LevelDbStore(File databaseDir) throws IOException {
+    private WriteOptions writeOptions;
+
+    public LevelDbStore(File databaseDir) throws RocksDBException {
         this(databaseDir, new LevelDbConfig());
     }
 
-    public LevelDbStore(File databaseDir, LevelDbConfig config) throws IOException {
-        this.factory = new Iq80DBFactory();
+    public LevelDbStore(File databaseDir, LevelDbConfig config) throws RocksDBException {
         this.databaseDir = databaseDir;
         this.config = config;
+
+        this.writeOptions = new WriteOptions();
+        this.writeOptions.setSync(config.isSync());
+        // If `sync` is true, `disableWAL` must be set false.
+        this.writeOptions.setDisableWAL(!config.isSync() && config.isDisableWAL());
 
         if (!config.isUseExisting()) {
             destroyDb();
@@ -44,60 +54,59 @@ public class LevelDbStore implements Closeable {
     }
 
     private void open()
-            throws IOException {
-        Options options = new Options();
-        options.createIfMissing(!config.isUseExisting());
+            throws RocksDBException {
+        options = new Options();
+        options.setCreateIfMissing(true);
 
-        db = factory.open(databaseDir, options);
+        this.db = RocksDB.open(this.options, this.databaseDir.getAbsolutePath());
     }
 
-    public void write(Consumer<LevelDbWriteCallback> callback) throws IOException {
+    public void write(Consumer<LevelDbWriteCallback> callback) throws RocksDBException {
         write(callback, false);
     }
 
-    public void write(Consumer<LevelDbWriteCallback> callback, boolean sync) throws IOException {
+    public void write(Consumer<LevelDbWriteCallback> callback, boolean sync) throws RocksDBException {
         write(callback, sync, false);
     }
 
-    public Snapshot write(Consumer<LevelDbWriteCallback> callback, boolean sync, boolean snapshot) throws IOException {
-        try (WriteBatch batch = db.createWriteBatch()) {
+    public void write(Consumer<LevelDbWriteCallback> callback, boolean sync, boolean snapshot) throws RocksDBException {
+        try (WriteBatch batch = new WriteBatch()) {
 
             callback.accept(new LevelDbWriteCallback(batch));
 
-            return db.write(batch, new WriteOptions().sync(sync).snapshot(snapshot));
+            db.write(writeOptions, batch);
         }
     }
 
     public List<Entry<byte[], byte[]>> query(StoreQuery<LevelDbQuery> storeQuery) {
         LevelDbQuery query = storeQuery.getQuery();
-        DBIterator iterator = db.iterator(query.getOptions());
-        if (query.getOffset() != null) {
-            iterator.seek(genKey(query.getNamespace(), query.getOffset()));
-        } else {
-            iterator.seekToFirst();
-        }
+        try (final ReadOptions readOptions = new ReadOptions()) {
+            try (RocksIterator iterator = db.newIterator(readOptions)) {
+                if (query.getOffset() != null) {
+                    iterator.seek(genKey(query.getNamespace(), query.getOffset()));
+                } else {
+                    iterator.seekToFirst();
+                }
 
-        List<Entry<byte[], byte[]>> result = Lists.newArrayListWithCapacity(storeQuery.getPageSize());
-        int pageSize = storeQuery.getPageSize();
-        while (iterator.hasNext() && pageSize-- > 0) {
-            Map.Entry<byte[], byte[]> next = iterator.next();
+                List<Entry<byte[], byte[]>> result = Lists.newArrayListWithCapacity(storeQuery.getPageSize());
+                int pageSize = storeQuery.getPageSize();
+                while (iterator.isValid() && pageSize-- > 0) {
+                    iterator.next();
 
-            if (!Arrays.equals(next.getKey(), 0, Ints.BYTES, Ints.toByteArray(query.getNamespace()), 0, Ints.BYTES)) {
-                break;
+                    if (!Arrays.equals(iterator.key(), 0, Ints.BYTES, Ints.toByteArray(query.getNamespace()), 0, Ints.BYTES)) {
+                        break;
+                    }
+
+                    result.add(Map.entry(iterator.key(), iterator.value()));
+                }
+
+                return result;
             }
-
-            result.add(next);
         }
-
-        return result;
     }
 
-    public byte[] get(int namespace, byte[] key) {
+    public byte[] get(int namespace, byte[] key) throws RocksDBException {
         return db.get(genKey(namespace, key));
-    }
-
-    public byte[] get(int namespace, byte[] key, ReadOptions options) {
-        return db.get(genKey(namespace, key), options);
     }
 
     static byte[] genKey(int namespace, byte[] key) {
@@ -108,14 +117,27 @@ public class LevelDbStore implements Closeable {
         return buffer.array();
     }
 
-    private void destroyDb() {
-        Closeables.closeQuietly(db);
-        db = null;
-        FileUtils.deleteRecursively(databaseDir);
+    private void destroyDb() throws RocksDBException {
+        try (final Options opt = new Options()) {
+            RocksDB.destroyDB(databaseDir.getAbsolutePath(), opt);
+        }
     }
 
     @Override
-    public void close() throws IOException {
-        this.db.close();
+    public void close() {
+        if (this.db != null) {
+            this.db.close();
+            this.db = null;
+        }
+
+        if (this.options != null) {
+            this.options.close();
+            this.options = null;
+        }
+
+        if (this.writeOptions != null) {
+            this.writeOptions.close();
+            this.writeOptions = null;
+        }
     }
 }

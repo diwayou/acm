@@ -1,4 +1,6 @@
-package com.diwayou.acm.leetcode.array;// Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+package com.diwayou.acm.leetcode.array;
+
+// Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
 
 // You may assume that the intervals were initially sorted according to their start times.
 
@@ -12,15 +14,6 @@ package com.diwayou.acm.leetcode.array;// Given a set of non-overlapping interva
 
 import java.util.List;
 
-/**
- * Definition for an interval.
- * public class Interval {
- * int start;
- * int end;
- * Interval() { start = 0; end = 0; }
- * Interval(int s, int e) { start = s; end = e; }
- * }
- */
 public class InsertInterval {
     public class Interval {
         int start;

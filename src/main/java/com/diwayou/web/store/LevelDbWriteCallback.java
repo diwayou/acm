@@ -1,6 +1,7 @@
 package com.diwayou.web.store;
 
-import org.iq80.leveldb.WriteBatch;
+import org.rocksdb.RocksDBException;
+import org.rocksdb.WriteBatch;
 
 public class LevelDbWriteCallback {
 
@@ -10,11 +11,19 @@ public class LevelDbWriteCallback {
         this.writeBatch = writeBatch;
     }
 
-    public WriteBatch put(int namespace, byte[] key, byte[] value) {
-        return writeBatch.put(LevelDbStore.genKey(namespace, key), value);
+    public void put(int namespace, byte[] key, byte[] value) {
+        try {
+            writeBatch.put(LevelDbStore.genKey(namespace, key), value);
+        } catch (RocksDBException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public WriteBatch delete(int namespace, byte[] key) {
-        return writeBatch.delete(LevelDbStore.genKey(namespace, key));
+    public void delete(int namespace, byte[] key) {
+        try {
+            writeBatch.delete(LevelDbStore.genKey(namespace, key));
+        } catch (RocksDBException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
