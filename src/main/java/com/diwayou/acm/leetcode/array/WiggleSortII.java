@@ -18,11 +18,13 @@ package com.diwayou.acm.leetcode.array;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 public class WiggleSortII {
 
     public static void main(String[] args) {
-        int[] nums = {1, 5, 1, 1, 6, 4};
+        int[] nums = IntStream.range(0, 100).toArray();
+        shuffle(nums);
 
         wiggleSort(nums);
 
@@ -50,10 +52,14 @@ public class WiggleSortII {
         int i = 0, j = 0, k = n - 1;
         while (j <= k) {
             int cur = nums[indexMap(indexMapSize, j)];
-            if (cur > mid)
+            if (cur > mid) {
+                System.out.print(String.format("i%d -- j%d   ", i, j));
                 swap(nums, indexMap(indexMapSize, i++), indexMap(indexMapSize, j++));
-            else if (cur < mid)
+            }
+            else if (cur < mid) {
+                System.out.print(String.format("j%d -- k%d   ", j, k));
                 swap(nums, indexMap(indexMapSize, j), indexMap(indexMapSize, k--));
+            }
             else
                 j++;
         }
@@ -65,6 +71,12 @@ public class WiggleSortII {
     }
 
     private static void swap(int[] nums, int i, int j) {
+        if (i == j) {
+            System.out.println();
+            return;
+        }
+
+        System.out.println(String.format("%d[%d] <-> %d[%d]", i, nums[i], j, nums[j]));
         int tmp = nums[i];
         nums[i] = nums[j];
         nums[j] = tmp;
