@@ -18,15 +18,16 @@ package com.diwayou.acm.leetcode.array;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 public class WiggleSortII {
 
     public static void main(String[] args) {
-        int[] nums = IntStream.range(0, 100).toArray();
-        shuffle(nums);
+        int[] nums = new int[]{1, 1, 1, 1, 2, 2, 2};
 
-        wiggleSort(nums);
+        for (int i = 0; i < 1; i++) {
+            shuffle(nums);
+            wiggleSort(nums);
+        }
 
         System.out.println(Arrays.toString(nums));
     }
@@ -35,125 +36,289 @@ public class WiggleSortII {
         Random rnd = ThreadLocalRandom.current();
         for (int i = nums.length - 1; i > 0; i--) {
             int index = rnd.nextInt(i + 1);
-            // Simple swap
-            int a = nums[index];
-            nums[index] = nums[i];
-            nums[i] = a;
+
+            swap(nums, index, i);
         }
     }
 
     public static void wiggleSort(int[] nums) {
-        int n = nums.length;
-        int indexMapSize = n | 1;
+        int indexMapSize = nums.length | 1;
 
         // Find a median.
-        int mid = nth_element(nums, n / 2);
+        int mid = select(0, nums.length, nums.length / 2, nums);
 
-        int i = 0, j = 0, k = n - 1;
+        int i = 0, j = 0, k = nums.length - 1;
+        int curIdx;
+        int cur;
         while (j <= k) {
-            int cur = nums[indexMap(indexMapSize, j)];
+            curIdx = indexMap(indexMapSize, j);
+            cur = nums[curIdx];
             if (cur > mid) {
-                System.out.print(String.format("i%d -- j%d   ", i, j));
-                swap(nums, indexMap(indexMapSize, i++), indexMap(indexMapSize, j++));
-            }
-            else if (cur < mid) {
-                System.out.print(String.format("j%d -- k%d   ", j, k));
-                swap(nums, indexMap(indexMapSize, j), indexMap(indexMapSize, k--));
-            }
-            else
+                //System.out.print(String.format("i%d -- j%d   ", i, j));
+                swap(nums, indexMap(indexMapSize, i++), curIdx);
+                j++;
+            } else if (cur < mid) {
+                //System.out.print(String.format("j%d -- k%d   ", j, k));
+
+                swap(nums, curIdx, indexMap(indexMapSize, k--));
+            } else
                 j++;
         }
     }
 
-    // Index-rewiring.
     private static int indexMap(int indexMapSize, int i) {
-        return (1 + 2 * (i)) % indexMapSize;
+        return (1 + i + i) % indexMapSize;
     }
 
     private static void swap(int[] nums, int i, int j) {
-        if (i == j) {
-            System.out.println();
+        if (i == j || nums[i] >= nums[j]) {
+            //System.out.println();
             return;
         }
 
-        System.out.println(String.format("%d[%d] <-> %d[%d]", i, nums[i], j, nums[j]));
+        //System.out.println(String.format("%d[%d] <-> %d[%d]", i, nums[i], j, nums[j]));
         int tmp = nums[i];
         nums[i] = nums[j];
         nums[j] = tmp;
     }
 
-    static void nth_element_helper2(int[] arr, int beg, int end) {
-        for (int i = beg + 1; i < end; i++) {
-            for (int j = i; j > beg; j--) {
-                if (arr[j - 1] < arr[j])
+    // copy from net.algart
+    public static int select(
+            final int from,
+            final int to,
+            final int requiredIndex,
+            int[] array) {
+        if (array == null) {
+            throw new NullPointerException("Null array");
+        }
+        if (from < 0 || from >= to) {
+            throw new IllegalArgumentException("Illegal from (" + from + ") or to (" + to
+                    + ") arguments: must be 0 <= from < to");
+        }
+        int left = from;
+        int right = to - 1;
+        if (requiredIndex < left || requiredIndex > right) {
+            throw new IllegalArgumentException("Index " + requiredIndex + " is out of range " + left + ".." + right);
+        }
+        // - measuring at real data shows that it is better to check min/max only for ALL array, not for sub-arrays
+        for (; ; ) {
+            if (requiredIndex == left) {
+                return selectMin(left, right, array);
+            }
+            if (requiredIndex == right) {
+                return selectMax(left, right, array);
+            }
+            assert requiredIndex > left;
+            assert requiredIndex < right;
+            final int difference = right - left;
+            if (difference == 2) {
+                final int base = left + 1;
+                int a = array[left];
+                int b = array[base];
+                final int c = array[right];
+                // Sorting a, b, c
+                if ((b) < (a)) {
+                    a = b;
+                    b = array[left];
+                }
+                if ((c) < (b)) {
+                    array[right] = b;
+                    b = c;
+                    // since this moment, c is not 3rd element
+                    if ((b) < (a)) {
+                        b = a;
+                        a = c;
+                    }
+                }
+                array[left] = a;
+                array[base] = b;
+                return array[requiredIndex];
+
+            } else if (difference == 3) {
+                final int afterLeft = left + 1;
+                final int beforeRight = right - 1;
+                int a = array[left];
+                int b = array[afterLeft];
+                int c = array[beforeRight];
+                int d = array[right];
+                // Sorting a, b, c, d
+                if ((b) < (a)) {
+                    a = b;
+                    b = array[left];
+                }
+                if ((d) < (c)) {
+                    d = c;
+                    c = array[right];
+                }
+                // Now a <= b, c <= d
+                if ((a) < (c)) {
+                    // a..b, then c..d
+                    array[left] = a;
+                    if ((b) < (d)) {
+                        array[right] = d;
+                        if ((b) < (c)) {
+                            array[afterLeft] = b;
+                            array[beforeRight] = c;
+                        } else {
+                            array[afterLeft] = c;
+                            array[beforeRight] = b;
+                        }
+                    } else {
+                        // a <= c <= d <= b
+                        array[afterLeft] = c;
+                        array[beforeRight] = d;
+                        array[right] = b;
+                    }
+                } else {
+                    // c..d, then a..b
+                    array[left] = c;
+                    if ((d) < (b)) {
+                        array[right] = b;
+                        if ((d) < (a)) {
+                            array[afterLeft] = d;
+                            array[beforeRight] = a;
+                        } else {
+                            array[afterLeft] = a;
+                            array[beforeRight] = d;
+                        }
+                    } else {
+                        // c <= a <= b <= d
+                        array[afterLeft] = a;
+                        array[beforeRight] = b;
+                        array[right] = d;
+                    }
+                }
+                return array[requiredIndex];
+            }
+
+            // Switch above is better than common code below:
+            // if (right - left < THRESHOLD) {
+            //    sortLittleArray(left, right, array);
+            //    return array[requiredIndex];
+            // }
+
+            int a = array[left];
+            int c = array[right];
+            // Sorting 3 elements to find a median from 3: left, (left+right)/2, right:
+            int base = (left + right) >>> 1;
+            // ">>>" will be correct even in the case of overflow
+            int b = array[base];
+            // Sorting a, b, c
+            if ((b) < (a)) {
+                a = b;
+                b = array[left];
+            }
+            if ((c) < (b)) {
+                array[right] = b;
+                b = c;
+                // since this moment, c is not 3rd element
+                if ((b) < (a)) {
+                    b = a;
+                    a = c;
+                }
+            }
+            array[left] = a;
+            // array[base] = b; - virtually (really we can skip this operator)
+
+            // Now data[left] <= data[base] <= data[right] (in other words, base is a median)
+            // moving the base at the new position left+1
+            int tmp = array[left + 1];
+            array[left + 1] = b;
+            array[base] = tmp;
+            base = left + 1;
+            assert b == array[base];
+
+            // Reordering elements left+2..right-1 so that, for some K,
+            //     data[left+2..K] <= data[base],
+            //     data[K+1..right-1] >= data[base]
+            int i = left + 1;
+            int j = right;
+            for (; ; ) {
+                do
+                    ++i;
+                while ((array[i]) < (b));
+                // Now
+                //     data[left+2..i-1] <= data[base]
+                //         (= data[base] for left+1,
+                //         <= data[base] for left+2 and exchanged indexes,
+                //         < data[base] for others),
+                //     data[i] >= data[base],
+                //     i <= j
+                do
+                    --j;
+                while ((b) < (array[j]));
+                // Now
+                //     data[j] <= data[base],
+                //     data[j+1..right-1] >= data[base],
+                //     i <= j+1
+                if (i >= j) {
                     break;
-                int t = arr[j];
-                arr[j] = arr[j - 1];
-                arr[j - 1] = t;
+                }
+                a = array[i];
+                array[i] = array[j];
+                array[j] = a;
+                // Now
+                //     data[left+1..i] <= data[base],
+                //     data[j..right-1] >= data[base],
+                //     i < j
+            }
+            // Now
+            //     data[left+2..i-1] <= data[base],
+            //     data[j] <= data[base],
+            //     data[j+1..right-1] >= data[base],
+            //     i >= j,
+            // so
+            //     data[left+2..j] <= data[base].
+            // It means that elements are reordered and we can assign K=j
+            array[base] = array[j];
+            array[j] = b;
+            // Now
+            //     data[left..j-1] <= data[base],
+            //     data[j] = data[base},
+            //     data[j+1..right] >= data[base]
+            assert left <= j;
+            assert j <= right;
+            if (requiredIndex == j) {
+                return array[requiredIndex];
+            } else if (requiredIndex < j) {
+                right = j - 1;
+            } else {
+                left = j + 1;
             }
         }
     }
 
-    static void nth_element_helper(int[] arr, int beg, int end, int index) {
-        if (beg + 4 >= end) {
-            nth_element_helper2(arr, beg, end);
-            return;
+    private static int selectMin(int left, int right, int[] array) {
+        int index = left;
+        int result = array[left];
+        for (int i = left + 1; i <= right; i++) {
+            int v = array[i];
+            if (v < result) {
+                result = v;
+                index = i;
+            }
         }
-        int initial_beg = beg;
-        int initial_end = end;
-
-        // Pick a pivot (using the median of 3 technique)
-        int pivA = arr[beg];
-        int pivB = arr[(beg + end) / 2];
-        int pivC = arr[end - 1];
-        int pivot;
-        if (pivA < pivB) {
-            if (pivB < pivC)
-                pivot = pivB;
-            else if (pivA < pivC)
-                pivot = pivC;
-            else
-                pivot = pivA;
-        } else {
-            if (pivA < pivC)
-                pivot = pivA;
-            else if (pivB < pivC)
-                pivot = pivC;
-            else
-                pivot = pivB;
+        if (index != left) {
+            array[index] = array[left];
+            array[left] = result;
         }
-
-        // Divide the values about the pivot
-        while (true) {
-            while (beg + 1 < end && arr[beg] < pivot)
-                beg++;
-            while (end > beg + 1 && arr[end - 1] > pivot)
-                end--;
-            if (beg + 1 >= end)
-                break;
-
-            // Swap values
-            int t = arr[beg];
-            arr[beg] = arr[end - 1];
-            arr[end - 1] = t;
-
-            beg++;
-            end--;
-        }
-        if (arr[beg] < pivot)
-            beg++;
-
-        // Recurse
-        if (beg == initial_beg || end == initial_end)
-            throw new RuntimeException("No progress. Bad pivot");
-        if (index < beg)
-            nth_element_helper(arr, initial_beg, beg, index);
-        else
-            nth_element_helper(arr, beg, initial_end, index);
+        return result;
     }
 
-    static int nth_element(int[] arr, int index) {
-        nth_element_helper(arr, 0, arr.length, index);
-        return arr[index];
+    private static int selectMax(int left, int right, int[] array) {
+        int index = right;
+        int result = array[right];
+        for (int i = right - 1; i >= left; i--) {
+            int v = array[i];
+            if (v > result) {
+                result = v;
+                index = i;
+            }
+        }
+        if (index != right) {
+            array[index] = array[right];
+            array[right] = result;
+        }
+        return result;
     }
 }

@@ -19,6 +19,7 @@ package com.diwayou.db.leveldb;
 
 import com.alipay.sofa.jraft.rhea.storage.KVEntry;
 import com.google.common.base.Splitter;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
@@ -35,8 +36,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Benchmark {
     private final boolean useExisting;
-    private final Integer writeBufferSize;
-    private final File databaseDir;
     private final double compressionRatio;
     private long startTime;
 
@@ -77,15 +76,12 @@ public class Benchmark {
         num = (Integer) flags.get(Flag.num);
         reads = (Integer) (flags.get(Flag.reads) == null ? flags.get(Flag.num) : flags.get(Flag.reads));
         valueSize = (Integer) flags.get(Flag.value_size);
-        writeBufferSize = (Integer) flags.get(Flag.write_buffer_size);
         compressionRatio = (Double) flags.get(Flag.compression_ratio);
         useExisting = (Boolean) flags.get(Flag.use_existing_db);
         heapCounter = 0;
         bytes = 0;
         random = new Random(301);
 
-        databaseDir = new File((String) flags.get(Flag.db));
-        
         client = new Client();
         client.init();
     }
@@ -259,30 +255,26 @@ public class Benchmark {
 
     private void write(Order order, DBState state, int numEntries, int valueSize, int entriesPerBatch)
             throws IOException {
-        if (state == DBState.FRESH) {
-            if (useExisting) {
-                message = "skipping (--use_existing_db is true)";
-                return;
-            }
-            destroyDb();
-            open();
-            start(); // Do not count time taken to destroy/open
-        }
-
         if (numEntries != num) {
             message = String.format("(%d ops)", numEntries);
         }
 
+        byte[] value = generate(valueSize);
+        Stopwatch stopwatch = Stopwatch.createStarted();
         for (int i = 0; i < numEntries; i += entriesPerBatch) {
             List<KVEntry> kvs = Lists.newArrayListWithCapacity(entriesPerBatch);
             for (int j = 0; j < entriesPerBatch; j++) {
                 int k = (order == Order.SEQUENTIAL) ? i + j : random.nextInt(num);
                 byte[] key = formatNumber(k);
-                kvs.add(new KVEntry(key, generate(valueSize)));
+                kvs.add(new KVEntry(key, value));
                 bytes += valueSize + key.length;
                 finishedSingleOp();
             }
+            stopwatch.reset();
+            stopwatch.start();
             client.getRheaKVStore().bPut(kvs);
+            stopwatch.stop();
+            //System.out.println(stopwatch.elapsed(TimeUnit.MILLISECONDS));
         }
     }
 
@@ -481,7 +473,7 @@ public class Benchmark {
         },
 
         // Number of key/values to place in database
-        num(1000000) {
+        num(1000) {
             @Override
             public Object parseValue(String value) {
                 return Integer.parseInt(value);
