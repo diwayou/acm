@@ -473,7 +473,7 @@ public class Benchmark {
         },
 
         // Number of key/values to place in database
-        num(1000) {
+        num(10000) {
             @Override
             public Object parseValue(String value) {
                 return Integer.parseInt(value);

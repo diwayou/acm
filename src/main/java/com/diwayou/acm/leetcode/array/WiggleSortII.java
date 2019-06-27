@@ -48,21 +48,24 @@ public class WiggleSortII {
         int mid = select(0, nums.length, nums.length / 2, nums);
 
         int i = 0, j = 0, k = nums.length - 1;
-        int curIdx;
+        int curIdxJ = indexMap(indexMapSize, j);
+        int curIdxI = indexMap(indexMapSize, i);
+        int curIdxK = indexMap(indexMapSize, k);
         int cur;
         while (j <= k) {
-            curIdx = indexMap(indexMapSize, j);
-            cur = nums[curIdx];
+            cur = nums[curIdxJ];
             if (cur > mid) {
                 //System.out.print(String.format("i%d -- j%d   ", i, j));
-                swap(nums, indexMap(indexMapSize, i++), curIdx);
-                j++;
+                swap(nums, curIdxI, curIdxJ);
+                curIdxI = indexMap(indexMapSize, ++i);
+                curIdxJ = indexMap(indexMapSize, ++j);
             } else if (cur < mid) {
                 //System.out.print(String.format("j%d -- k%d   ", j, k));
-
-                swap(nums, curIdx, indexMap(indexMapSize, k--));
-            } else
-                j++;
+                swap(nums, curIdxJ, curIdxK);
+                curIdxK = indexMap(indexMapSize, --k);
+            } else {
+                curIdxJ = indexMap(indexMapSize, ++j);
+            }
         }
     }
 

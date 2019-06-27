@@ -38,10 +38,11 @@ public class Server2 {
                 .config();
         final StoreEngineOptions storeOpts = StoreEngineOptionsConfigured.newConfigured() //
                 .withStorageType(StorageType.RocksDB)
-                .withRocksDBOptions(RocksDBOptionsConfigured.newConfigured().withDbPath(Configs.DB_PATH).config())
+                .withRocksDBOptions(RocksDBOptionsConfigured.newConfigured().withDbPath(Configs.DB_PATH).withSync(false).config())
                 .withRaftDataPath(Configs.RAFT_DATA_PATH)
                 .withServerAddress(new Endpoint("127.0.0.1", 8182))
                 .config();
+        storeOpts.getCommonNodeOptions().getRaftOptions().setSync(false);
         final RheaKVStoreOptions opts = RheaKVStoreOptionsConfigured.newConfigured() //
                 .withClusterName(Configs.CLUSTER_NAME) //
                 .withInitialServerList(Configs.ALL_NODE_ADDRESSES)
