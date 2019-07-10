@@ -1,20 +1,18 @@
 package com.diwayou.acm.team;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 
 /**
  * 打家劫舍 https://leetcode-cn.com/problems/house-robber-iii/
  */
-public class HouseRobberIII {
+public class HouseRobberIII1 {
 
     public static void main(String[] args) {
         Integer[] input = {3,4,5,1,3,null,1};
         TreeNode root = buildTree(input);
 
-        System.out.println(new HouseRobberIII().rob(root));
+        System.out.println(new HouseRobberIII1().rob(root));
     }
 
     private static TreeNode buildTree(Integer[] input) {
@@ -55,42 +53,28 @@ public class HouseRobberIII {
         }
     }
 
-    private Map<TreeNode, Integer> dpUse = new HashMap<>();
-    private Map<TreeNode, Integer> dpNotUse = new HashMap<>();
-
     public int rob(TreeNode root) {
         if (root == null) {
             return 0;
         }
 
-        return Math.max(doRob(root, false), doRob(root, true));
+        int[] res = doRob(root);
+
+        return Math.max(res[0], res[1]);
     }
 
-    private int doRob(TreeNode root, boolean use) {
+    private int[] doRob(TreeNode root) {
         if (root == null) {
-            return 0;
+            return new int[2];
         }
 
-        if (use && dpUse.containsKey(root)) {
-            return dpUse.get(root);
-        } else if (!use && dpNotUse.containsKey(root)) {
-            return dpNotUse.get(root);
-        }
+        int[] left = doRob(root.left);
+        int[] right = doRob(root.right);
 
-        int ret;
-        if (use) {
-            ret = root.val + doRob(root.left, false) + doRob(root.right, false);
-        } else {
-            ret = Math.max(doRob(root.left, true), doRob(root.left, false)) +
-                    Math.max(doRob(root.right, true), doRob(root.right, false));
-        }
+        int[] res = new int[2];
+        res[0] = root.val + left[1] + right[1];
+        res[1] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
 
-        if (use) {
-            dpUse.put(root, ret);
-        } else {
-            dpNotUse.put(root, ret);
-        }
-
-        return ret;
+        return res;
     }
 }
