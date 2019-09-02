@@ -112,7 +112,7 @@ public class SimpleServerUserProcessor extends SyncUserProcessor<RequestBody> {
 
         //test biz context get connection
 
-        Long waittime = (Long) bizCtx.getInvokeContext().get(InvokeContext.BOLT_PROCESS_WAIT_TIME);
+        Long waittime = bizCtx.getInvokeContext().get(InvokeContext.BOLT_PROCESS_WAIT_TIME);
         if (logger.isInfoEnabled()) {
             logger.info("Server User processor process wait time {}", waittime);
         }

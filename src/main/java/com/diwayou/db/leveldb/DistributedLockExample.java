@@ -17,8 +17,8 @@
 package com.diwayou.db.leveldb;
 
 import com.alipay.sofa.jraft.rhea.client.RheaKVStore;
-import com.alipay.sofa.jraft.rhea.util.ExecutorServiceHelper;
 import com.alipay.sofa.jraft.rhea.util.concurrent.DistributedLock;
+import com.alipay.sofa.jraft.util.ExecutorServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

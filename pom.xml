@@ -27,7 +27,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>12</java.version>
+        <java.version>11</java.version>
         <lucene.version>8.1.1</lucene.version>
     </properties>
 
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>jraft-rheakv-pd</artifactId>
-            <version>1.2.5.bugfix</version>
+            <version>1.2.6</version>
         </dependency>
 
         <!-- core必须放在最前边 -->
