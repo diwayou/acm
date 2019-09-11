@@ -15,9 +15,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -62,7 +62,7 @@ public class FxQueryFrame extends Stage {
                 QueryResult result = searcher.search(textField.getText(), curPageNum);
 
                 if (curPageNum == 1) {
-                    int pageCount = Math.round(result.getTotal() / (float)pageSize);
+                    int pageCount = Math.round(result.getTotal() / (float) pageSize);
                     pagination.setPageCount(pageCount);
                 }
 
@@ -164,7 +164,8 @@ public class FxQueryFrame extends Stage {
 
     private void initSearcher(int pageSize) {
         try {
-            this.searcher = new ResultSearcher(pageSize, (p, qr) -> {});
+            this.searcher = new ResultSearcher(pageSize, (p, qr) -> {
+            });
         } catch (IOException e) {
             log.log(Level.WARNING, "", e);
         }

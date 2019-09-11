@@ -65,9 +65,9 @@ public class CompanyIndex implements AutoCloseable {
     }
 
     public void store(String name, String uuid, String regDate,
-                             String type, String people,
-                             String regMoney, String content, String province,
-                             String city, String address) {
+                      String type, String people,
+                      String regMoney, String content, String province,
+                      String city, String address) {
         Document doc = new Document();
         doc.add(new TextField("name", name, Field.Store.YES));
         doc.add(new StringField("uuid", uuid, Field.Store.YES));

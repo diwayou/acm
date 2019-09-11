@@ -1,6 +1,6 @@
 package com.diwayou.acm.graph;
 
-import com.diwayou.acm.util.StdDraw;
+import com.diwayou.acm.book.util.StdDraw;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.graph.MutableValueGraph;

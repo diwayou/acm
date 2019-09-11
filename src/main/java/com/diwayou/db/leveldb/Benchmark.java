@@ -67,7 +67,7 @@ public class Benchmark {
     private int nextReport;     // When to report next
 
     final Client client;
-    
+
     private boolean snappyAvailable = false;
 
     public Benchmark(Map<Flag, Object> flags)

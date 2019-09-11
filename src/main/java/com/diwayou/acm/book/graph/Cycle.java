@@ -1,7 +1,7 @@
 package com.diwayou.acm.book.graph;
 
 import com.diwayou.acm.book.queue.Stack;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************
  *  Compilation:  javac Cycle.java

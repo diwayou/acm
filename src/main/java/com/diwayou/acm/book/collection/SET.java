@@ -21,7 +21,7 @@ package com.diwayou.acm.book.collection;
  *
  *************************************************************************/
 
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdOut;
 
 import java.util.Iterator;
 import java.util.SortedSet;

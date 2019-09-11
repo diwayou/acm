@@ -8,7 +8,8 @@ public class PageStoreContext {
 
     private Map<String, Object> context = Maps.newHashMap();
 
-    private PageStoreContext() {}
+    private PageStoreContext() {
+    }
 
     public static PageStoreContext create() {
         return new PageStoreContext();

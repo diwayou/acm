@@ -22,8 +22,8 @@ package com.diwayou.acm.book.list; /********************************************
  *
  *************************************************************************/
 
-import com.diwayou.acm.util.StdIn;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdIn;
+import com.diwayou.acm.book.util.StdOut;
 
 import java.util.Arrays;
 

@@ -6,7 +6,7 @@ package com.diwayou.acm.book.graph; /*******************************************
  *
  *************************************************************************/
 
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdOut;
 
 /**
  * The <tt>FlowEdge</tt> class represents a capacitated edge with a flow

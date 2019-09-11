@@ -30,7 +30,7 @@ package com.diwayou.acm.book.hash; /********************************************
  *
  ***************************************************************/
 
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdOut;
 
 import java.math.BigInteger;
 import java.util.Random;

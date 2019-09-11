@@ -29,7 +29,6 @@ import static com.alipay.sofa.jraft.util.BytesUtil.readUtf8;
 import static com.alipay.sofa.jraft.util.BytesUtil.writeUtf8;
 
 /**
- *
  * @author jiachun.fjc
  */
 public class ScanExample {
@@ -63,7 +62,7 @@ public class ScanExample {
         final CompletableFuture<List<KVEntry>> f3 = rheaKVStore.scan(firstKeyString, lastKeyString);
         final CompletableFuture<List<KVEntry>> f4 = rheaKVStore.scan(firstKeyString, lastKeyString, false);
         CompletableFuture.allOf(f1, f2, f3, f4).join();
-        for (final CompletableFuture<List<KVEntry>> f : new CompletableFuture[] { f1, f2, f3, f4 }) {
+        for (final CompletableFuture<List<KVEntry>> f : new CompletableFuture[]{f1, f2, f3, f4}) {
             for (final KVEntry kv : f.join()) {
                 LOG.info("Async scan: key={}, value={}", readUtf8(kv.getKey()), readUtf8(kv.getValue()));
             }
@@ -74,7 +73,7 @@ public class ScanExample {
         final List<KVEntry> l2 = rheaKVStore.bScan(firstKey, lastKey, false);
         final List<KVEntry> l3 = rheaKVStore.bScan(firstKeyString, lastKeyString);
         final List<KVEntry> l4 = rheaKVStore.bScan(firstKeyString, lastKeyString, false);
-        for (final List<KVEntry> l : new List[] { l1, l2, l3, l4 }) {
+        for (final List<KVEntry> l : new List[]{l1, l2, l3, l4}) {
             for (final KVEntry kv : l) {
                 LOG.info("Async scan: key={}, value={}", readUtf8(kv.getKey()), readUtf8(kv.getValue()));
             }

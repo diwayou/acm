@@ -4,7 +4,7 @@ import com.diwayou.acm.book.collection.Bag;
 import com.diwayou.acm.book.graph.Digraph;
 import com.diwayou.acm.book.graph.DirectedDFS;
 import com.diwayou.acm.book.queue.Stack;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************
  *  Compilation:  javac NFA.java

@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * IK分词器主类
- *
  */
 public final class IKSegmenter {
 
@@ -49,6 +48,7 @@ public final class IKSegmenter {
 
     /**
      * IK分词器构造函数
+     *
      * @param input
      */
     public IKSegmenter(Reader input, Configuration configuration) {
@@ -72,6 +72,7 @@ public final class IKSegmenter {
 
     /**
      * 初始化词典，加载子分词器实现
+     *
      * @return List<ISegmenter>
      */
     private List<ISegmenter> loadSegmenters() {
@@ -87,6 +88,7 @@ public final class IKSegmenter {
 
     /**
      * 分词，获取下一个词元
+     *
      * @return Lexeme 词元对象
      * @throws IOException
      */
@@ -135,6 +137,7 @@ public final class IKSegmenter {
 
     /**
      * 重置分词器到初始状态
+     *
      * @param input
      */
     public synchronized void reset(Reader input) {

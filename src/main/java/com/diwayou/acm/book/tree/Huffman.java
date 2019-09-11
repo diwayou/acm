@@ -1,8 +1,8 @@
 package com.diwayou.acm.book.tree;
 
 import com.diwayou.acm.book.queue.MinPQ;
-import com.diwayou.acm.util.BinaryStdIn;
-import com.diwayou.acm.util.BinaryStdOut;
+import com.diwayou.acm.book.util.BinaryStdIn;
+import com.diwayou.acm.book.util.BinaryStdOut;
 
 /*************************************************************************
  *  Compilation:  javac Huffman.java

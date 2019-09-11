@@ -25,7 +25,6 @@ import java.util.concurrent.CompletableFuture;
 import static com.alipay.sofa.jraft.util.BytesUtil.readUtf8;
 
 /**
- *
  * @author jiachun.fjc
  */
 public class MergeExample {

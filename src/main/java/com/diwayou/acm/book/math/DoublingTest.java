@@ -1,7 +1,7 @@
 package com.diwayou.acm.book.math;
 
-import com.diwayou.acm.util.StdOut;
-import com.diwayou.acm.util.StdRandom;
+import com.diwayou.acm.book.util.StdOut;
+import com.diwayou.acm.book.util.StdRandom;
 
 /*************************************************************************
  *  Compilation:  javac DoublingTest.java

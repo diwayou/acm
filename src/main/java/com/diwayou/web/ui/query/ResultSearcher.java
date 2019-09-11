@@ -36,7 +36,7 @@ public class ResultSearcher implements Closeable {
                 IndexFieldName.url.name(), 600F,
                 IndexFieldName.parentUrl.name(), 400F,
                 IndexFieldName.content.name(), 1F
-                );
+        );
     }
 
     public QueryResult search(String keyword, int pageNum) throws IOException {

@@ -89,7 +89,8 @@ public class PageUtil {
                         ext = "txt";
                     }
                 }
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
 
         return ext;

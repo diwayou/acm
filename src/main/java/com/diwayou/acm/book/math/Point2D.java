@@ -5,9 +5,9 @@ package com.diwayou.acm.book.math; /********************************************
  *
  *************************************************************************/
 
-import com.diwayou.acm.util.StdDraw;
-import com.diwayou.acm.util.StdOut;
-import com.diwayou.acm.util.StdRandom;
+import com.diwayou.acm.book.util.StdDraw;
+import com.diwayou.acm.book.util.StdOut;
+import com.diwayou.acm.book.util.StdRandom;
 
 import java.util.Arrays;
 import java.util.Comparator;

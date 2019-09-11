@@ -15,23 +15,23 @@ public class FlowStudy {
         subscribeNames.forEach(name -> publisher.subscribe(new SimpleSubscribe(name, latch)));
 
         IntStream.rangeClosed(1, 5).forEach(i -> {
-                    while (true) {
-                        int lag = publisher.offer(i, (s, item) -> {
-                            System.out.println(((SimpleSubscribe) s).getName() + "丢弃--- " + item);
-                            return false;
-                        });
-
-                        if (lag < 0) {
-                            System.out.println(i + " 执行延迟：" + lag);
-                            try {
-                                TimeUnit.SECONDS.sleep(1);
-                            } catch (InterruptedException ignore) {
-                            }
-                        } else {
-                            break;
-                        }
-                    }
+            while (true) {
+                int lag = publisher.offer(i, (s, item) -> {
+                    System.out.println(((SimpleSubscribe) s).getName() + "丢弃--- " + item);
+                    return false;
                 });
+
+                if (lag < 0) {
+                    System.out.println(i + " 执行延迟：" + lag);
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException ignore) {
+                    }
+                } else {
+                    break;
+                }
+            }
+        });
 
         publisher.close();
 

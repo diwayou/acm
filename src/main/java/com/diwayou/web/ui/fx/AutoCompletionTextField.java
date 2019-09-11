@@ -115,7 +115,7 @@ public class AutoCompletionTextField extends TextField {
     /**
      * Build TextFlow with selected text. Return "case" dependent.
      *
-     * @param text - string with text
+     * @param text   - string with text
      * @param filter - string to select in text
      * @return - TextFlow
      */
@@ -123,7 +123,7 @@ public class AutoCompletionTextField extends TextField {
         int filterIndex = text.toLowerCase().indexOf(filter.toLowerCase());
         Text textBefore = new Text(text.substring(0, filterIndex));
         Text textAfter = new Text(text.substring(filterIndex + filter.length()));
-        Text textFilter = new Text(text.substring(filterIndex,  filterIndex + filter.length())); //instead of "filter" to keep all "case sensitive"
+        Text textFilter = new Text(text.substring(filterIndex, filterIndex + filter.length())); //instead of "filter" to keep all "case sensitive"
         textFilter.setFill(Color.ORANGE);
         textFilter.setFont(Font.font("Helvetica", FontWeight.BOLD, 12));
         return new TextFlow(textBefore, textFilter, textAfter);

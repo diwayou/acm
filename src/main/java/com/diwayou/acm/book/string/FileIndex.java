@@ -27,9 +27,9 @@ package com.diwayou.acm.book.string; /******************************************
 
 import com.diwayou.acm.book.collection.SET;
 import com.diwayou.acm.book.collection.ST;
-import com.diwayou.acm.util.In;
-import com.diwayou.acm.util.StdIn;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.In;
+import com.diwayou.acm.book.util.StdIn;
+import com.diwayou.acm.book.util.StdOut;
 
 import java.io.File;
 

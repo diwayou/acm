@@ -6,7 +6,7 @@ package com.diwayou.acm.book.math; /********************************************
  *
  *************************************************************************/
 
-import com.diwayou.acm.util.StdDraw;
+import com.diwayou.acm.book.util.StdDraw;
 
 import java.awt.*;
 

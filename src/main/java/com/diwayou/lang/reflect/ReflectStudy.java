@@ -11,7 +11,8 @@ import java.util.List;
 public class ReflectStudy {
     public static void main(String[] args) throws NoSuchMethodException {
         Method getMethod = List.class.getMethod("get", int.class);
-        Invokable<List<String>, ?> invokable = new TypeToken<List<String>>() {}.method(getMethod);
+        Invokable<List<String>, ?> invokable = new TypeToken<List<String>>() {
+        }.method(getMethod);
         System.out.println(invokable.getReturnType()); // Not Object.class!
         System.out.println(invokable.getOwnerType());
 

@@ -26,7 +26,6 @@ import java.util.concurrent.CompletableFuture;
 import static com.alipay.sofa.jraft.util.BytesUtil.writeUtf8;
 
 /**
- *
  * @author jiachun.fjc
  */
 public class GetSequenceExample {

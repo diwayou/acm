@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
  * 中文数量词子分词器
  */
 class CN_QuantifierSegmenter implements ISegmenter {
@@ -138,6 +137,7 @@ class CN_QuantifierSegmenter implements ISegmenter {
 
     /**
      * 处理中文量词
+     *
      * @param context
      */
     private void processCount(AnalyzeContext context) {
@@ -204,6 +204,7 @@ class CN_QuantifierSegmenter implements ISegmenter {
 
     /**
      * 判断是否需要扫描量词
+     *
      * @return
      */
     private boolean needCountScan(AnalyzeContext context) {
@@ -225,6 +226,7 @@ class CN_QuantifierSegmenter implements ISegmenter {
 
     /**
      * 添加数词词元到结果集
+     *
      * @param context
      */
     private void outputNumLexeme(AnalyzeContext context) {

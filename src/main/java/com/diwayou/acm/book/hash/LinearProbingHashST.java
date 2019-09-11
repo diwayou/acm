@@ -1,8 +1,8 @@
 package com.diwayou.acm.book.hash;
 
 import com.diwayou.acm.book.queue.Queue;
-import com.diwayou.acm.util.StdIn;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdIn;
+import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************
  *  Compilation:  javac LinearProbingHashST.java

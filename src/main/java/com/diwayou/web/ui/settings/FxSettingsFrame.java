@@ -100,7 +100,7 @@ public class FxSettingsFrame extends Dialog {
         flow.getChildren().add(box);
     }
 
-    private void addSetting(String label,  boolean state, EventHandler<ActionEvent> handler) {
+    private void addSetting(String label, boolean state, EventHandler<ActionEvent> handler) {
         CheckBox checkBox = new CheckBox(label);
         checkBox.setSelected(state);
         checkBox.setOnAction(handler);

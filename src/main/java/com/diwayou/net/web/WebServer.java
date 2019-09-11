@@ -14,7 +14,7 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 public class WebServer {
     static final boolean SSL = System.getProperty("ssl") != null;
-    static final int PORT = Integer.parseInt(System.getProperty("port", SSL? "443" : "80"));
+    static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "443" : "80"));
 
     public static void main(String[] args) throws Exception {
         System.setProperty("user.dir", "D:\\work\\web\\seller\\branches\\dev\\src");
@@ -40,7 +40,7 @@ public class WebServer {
             Channel ch = b.bind(PORT).sync().channel();
 
             System.err.println("Open your web browser and navigate to " +
-                    (SSL? "https" : "http") + "://127.0.0.1:" + PORT + '/');
+                    (SSL ? "https" : "http") + "://127.0.0.1:" + PORT + '/');
 
             ch.closeFuture().sync();
         } finally {

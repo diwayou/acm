@@ -12,8 +12,8 @@ package com.diwayou.acm.book.queue; /*******************************************
  *
  *************************************************************************/
 
-import com.diwayou.acm.util.StdIn;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdIn;
+import com.diwayou.acm.book.util.StdOut;
 
 import java.util.Comparator;
 import java.util.Iterator;

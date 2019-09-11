@@ -1,6 +1,6 @@
 package com.diwayou.acm.book.graph;
 
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************
  *  Compilation:  javac AssignmentProblem.java

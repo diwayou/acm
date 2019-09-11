@@ -1,7 +1,7 @@
 package com.diwayou.acm.book.string;
 
-import com.diwayou.acm.util.BinaryStdIn;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.BinaryStdIn;
+import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************
  *  Compilation:  javac HexDump.java

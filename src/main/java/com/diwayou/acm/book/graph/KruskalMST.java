@@ -3,8 +3,8 @@ package com.diwayou.acm.book.graph;
 import com.diwayou.acm.book.collection.UF;
 import com.diwayou.acm.book.queue.MinPQ;
 import com.diwayou.acm.book.queue.Queue;
-import com.diwayou.acm.util.In;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.In;
+import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************
  * Compilation:  javac KruskalMST.java

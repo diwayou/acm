@@ -7,7 +7,7 @@ package com.diwayou.acm.book.queue; /*******************************************
  *************************************************************************/
 
 import com.diwayou.acm.book.collection.Date;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdOut;
 
 import java.util.Arrays;
 import java.util.Comparator;

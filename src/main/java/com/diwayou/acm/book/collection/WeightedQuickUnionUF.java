@@ -1,7 +1,7 @@
 package com.diwayou.acm.book.collection;
 
-import com.diwayou.acm.util.StdIn;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.StdIn;
+import com.diwayou.acm.book.util.StdOut;
 
 /****************************************************************************
  *  Compilation:  javac WeightedQuickUnionUF.java

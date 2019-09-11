@@ -11,6 +11,7 @@ public class StoreQuery<T> extends Page {
     public static <T> StoreQuery<T> create(T query) {
         return new StoreQuery<>(query);
     }
+
     public T getQuery() {
         return query;
     }

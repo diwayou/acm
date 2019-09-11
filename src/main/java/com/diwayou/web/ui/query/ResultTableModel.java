@@ -22,9 +22,9 @@ public class ResultTableModel extends AbstractTableModel {
     /**
      * The table column classes.
      */
-    private Class<?>[] columns = new Class<?>[] { String.class, String.class, String.class, String.class, String.class };
+    private Class<?>[] columns = new Class<?>[]{String.class, String.class, String.class, String.class, String.class};
 
-    private String[] columnNames = new String[] {"父链接", "链接", "类型", "后缀", "内容"};
+    private String[] columnNames = new String[]{"父链接", "链接", "类型", "后缀", "内容"};
 
     private String[] contentCache;
 
@@ -70,7 +70,7 @@ public class ResultTableModel extends AbstractTableModel {
     public void setValueAt(Object value, int row, int col) {
         if (col == 4 && value != null) {
             this.data[row][col] = CONTENT_TIP;
-            this.contentCache[row] = (String)value;
+            this.contentCache[row] = (String) value;
         } else {
             this.data[row][col] = value;
         }

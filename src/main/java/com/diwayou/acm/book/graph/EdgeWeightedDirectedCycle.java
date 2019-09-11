@@ -1,8 +1,8 @@
 package com.diwayou.acm.book.graph;
 
 import com.diwayou.acm.book.queue.Stack;
-import com.diwayou.acm.util.StdOut;
-import com.diwayou.acm.util.StdRandom;
+import com.diwayou.acm.book.util.StdOut;
+import com.diwayou.acm.book.util.StdRandom;
 
 /*************************************************************************
  *  Compilation:  javac EdgeWeightedDirectedCycle.java

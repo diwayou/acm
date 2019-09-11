@@ -1,9 +1,9 @@
 package com.diwayou.acm.book.hash;
 
 import com.diwayou.acm.book.collection.ST;
-import com.diwayou.acm.util.In;
-import com.diwayou.acm.util.StdIn;
-import com.diwayou.acm.util.StdOut;
+import com.diwayou.acm.book.util.In;
+import com.diwayou.acm.book.util.StdIn;
+import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************
  *  Compilation:  javac LookupCSV.java

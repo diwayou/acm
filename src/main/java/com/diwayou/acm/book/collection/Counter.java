@@ -1,7 +1,7 @@
 package com.diwayou.acm.book.collection;
 
-import com.diwayou.acm.util.StdOut;
-import com.diwayou.acm.util.StdRandom;
+import com.diwayou.acm.book.util.StdOut;
+import com.diwayou.acm.book.util.StdRandom;
 
 /*************************************************************************
  *  Compilation:  javac Counter.java

@@ -9,8 +9,8 @@ package com.diwayou.acm.book.math; /********************************************
  *************************************************************************/
 
 import com.diwayou.acm.book.queue.MinPQ;
-import com.diwayou.acm.util.StdDraw;
-import com.diwayou.acm.util.StdIn;
+import com.diwayou.acm.book.util.StdDraw;
+import com.diwayou.acm.book.util.StdIn;
 
 import java.awt.*;
 

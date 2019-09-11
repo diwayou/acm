@@ -1,8 +1,8 @@
 package com.diwayou.acm.book.sort;
 
-import com.diwayou.acm.util.StdIn;
-import com.diwayou.acm.util.StdOut;
-import com.diwayou.acm.util.StdRandom;
+import com.diwayou.acm.book.util.StdIn;
+import com.diwayou.acm.book.util.StdOut;
+import com.diwayou.acm.book.util.StdRandom;
 
 /*************************************************************************
  *  Compilation:  javac Quick.java
