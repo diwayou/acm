@@ -1,4 +1,4 @@
-package com.diwayou.acm.book.list; /*************************************************************************
+package com.diwayou.acm.book.string; /*************************************************************************
  *  Compilation:  javac SuffixArray.java
  *  Execution:    java SuffixArray < input.txt
  *

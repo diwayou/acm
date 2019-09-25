@@ -14,7 +14,7 @@ public class LongestIncreasingSubsequence3 {
             return 0;
         }
 
-        // 下标为最长长度，value为当前最长长度子序列中最大的值
+        // 维持着当前最长递增序列的每个位置最小的值
         int[] dp = new int[nums.length + 1];
         int end = 1;
         dp[end] = nums[0];

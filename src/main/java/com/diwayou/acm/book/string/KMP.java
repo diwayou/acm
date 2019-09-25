@@ -107,8 +107,8 @@ public class KMP {
 
     // test client
     public static void main(String[] args) {
-        String pat = args[0];
-        String txt = args[1];
+        String pat = "ABC";
+        String txt = "ABCDE";
         char[] pattern = pat.toCharArray();
         char[] text = txt.toCharArray();
 

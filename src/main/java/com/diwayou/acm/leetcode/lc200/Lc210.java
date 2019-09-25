@@ -1,4 +1,4 @@
-package com.diwayou.acm.leetcode;
+package com.diwayou.acm.leetcode.lc200;
 
 import java.util.*;
 

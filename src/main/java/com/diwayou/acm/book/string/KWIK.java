@@ -1,6 +1,5 @@
 package com.diwayou.acm.book.string;
 
-import com.diwayou.acm.book.list.SuffixArray;
 import com.diwayou.acm.book.util.In;
 import com.diwayou.acm.book.util.StdIn;
 import com.diwayou.acm.book.util.StdOut;

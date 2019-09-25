@@ -1,4 +1,4 @@
-package com.diwayou.acm.book.hash; /***************************************************************
+package com.diwayou.acm.book.string; /***************************************************************
  *  Compilation:  javac RabinKarp.java
  *  Execution:    java RabinKarp pat txt
  *
