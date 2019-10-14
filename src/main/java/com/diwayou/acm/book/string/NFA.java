@@ -89,8 +89,8 @@ public class NFA {
 
 
     public static void main(String[] args) {
-        String regexp = "(" + args[0] + ")";
-        String txt = args[1];
+        String regexp = "(" + "aaaa" + ")";
+        String txt = "aaa";
         NFA nfa = new NFA(regexp);
         StdOut.println(nfa.recognizes(txt));
     }
