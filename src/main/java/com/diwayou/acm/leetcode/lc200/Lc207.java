@@ -16,20 +16,18 @@ public class Lc207 {
         System.out.println(new Lc207().canFinish1(2, arr));
     }
 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    public boolean canFinish1(int numCourses, int[][] prerequisites) {
         int[] inDegrees = new int[numCourses];
-        List<Integer>[] adjMap = new List[numCourses];
+        List<Integer>[] g = new List[numCourses];
 
         Queue<Integer> queue = new LinkedList<>();
         for (int[] req : prerequisites) {
             ++inDegrees[req[0]];
-            List<Integer> adj = adjMap[req[1]];
-            if (adj == null) {
-                adj = new ArrayList<>();
-                adjMap[req[1]] = adj;
+            if (g[req[1]] == null) {
+                g[req[1]] = new ArrayList<>();
             }
 
-            adj.add(req[0]);
+            g[req[1]].add(req[0]);
         }
 
         for (int i = 0; i < numCourses; ++i) {
@@ -40,14 +38,14 @@ public class Lc207 {
 
         int count = 0;
         while (!queue.isEmpty()) {
-            Integer num = queue.poll();
+            int v = queue.poll();
             ++count;
 
-            if (adjMap[num] == null) {
+            if (g[v] == null) {
                 continue;
             }
 
-            for (int adj : adjMap[num]) {
+            for (int adj : g[v]) {
                 if (--inDegrees[adj] == 0) {
                     queue.offer(adj);
                 }
@@ -57,45 +55,45 @@ public class Lc207 {
         return count == numCourses;
     }
 
-    public boolean canFinish1(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graphic = new List[numCourses];
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<Integer>[] g = new List[numCourses];
 
-        for (int[] pre : prerequisites) {
-            if (graphic[pre[0]] == null) {
-                graphic[pre[0]] = new ArrayList<>();
+        for (int[] req : prerequisites) {
+            if (g[req[1]] == null) {
+                g[req[1]] = new ArrayList<>();
             }
-            graphic[pre[0]].add(pre[1]);
+
+            g[req[1]].add(req[0]);
         }
 
-        boolean[] globalMarked = new boolean[numCourses];
-        boolean[] localMarked = new boolean[numCourses];
+        int[] mark = new int[numCourses];
         for (int i = 0; i < numCourses; i++) {
-            if (hasCycle(globalMarked, localMarked, graphic, i)) {
+            if (hasCycle(mark, g, i)) {
                 return false;
             }
         }
+
         return true;
     }
 
-    private boolean hasCycle(boolean[] globalMarked, boolean[] localMarked,
-                             List<Integer>[] graphic, int curNode) {
-        if (localMarked[curNode]) {
+    private boolean hasCycle(int[] mark, List<Integer>[] g, int v) {
+        if (mark[v] == 1) {
             return true;
         }
-        if (globalMarked[curNode]) {
+        if (mark[v] == 2) {
             return false;
         }
-        globalMarked[curNode] = true;
 
-        if (graphic[curNode] != null) {
-            localMarked[curNode] = true;
-            for (int nextNode : graphic[curNode]) {
-                if (hasCycle(globalMarked, localMarked, graphic, nextNode)) {
+        if (g[v] != null) {
+            mark[v] = 1;
+            for (int adj : g[v]) {
+                if (hasCycle(mark, g, adj)) {
                     return true;
                 }
             }
-            localMarked[curNode] = false;
         }
+
+        mark[v] = 2;
 
         return false;
     }
