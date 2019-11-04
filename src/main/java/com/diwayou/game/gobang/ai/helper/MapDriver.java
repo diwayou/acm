@@ -19,7 +19,7 @@ public class MapDriver {
         try {
             reader = new BufferedReader(new FileReader(file));
             String tempString = reader.readLine();
-            int size = Integer.valueOf(tempString);
+            int size = Integer.parseInt(tempString);
             Color[][] map = new Color[size][size];
             for (int i = 0; i < size; i++) {
                 tempString = reader.readLine();

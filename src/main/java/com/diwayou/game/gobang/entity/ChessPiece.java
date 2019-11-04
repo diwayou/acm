@@ -2,11 +2,16 @@ package com.diwayou.game.gobang.entity;
 
 public class ChessPiece {
 
+    public static final ChessPiece empty = new ChessPiece();
+
     private int x;
 
     private int y;
 
     private ChessOwner owner;
+
+    public ChessPiece() {
+    }
 
     public ChessPiece(int x, int y) {
         this.x = x;

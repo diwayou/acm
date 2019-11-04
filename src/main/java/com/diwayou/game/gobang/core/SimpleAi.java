@@ -54,10 +54,6 @@ public class SimpleAi {
         // 得到可行位置的集合
         List<ScoreChessPiece> allMayChessPiece = getAllMayLocation();
 
-        if (allMayChessPiece.isEmpty()) {
-            return new ChessPiece(chess.length / 2, chess.length / 2);
-        }
-
         // 所有得分最大且相同的位置
         //打分时可能存在分数相同的位置，将这个位置保存起来随机落子
         List<ScoreChessPiece> allMaxChessPiece = new ArrayList<>();
@@ -88,9 +84,19 @@ public class SimpleAi {
 
             System.out.println("x=" + chessPiece.getX() + " y=" + chessPiece.getY() + " score=" + score);
         }
-
-        //从最高分集合中随机抽取一个位置
-        ChessPiece pos = allMaxChessPiece.get((int) (Math.random() * allMaxChessPiece.size()));
+        ChessPiece pos;
+        if (!allMaxChessPiece.isEmpty()) {
+            //从最高分集合中随机抽取一个位置
+            pos = allMaxChessPiece.get((int) (Math.random() * allMaxChessPiece.size()));
+        } else if (!allMayChessPiece.isEmpty()) {
+            pos = allMayChessPiece.get((int) (Math.random() * allMayChessPiece.size()));
+        } else {
+            if (chess[0][0] == null) {
+                return new ChessPiece(chess.length / 2, chess.length / 2);
+            } else {
+                return ChessPiece.empty;
+            }
+        }
 
         System.out.println("机器落子:行：" + (pos.getX() + 1) + " 列:" + (pos.getY() + 1));
 

@@ -20,7 +20,6 @@ public class Lc207 {
         int[] inDegrees = new int[numCourses];
         List<Integer>[] g = new List[numCourses];
 
-        Queue<Integer> queue = new LinkedList<>();
         for (int[] req : prerequisites) {
             ++inDegrees[req[0]];
             if (g[req[1]] == null) {
@@ -30,6 +29,7 @@ public class Lc207 {
             g[req[1]].add(req[0]);
         }
 
+        Queue<Integer> queue = new LinkedList<>();
         for (int i = 0; i < numCourses; ++i) {
             if (inDegrees[i] == 0) {
                 queue.offer(i);

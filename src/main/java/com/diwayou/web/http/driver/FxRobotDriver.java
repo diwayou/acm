@@ -53,6 +53,7 @@ public class FxRobotDriver implements RobotDriver {
             return null;
         });
 
+        System.out.println("初始化浏览器成功....");
         if (re != null) {
             throw new RuntimeException(re);
         }

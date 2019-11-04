@@ -28,6 +28,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
+        <java.fx.version>11</java.fx.version>
         <lucene.version>8.1.1</lucene.version>
     </properties>
 
@@ -89,12 +90,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
-            <version>12</version>
+            <version>${java.fx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>12</version>
+            <version>${java.fx.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.activation</groupId>

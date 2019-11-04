@@ -25,7 +25,7 @@ public class AppConfig {
         storeDoc = Preferences.userRoot().node(NODE).getBoolean(DOC_KEY, false);
         systemBrowser = Preferences.userRoot().node(NODE).getBoolean(IMAGE_BROWSER_KEY, true);
         imageLength = Preferences.userRoot().node(NODE).getInt(IMAGE_LENGTH_KEY, 10 * 1024);
-        fxRender = Preferences.userRoot().node(NODE).getBoolean(FX_RENDER_KEY, true);
+        fxRender = Preferences.userRoot().node(NODE).getBoolean(FX_RENDER_KEY, false);
     }
 
     public static synchronized void toggleImage(boolean isStore) {

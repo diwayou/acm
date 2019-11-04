@@ -2,6 +2,7 @@ package com.diwayou.game.gobang.core;
 
 import com.diwayou.game.gobang.entity.ChessBoard;
 import com.diwayou.game.gobang.entity.ChessOwner;
+import com.diwayou.game.gobang.entity.ChessPiece;
 import com.diwayou.game.gobang.ui.ChessBoardUi;
 
 import javax.swing.*;
@@ -51,6 +52,16 @@ public class ChessController {
         int row = (y - 5) / 30;
 
         showChess(row, col);
+    }
+
+    public void showChess(ChessPiece chessPiece) {
+        if (chessPiece == ChessPiece.empty) {
+            JOptionPane.showMessageDialog(chessBoardUi, "平局", "棋盘已满！", JOptionPane.WARNING_MESSAGE);
+            restartBoard();
+            return;
+        }
+
+        showChess(chessPiece.getX(), chessPiece.getY());
     }
 
     public void showChess(int row, int col) {

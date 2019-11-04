@@ -66,7 +66,7 @@ public class GobangFrame extends JFrame {
 
                 ChessPiece chessPiece = aiPlayer.explore();
 
-                chessController.showChess(chessPiece.getX(), chessPiece.getY());
+                chessController.showChess(chessPiece);
             }));
         });
         JMenuItem robotItem = new JMenuItem("AI对战");
@@ -81,7 +81,7 @@ public class GobangFrame extends JFrame {
 
                 ChessPiece chessPiece = aiPlayer.explore();
 
-                chessController.showChess(chessPiece.getX(), chessPiece.getY());
+                chessController.showChess(chessPiece);
             }));
         });
         mode.add(humanItem);
@@ -97,10 +97,10 @@ public class GobangFrame extends JFrame {
         chessBoardUi.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (mode.equals(PlayMode.aiVsAi)) {
+                if (playMode.equals(PlayMode.aiVsAi)) {
                     ChessPiece chessPiece = aiPlayer.explore();
 
-                    chessController.showChess(chessPiece.getX(), chessPiece.getY());
+                    chessController.showChess(chessPiece);
                 } else {
                     chessController.showChess(e);
                 }
