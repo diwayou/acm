@@ -64,6 +64,12 @@ public class Lc146 {
                 return -1;
             }
 
+            moveToTail(node);
+
+            return node.v;
+        }
+
+        private void moveToTail(Node node) {
             node.prev.next = node.next;
             node.next.prev = node.prev;
 
@@ -71,8 +77,6 @@ public class Lc146 {
             node.prev = tail.prev;
             tail.prev = node;
             node.next = tail;
-
-            return node.v;
         }
 
         public void put(int key, int value) {
@@ -80,13 +84,7 @@ public class Lc146 {
             if (node != null) {
                 node.v = value;
 
-                node.prev.next = node.next;
-                node.next.prev = node.prev;
-
-                tail.prev.next = node;
-                node.prev = tail.prev;
-                tail.prev = node;
-                node.next = tail;
+                moveToTail(node);
 
                 return;
             }

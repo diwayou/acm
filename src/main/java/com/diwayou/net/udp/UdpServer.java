@@ -20,7 +20,7 @@ public class UdpServer {
 
                     process(packet);
                 } catch (IOException e) {
-                    //System.out.println("超时?");
+                    System.out.println("超时?");
                 }
             }
         }

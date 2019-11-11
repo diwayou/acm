@@ -13,7 +13,7 @@ public class UdpClient {
         try (DatagramSocket client = new DatagramSocket()) {
             String message = "你好啊!";
             byte[] buf = message.getBytes(StandardCharsets.UTF_8);
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 12345);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName("255.255.255.255"), 12345);
 
             while (true) {
                 TimeUnit.SECONDS.sleep(2);
