@@ -1,6 +1,5 @@
 package com.diwayou.acm.book.hash;
 
-import com.diwayou.acm.book.collection.ST;
 import com.diwayou.acm.book.util.StdOut;
 
 /*************************************************************************

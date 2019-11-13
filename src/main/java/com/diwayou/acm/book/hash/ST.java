@@ -1,4 +1,4 @@
-package com.diwayou.acm.book.collection; /*************************************************************************
+package com.diwayou.acm.book.hash; /*************************************************************************
  *  Compilation:  javac ST.java
  *  Execution:    java ST
  *

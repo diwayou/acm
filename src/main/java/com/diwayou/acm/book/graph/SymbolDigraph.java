@@ -1,6 +1,6 @@
 package com.diwayou.acm.book.graph;
 
-import com.diwayou.acm.book.collection.ST;
+import com.diwayou.acm.book.hash.ST;
 import com.diwayou.acm.book.util.In;
 import com.diwayou.acm.book.util.StdIn;
 import com.diwayou.acm.book.util.StdOut;
