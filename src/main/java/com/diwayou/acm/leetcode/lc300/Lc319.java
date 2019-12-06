@@ -11,6 +11,6 @@ package com.diwayou.acm.leetcode.lc300;
 public class Lc319 {
 
     public int bulbSwitch(int n) {
-        return 0;
+        return (int)Math.sqrt(n);
     }
 }
