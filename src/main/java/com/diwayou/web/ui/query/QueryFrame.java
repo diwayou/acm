@@ -170,7 +170,7 @@ public class QueryFrame extends JFrame {
                 // 父子链接调用主窗口浏览器浏览
                 if (col == 0 || col == 1) {
                     try {
-                        mainFrame.getRobot().get((String) content, 10);
+                        mainFrame.navUrl((String) content, 10);
                         toolPanel.updateUrl((String) content);
                     } catch (Exception ex) {
                         log.log(Level.WARNING, "", ex);

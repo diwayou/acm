@@ -117,11 +117,11 @@ public class ToolPanel extends JPanel {
             }
 
             final String fUrl = url;
-            mainFrame.getRobot().clear();
+            SwingUtilities.invokeLater(() -> mainFrame.getRobot().clear());
 
             ForkJoinPool.commonPool().execute(() -> {
                 try {
-                    mainFrame.getRobot().get(fUrl, 10);
+                    mainFrame.navUrl(fUrl, 10);
                     updateUrl(mainFrame.getRobot().getUrl());
                 } catch (Exception e) {
                     log.log(Level.WARNING, "", e);

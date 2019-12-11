@@ -22,6 +22,10 @@ public class SpiderBuilder {
     }
 
     public static SpiderBuilder newBuilder(Path storePath) {
+        if (!storePath.toFile().exists() && !storePath.toFile().mkdirs()) {
+            throw new RuntimeException("create directory fail storePath=" + storePath.toAbsolutePath().toString());
+        }
+
         UrlStore urlStore = new LevelDbUrlStore(storePath);
         return new SpiderBuilder()
                 .setStorePath(storePath)

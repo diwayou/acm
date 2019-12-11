@@ -7,7 +7,7 @@ import java.net.URI;
 public class UrlUtil {
 
     public static String urlToFilename(String url) {
-        if (url == null) {
+        if (url == null || url.isBlank()) {
             return "";
         }
 

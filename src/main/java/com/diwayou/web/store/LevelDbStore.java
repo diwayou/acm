@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -33,6 +36,8 @@ public class LevelDbStore implements Closeable {
 
     private WriteOptions writeOptions;
 
+    private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
     public LevelDbStore(File databaseDir) throws RocksDBException {
         this(databaseDir, new LevelDbConfig());
     }
@@ -41,16 +46,23 @@ public class LevelDbStore implements Closeable {
         this.databaseDir = databaseDir;
         this.config = config;
 
-        this.writeOptions = new WriteOptions();
-        this.writeOptions.setSync(config.isSync());
-        // If `sync` is true, `disableWAL` must be set false.
-        this.writeOptions.setDisableWAL(!config.isSync() && config.isDisableWAL());
+        final Lock writeLock = this.readWriteLock.writeLock();
+        writeLock.lock();
 
-        if (!config.isUseExisting()) {
-            destroyDb();
+        try {
+            this.writeOptions = new WriteOptions();
+            this.writeOptions.setSync(config.isSync());
+            // If `sync` is true, `disableWAL` must be set false.
+            this.writeOptions.setDisableWAL(!config.isSync() && config.isDisableWAL());
+
+            if (!config.isUseExisting()) {
+                destroyDb();
+            }
+
+            open();
+        } finally {
+            writeLock.unlock();
         }
-
-        open();
     }
 
     private void open()
@@ -70,43 +82,64 @@ public class LevelDbStore implements Closeable {
     }
 
     public void write(Consumer<LevelDbWriteCallback> callback, boolean sync, boolean snapshot) throws RocksDBException {
-        try (WriteBatch batch = new WriteBatch()) {
+        final Lock writeLock = this.readWriteLock.writeLock();
+        writeLock.lock();
+        try {
+            try (WriteBatch batch = new WriteBatch()) {
 
-            callback.accept(new LevelDbWriteCallback(batch));
+                callback.accept(new LevelDbWriteCallback(batch));
 
-            db.write(writeOptions, batch);
+                db.write(writeOptions, batch);
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
     public List<Entry<byte[], byte[]>> query(StoreQuery<LevelDbQuery> storeQuery) {
-        LevelDbQuery query = storeQuery.getQuery();
-        try (final ReadOptions readOptions = new ReadOptions()) {
-            try (RocksIterator iterator = db.newIterator(readOptions)) {
-                if (query.getOffset() != null) {
-                    iterator.seek(genKey(query.getNamespace(), query.getOffset()));
-                } else {
-                    iterator.seekToFirst();
-                }
+        final Lock readLock = this.readWriteLock.readLock();
+        readLock.lock();
 
-                List<Entry<byte[], byte[]>> result = Lists.newArrayListWithCapacity(storeQuery.getPageSize());
-                int pageSize = storeQuery.getPageSize();
-                while (iterator.isValid() && pageSize-- > 0) {
-                    iterator.next();
-
-                    if (!Arrays.equals(iterator.key(), 0, Ints.BYTES, Ints.toByteArray(query.getNamespace()), 0, Ints.BYTES)) {
-                        break;
+        try {
+            LevelDbQuery query = storeQuery.getQuery();
+            try (final ReadOptions readOptions = new ReadOptions()) {
+                try (RocksIterator iterator = db.newIterator(readOptions)) {
+                    if (query.getOffset() != null) {
+                        iterator.seek(genKey(query.getNamespace(), query.getOffset()));
+                    } else {
+                        iterator.seekToFirst();
                     }
 
-                    result.add(Map.entry(iterator.key(), iterator.value()));
-                }
+                    List<Entry<byte[], byte[]>> result = Lists.newArrayListWithCapacity(storeQuery.getPageSize());
+                    int pageSize = storeQuery.getPageSize();
+                    while (iterator.isValid() && pageSize-- > 0) {
+                        byte[] key = iterator.key();
+                        byte[] value = iterator.value();
+                        if (!Arrays.equals(key, 0, Ints.BYTES, Ints.toByteArray(query.getNamespace()), 0, Ints.BYTES)) {
+                            break;
+                        }
 
-                return result;
+                        result.add(Map.entry(key, value));
+
+                        iterator.next();
+                    }
+
+                    return result;
+                }
             }
+        } finally {
+            readLock.unlock();
         }
     }
 
     public byte[] get(int namespace, byte[] key) throws RocksDBException {
-        return db.get(genKey(namespace, key));
+        final Lock readLock = this.readWriteLock.readLock();
+        readLock.lock();
+        try {
+            return db.get(genKey(namespace, key));
+        } finally {
+            readLock.unlock();
+        }
     }
 
     static byte[] genKey(int namespace, byte[] key) {
