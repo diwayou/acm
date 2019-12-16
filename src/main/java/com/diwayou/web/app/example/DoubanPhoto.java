@@ -13,7 +13,7 @@ public class DoubanPhoto {
                 .setCrawlThreadNum(2)
                 .build();
 
-        for (long l = 2576698500L; l < 2576698588L; l++) {
+        for (long l = 2576600000L; l < 2576698588L; l++) {
             Request request = new Request(String.format("https://img1.doubanio.com/view/photo/l/public/p%d.jpeg", l))
                     .setFetcherType(FetcherType.JAVA_HTTP)
                     .setTimeout(6);
