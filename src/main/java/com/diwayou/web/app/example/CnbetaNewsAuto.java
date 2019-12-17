@@ -6,17 +6,17 @@ import com.diwayou.web.crawl.SpiderBuilder;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
+import com.diwayou.web.fetcher.FetcherFactory;
 import com.diwayou.web.log.AppLog;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.nio.file.Path;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CnbetaNews {
+public class CnbetaNewsAuto {
     private static final Logger log = AppLog.getCrawl();
 
     public static void main(String[] args) throws Exception {
@@ -45,10 +45,24 @@ public class CnbetaNews {
                 })
                 .build();
 
+
+        Request request = new Request("https://www.cnbeta.com")
+                .setFetcherType(FetcherType.JAVA_HTTP)
+                .setTimeout(2);
+        Page page = FetcherFactory.one().getJavaHttpFetcher().fetch(request);
+        if (page.statusCode() != 200) {
+            log.log(Level.WARNING, String.format("拉取%s不是200状态", page.getRequest().getUrl()));
+            return;
+        }
+
+        String content = page.bodyAsString();
+        Document document = Jsoup.parse(content);
+
+        String maxId = document.select(".items-area .item").first().attr("id");
+
         Scanner in = new Scanner(System.in);
-        Random random = new Random();
-        for (long l = 922531; l > 900000; l -= 2) {
-            Request request = new Request(String.format("https://www.cnbeta.com/articles/tech/%d.htm", l))
+        for (long l = Long.parseLong(maxId.substring(maxId.lastIndexOf('_') + 1)); l > 900000; l -= 2) {
+            request = new Request(String.format("https://www.cnbeta.com/articles/tech/%d.htm", l))
                     .setFetcherType(FetcherType.JAVA_HTTP)
                     .setTimeout(2);
             spider.submitRequest(request);
