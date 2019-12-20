@@ -58,7 +58,7 @@ public class CnbetaNewsAuto {
         String content = page.bodyAsString();
         Document document = Jsoup.parse(content);
 
-        String maxId = document.select(".items-area .item").first().attr("id");
+        String maxId = document.select(".items-area .item").next().next().attr("id");
 
         Scanner in = new Scanner(System.in);
         for (long l = Long.parseLong(maxId.substring(maxId.lastIndexOf('_') + 1)); l > 900000; l -= 2) {

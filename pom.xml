@@ -55,6 +55,12 @@
             <version>1.2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
         <!-- core必须放在最前边 -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
