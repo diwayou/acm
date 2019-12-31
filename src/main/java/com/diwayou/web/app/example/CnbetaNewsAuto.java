@@ -8,6 +8,7 @@ import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.fetcher.FetcherFactory;
 import com.diwayou.web.log.AppLog;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -67,7 +68,10 @@ public class CnbetaNewsAuto {
                     .setTimeout(2);
             spider.submitRequest(request);
 
-            in.nextLine();
+            String line = in.nextLine();
+            if (StringUtils.isNumeric(line) && !line.isBlank()) {
+                l -= Long.parseLong(line);
+            }
         }
 
         spider.waitUntilStop();
