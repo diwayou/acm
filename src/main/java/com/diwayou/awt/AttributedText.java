@@ -27,6 +27,7 @@ public class AttributedText extends JPanel {
 
         /* Underlining is easy */
         map.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+
         font = font.deriveFont(map);
         g.setFont(font);
         g.drawString(text, 45, 90);
