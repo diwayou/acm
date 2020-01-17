@@ -1,5 +1,6 @@
 package com.diwayou.web.domain;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -50,7 +51,7 @@ public class Request {
     /**
      * 扩展信息
      */
-    private Map<String, String> attributes;
+    private Map<String, Object> attributes;
 
     private List<RequestScript> requestScripts;
 
@@ -115,13 +116,27 @@ public class Request {
         return this;
     }
 
-    public Map<String, String> getAttributes() {
+    public Map<String, Object> getAttributes() {
         return attributes;
     }
 
-    public Request setAttributes(Map<String, String> attributes) {
+    private Request setAttributes(Map<String, Object> attributes) {
         this.attributes = attributes;
         return this;
+    }
+
+    public Request addAttribute(String key, Object value) {
+        if (this.attributes == null) {
+            this.attributes = new HashMap<>();
+        }
+
+        this.attributes.put(key, value);
+
+        return this;
+    }
+
+    public Object getAttribute(String key) {
+        return this.attributes == null ? null : this.attributes.get(key);
     }
 
     public List<RequestScript> getRequestScripts() {
