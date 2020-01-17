@@ -9,6 +9,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.AttributedString;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class ImageUtil {
         for (int i = 0; i < count; i++) {
             long start = System.currentTimeMillis();
             image = createShareImage(600, 960, 26, "Serif", itemImage, "【预售品：1月5日后支持发货或到柜提货】兰蔻新清滢柔肤水400ml 口碑大粉水",
-                    "麦凯乐-大连总店提供商品", "百货专柜", "420", "https://m.51tiangou.com/product/listing.html?id=14756067",
+                    "麦凯乐-大连总店提供商品", "百货专柜", "420", "240", "https://m.51tiangou.com/product/listing.html?id=14756067",
                     "/img/bottom.png");
             long end = System.currentTimeMillis();
 
@@ -47,7 +49,7 @@ public class ImageUtil {
     }
 
     public static BufferedImage createShareImage(int width, int height, int fontSize, String fontName, String itemImageUrl, String itemName,
-                                                 String storeName, String source, String price, String qrcodeUrl,
+                                                 String storeName, String source, String price, String oriPrice, String qrcodeUrl,
                                                  String bottomUrl) throws Exception {
         //Image itemImage = scaleImage(loadImage(itemImageUrl), width, width);
         Image itemImage = loadImage(itemImageUrl);
@@ -106,7 +108,11 @@ public class ImageUtil {
         g.setColor(new Color(0xff4848));
         f = new Font(fontName, Font.PLAIN, fontSize * 2);
         g.setFont(f);
-        curHeight = drawStringMultiLine(g, "¥ " + price, width - 20, 25, curHeight);
+        drawStringMultiLine(g, "¥ " + price, width - 20, 25, curHeight);
+
+        m = g.getFontMetrics();
+        f = new Font(fontName, Font.PLAIN, fontSize);
+        drawStrikeString(g, f, oriPrice, 35 + m.stringWidth("¥ " + price), curHeight);
 
         g.drawImage(bottomImage, 0, height - 72, width, 72, null);
 
@@ -129,6 +135,14 @@ public class ImageUtil {
         }
 
         return image;
+    }
+
+    public static void drawStrikeString(Graphics2D g, Font font, String s, int x, int y) {
+        AttributedString as = new AttributedString(s);
+        as.addAttribute(TextAttribute.FONT, font);
+        as.addAttribute(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON, 0, s.length());
+
+        g.drawString(as.getIterator(), x, y);
     }
 
     public static int drawStringMultiLine(Graphics2D g, String text, int lineWidth, int x, int y) {
