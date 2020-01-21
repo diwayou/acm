@@ -68,7 +68,7 @@ public class CnbetaNewsManager {
         }
 
         if (resultQueue.size() < size) {
-            load(size);
+            load(size * 5);
         }
 
         return result;
