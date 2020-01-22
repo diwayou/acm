@@ -6,6 +6,9 @@ import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.fetcher.FetcherFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +61,11 @@ public class CnbetaNewsManager {
         return nextPage(size);
     }
 
+    @Trace
     public List<CnbetaNewsVo> nextPage(int size) {
+        log.info("TraceId={}", TraceContext.traceId());
+        ActiveSpan.tag("size", String.valueOf(size));
+
         List<CnbetaNewsVo> result = new ArrayList<>(size);
         if (!resultQueue.isEmpty()) {
             int i = 0;
@@ -87,7 +94,7 @@ public class CnbetaNewsManager {
                 String meta = document.select(".meta").text();
                 String body = document.select("#artibody").text();
 
-                resultQueue.addLast(new CnbetaNewsVo(title, meta, body));
+                resultQueue.addLast(new CnbetaNewsVo(title, meta, body, request.getUrl()));
             });
 
             curId.addAndGet(-2);

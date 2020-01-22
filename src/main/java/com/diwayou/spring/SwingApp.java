@@ -1,6 +1,7 @@
 package com.diwayou.spring;
 
 import com.diwayou.spring.ui.SiteListPanel;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 @SpringBootApplication
+@MapperScan(basePackages = "com.diwayou.spring.dao")
 public class SwingApp extends JFrame {
 
     private SiteListPanel siteListPanel;

@@ -19,7 +19,6 @@ package com.diwayou.web.support;
 
 import com.diwayou.web.exception.RobotException;
 import com.diwayou.web.exception.TimeoutException;
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 
 import java.time.Clock;
@@ -246,7 +245,6 @@ public class FluentWait<T> implements Wait<T> {
                 return e;
             }
         }
-        Throwables.throwIfUnchecked(e);
         throw new RuntimeException(e);
     }
 

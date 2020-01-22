@@ -11,4 +11,6 @@ public class CnbetaNewsVo {
     private String meta;
 
     private String body;
+
+    private String url;
 }
