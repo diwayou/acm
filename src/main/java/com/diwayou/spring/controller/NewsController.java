@@ -5,19 +5,28 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 @Slf4j
 @Controller
+@Validated
 public class NewsController {
 
     @Autowired
     private CnbetaNewsManager cnbetaNewsManager;
 
     @GetMapping
-    public String index(Model model, @RequestParam(value = "size") Integer size) {
+    public String index(Model model, @RequestParam(value = "size", defaultValue = "2") @Min(1) @Max(5) Integer size,
+                        HttpServletRequest request) {
         model.addAttribute("news", cnbetaNewsManager.nextPage(size));
+
+        request.getSession().setAttribute("a", "b");
 
         return "index";
     }

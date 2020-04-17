@@ -9,7 +9,7 @@ import java.nio.file.Path;
 public class FileSystemStudy {
     public static void main(String[] args) throws IOException {
         Path file = Path.of("D:\\opensource\\acm\\target\\acm-0.0.1-SNAPSHOT-jar-with-dependencies.jar");
-        FileSystem fs = FileSystems.newFileSystem(file, null);
+        FileSystem fs = FileSystems.newFileSystem(file, FileSystemStudy.class.getClassLoader());
         Path path = fs.getPath("javafx.properties");
 
         System.out.println(Files.readAllLines(path));

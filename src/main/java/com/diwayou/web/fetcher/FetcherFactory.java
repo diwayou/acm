@@ -17,7 +17,7 @@ public class FetcherFactory implements Closeable {
     }
 
     private FetcherFactory() {
-        this(64);
+        this(128);
     }
 
     private FetcherFactory(int fxPoolCapacity) {
