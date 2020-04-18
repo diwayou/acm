@@ -156,6 +156,12 @@ public class LevelDbStore implements Closeable {
         }
     }
 
+    public void flush() throws RocksDBException {
+        if (this.db != null) {
+            this.db.flush(new FlushOptions().setWaitForFlush(true));
+        }
+    }
+
     @Override
     public void close() {
         if (this.db != null) {
