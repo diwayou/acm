@@ -20,7 +20,7 @@ public class ReadExcel {
     }
 
     @Data
-    public static class DataRow {
+    private static class DataRow {
 
         private String code;
 
@@ -40,7 +40,7 @@ public class ReadExcel {
 
     }
 
-    public static class DataListener extends AnalysisEventListener<DataRow> {
+    private static class DataListener extends AnalysisEventListener<DataRow> {
 
         @Override
         public void invoke(DataRow dataRow, AnalysisContext analysisContext) {
