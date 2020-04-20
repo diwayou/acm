@@ -28,8 +28,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>11</java.version>
-        <java.fx.version>11</java.fx.version>
+        <java.version>14</java.version>
+        <java.fx.version>14</java.fx.version>
         <lucene.version>8.1.1</lucene.version>
         <shardingsphere.version>4.0.0</shardingsphere.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>

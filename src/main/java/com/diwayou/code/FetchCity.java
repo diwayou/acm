@@ -105,6 +105,8 @@ public class FetchCity {
                     //Files.writeString(Path.of(fileName), JSON.toJSONString(province), StandardCharsets.UTF_8);
                 }
             }
+        } finally {
+            FetcherFactory.one().close();
         }
     }
 
