@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 /**
  * 爬取2020年的地址编码
  * http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/index.html
+ *
  * @author gaopeng
  * @date 2020/4/17
  */
@@ -42,6 +43,38 @@ public class FetchCity {
         UrlStore urlStore = new MemoryUrlStore();
 
         String url = "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/index.html";
+
+        // [[http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/11.html, 北京市],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/12.html, 天津市],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/13.html, 河北省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/14.html, 山西省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/15.html, 内蒙古自治区],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/21.html, 辽宁省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/22.html, 吉林省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/23.html, 黑龙江省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/31.html, 上海市],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/32.html, 江苏省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/33.html, 浙江省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/34.html, 安徽省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/35.html, 福建省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/36.html, 江西省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/37.html, 山东省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/41.html, 河南省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/42.html, 湖北省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/43.html, 湖南省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/44.html, 广东省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/45.html, 广西壮族自治区],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/46.html, 海南省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/50.html, 重庆市],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/51.html, 四川省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/52.html, 贵州省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/53.html, 云南省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/54.html, 西藏自治区],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/61.html, 陕西省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/62.html, 甘肃省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/63.html, 青海省],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/64.html, 宁夏回族自治区],
+        // [http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/65.html, 新疆维吾尔自治区]]
 
         Fetcher fetcher = FetcherFactory.one().getFxWebviewFetcher();
         Page page = fetcher.fetch(new Request(url));
@@ -69,7 +102,7 @@ public class FetchCity {
                 fetch(pe.absUrl("href"), urlStore, province, cache);
 
                 if (!province.isEmpty()) {
-                    Files.writeString(Path.of(fileName), JSON.toJSONString(province), StandardCharsets.UTF_8);
+                    //Files.writeString(Path.of(fileName), JSON.toJSONString(province), StandardCharsets.UTF_8);
                 }
             }
         }
@@ -93,7 +126,7 @@ public class FetchCity {
     @Getter
     private enum RowType {
 
-        province("province", ".countytr"),
+        county("county", ".countytr"),
         city("city", ".citytr"),
         town("town", ".towntr"),
         village("village", ".villagetr");
@@ -116,9 +149,9 @@ public class FetchCity {
 
         final int ns = 1;
         byte[] key = url.getBytes(StandardCharsets.UTF_8);
-        byte[] cotent = cache.get(ns, key);
+        byte[] content = cache.get(ns, key);
         List<Row> rows;
-        if (cotent == null) {
+        if (content == null) {
             log.info("cache miss {}", url);
             rows = getRows(url);
 
@@ -130,7 +163,7 @@ public class FetchCity {
                 wb.put(ns, key, JSON.toJSONBytes(rows));
             });
         } else {
-            rows = JSON.parseArray(new String(cotent, StandardCharsets.UTF_8), Row.class);
+            rows = JSON.parseArray(new String(content, StandardCharsets.UTF_8), Row.class);
         }
         if (!rows.isEmpty() && rows.get(0).type.equals(RowType.village.name)) {
             result.addAll(rows);
@@ -157,7 +190,7 @@ public class FetchCity {
             }
         } while (document == null);
 
-        List<Row> rows = getNormal(document, RowType.province);
+        List<Row> rows = getNormal(document, RowType.county);
         if (rows.isEmpty()) {
             rows = getNormal(document, RowType.city);
             if (rows.isEmpty()) {
