@@ -7,6 +7,8 @@ import lombok.Data;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author gaopeng
@@ -20,7 +22,7 @@ public class ReadExcel {
     }
 
     @Data
-    private static class DataRow {
+    public static class DataRow {
 
         private String code;
 
@@ -40,16 +42,18 @@ public class ReadExcel {
 
     }
 
-    private static class DataListener extends AnalysisEventListener<DataRow> {
+    public static class DataListener extends AnalysisEventListener<DataRow> {
+
+        private List<DataRow> result = new LinkedList<>();
 
         @Override
         public void invoke(DataRow dataRow, AnalysisContext analysisContext) {
-            System.out.println(dataRow);
+            result.add(dataRow);
         }
 
         @Override
         public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-
+            System.out.println(result.size());
         }
     }
 }
