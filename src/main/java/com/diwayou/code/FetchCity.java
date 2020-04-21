@@ -21,6 +21,7 @@ import org.jsoup.nodes.Element;
 import org.rocksdb.RocksDBException;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -88,26 +89,44 @@ public class FetchCity {
         LevelDbConfig config = new LevelDbConfig()
                 .setUseExisting(true)
                 .setSync(true);
-        try (LevelDbStore cache = new LevelDbStore(Path.of("cache").toFile(), config)) {
+
+        int count = 0;
+        boolean save = false;
+        try (LevelDbStore cache = new LevelDbStore(Path.of("cache").toFile(), config);
+                Writer writer = Files.newBufferedWriter(Path.of("city.csv"))) {
             for (Element pe : provinces) {
-                String fileName = pe.text() + ".json";
+                String provinceName = pe.text();
 
-                if (Files.exists(Path.of(fileName))) {
-                    continue;
+                log.info("fetch {}", provinceName);
+
+                String provinceCode = genProvinceCode(pe.attr("href"));
+                if (save) {
+                    writer.write(String.format("%s,%s,%s\n", provinceCode, pe.text(), "province"));
                 }
-
-                log.info("fetch {}", fileName);
 
                 List<Row> province = new LinkedList<>();
-                fetch(pe.absUrl("href"), urlStore, province, cache);
+                int level = 1;
+                fetch(pe.absUrl("href"), urlStore, province, cache, level);
 
                 if (!province.isEmpty()) {
-                    //Files.writeString(Path.of(fileName), JSON.toJSONString(province), StandardCharsets.UTF_8);
+                    count += province.size();
+
+                    for(Row row : province) {
+                        if (save) {
+                            writer.write(String.format("%s,%s,%s\n", row.getCode(), row.getName(), row.getType()));
+                        }
+                    }
                 }
             }
+
+            log.info("共抓取到{}条记录", count);
         } finally {
             FetcherFactory.one().close();
         }
+    }
+
+    private static String genProvinceCode(String href) {
+        return StringUtils.rightPad(href.substring(0, href.indexOf(".")), 12, '0');
     }
 
     @Data
@@ -138,7 +157,7 @@ public class FetchCity {
         private final String select;
     }
 
-    private static void fetch(String url, UrlStore urlStore, List<Row> result, LevelDbStore cache) throws IOException, RocksDBException {
+    private static void fetch(String url, UrlStore urlStore, List<Row> result, LevelDbStore cache, int level) throws IOException, RocksDBException {
         if (StringUtils.isBlank(url)) {
             return;
         }
@@ -161,9 +180,7 @@ public class FetchCity {
                 return;
             }
 
-            cache.write(wb -> {
-                wb.put(ns, key, JSON.toJSONBytes(rows));
-            });
+            cache.write(wb -> wb.put(ns, key, JSON.toJSONBytes(rows)));
         } else {
             rows = JSON.parseArray(new String(content, StandardCharsets.UTF_8), Row.class);
         }
@@ -176,7 +193,12 @@ public class FetchCity {
         for (Row row : rows) {
             result.add(row);
 
-            fetch(row.getUrl(), urlStore, result, cache);
+            // 只抓取town以上级别
+            if (row.getType().equals(RowType.town.getName())) {
+                continue;
+            }
+
+            fetch(row.getUrl(), urlStore, result, cache, level + 1);
         }
     }
 
