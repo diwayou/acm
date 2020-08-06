@@ -1,6 +1,6 @@
 package com.diwayou.code;
 
-import com.alibaba.fastjson.JSON;
+import com.diwayou.util.Json;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.fetcher.Fetcher;
@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -147,9 +147,9 @@ public class FetchCity {
                 return;
             }
 
-            cache.write(wb -> wb.put(ns, key, JSON.toJSONBytes(rows)));
+            cache.write(wb -> wb.put(ns, key, Json.nonNull().toBytes(rows)));
         } else {
-            rows = JSON.parseArray(new String(content, StandardCharsets.UTF_8), Row.class);
+            rows = Json.nonNull().fromJsonToList(new String(content, StandardCharsets.UTF_8), Row.class);
         }
         if (!rows.isEmpty() && rows.get(0).type.equals(RowType.village.name)) {
             result.addAll(rows);
@@ -161,7 +161,7 @@ public class FetchCity {
             result.add(row);
 
             // 只抓取town以上级别
-            if (row.getType().equals(RowType.village.getName())) {
+            if (row.getType().equals(RowType.town.getName())) {
                 //continue;
             }
 

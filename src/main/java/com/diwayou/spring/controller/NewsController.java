@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 @Slf4j
 @Controller
@@ -22,7 +20,7 @@ public class NewsController {
     private CnbetaNewsManager cnbetaNewsManager;
 
     @GetMapping
-    public String index(Model model, @RequestParam(value = "size", defaultValue = "2") @Min(1) @Max(5) Integer size,
+    public String index(Model model, @RequestParam(value = "size", defaultValue = "2") Integer size,
                         HttpServletRequest request) {
         model.addAttribute("news", cnbetaNewsManager.nextPage(size));
 

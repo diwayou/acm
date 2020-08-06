@@ -1,6 +1,6 @@
 package com.diwayou.web.scheduler;
 
-import com.alibaba.fastjson.JSON;
+import com.diwayou.util.Json;
 import com.diwayou.web.concurrent.FixedThreadPoolExecutor;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.Page;
@@ -65,7 +65,7 @@ public class RequestScheduler implements Scheduler<Request> {
                     List<Request> requests = pageResult.stream()
                             .map(Map.Entry::getValue)
                             .map(v -> new String(v, StandardCharsets.UTF_8))
-                            .map(v -> JSON.parseObject(v, Request.class))
+                            .map(v -> Json.nonNull().fromJson(v, Request.class))
                             .collect(Collectors.toList());
                     if (requests.isEmpty()) {
                         break;
@@ -105,7 +105,7 @@ public class RequestScheduler implements Scheduler<Request> {
     }
 
     private byte[] genValue(Request request) {
-        return JSON.toJSONBytes(request);
+        return Json.nonNull().toBytes(request);
     }
 
     private byte[] genKey(Request request) {

@@ -1,10 +1,10 @@
 package com.diwayou.code;
 
-import com.alibaba.fastjson.JSON;
+import com.diwayou.util.Json;
 import com.diwayou.web.store.LevelDbConfig;
 import com.diwayou.web.store.LevelDbStore;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.rocksdb.RocksDBException;
 
 import java.io.IOException;
@@ -137,7 +137,7 @@ public class ProcessCity {
             return;
         }
 
-        List<Row> rows = JSON.parseArray(new String(content, StandardCharsets.UTF_8), Row.class);
+        List<Row> rows = Json.nonNull().fromJsonToList(new String(content, StandardCharsets.UTF_8), Row.class);
 
         for (Row row : rows) {
             if (!isSelfCity && StringUtils.isBlank(row.getUrl())) {

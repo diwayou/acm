@@ -1,8 +1,8 @@
 package com.diwayou.spring.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.diwayou.spring.domain.entity.User;
 import com.diwayou.spring.manager.UserManager;
+import com.diwayou.util.Json;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +29,6 @@ public class UserController {
     public String get(@RequestParam("id") Integer id) {
         User u = userManager.get(id);
 
-        return JSON.toJSONString(u);
+        return Json.nonNull().toJson(u);
     }
 }
