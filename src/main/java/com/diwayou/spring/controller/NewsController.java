@@ -1,31 +1,26 @@
 package com.diwayou.spring.controller;
 
+import com.diwayou.spring.domain.CnbetaNewsVo;
 import com.diwayou.spring.manager.CnbetaNewsManager;
-import lombok.extern.slf4j.Slf4j;
+import com.diwayou.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
-@Slf4j
-@Controller
-@Validated
+@RestController
 public class NewsController {
 
     @Autowired
     private CnbetaNewsManager cnbetaNewsManager;
 
-    @GetMapping
-    public String index(Model model, @RequestParam(value = "size", defaultValue = "2") Integer size,
-                        HttpServletRequest request) {
-        model.addAttribute("news", cnbetaNewsManager.nextPage(size));
+    @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String index(@RequestParam(value = "size", defaultValue = "2") Integer size) {
+        List<CnbetaNewsVo> news = cnbetaNewsManager.nextPage(size);
 
-        request.getSession().setAttribute("a", "b");
-
-        return "index";
+        return Json.nonNull().toJson(news);
     }
 }
