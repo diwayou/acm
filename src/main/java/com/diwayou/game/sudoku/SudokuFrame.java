@@ -19,18 +19,22 @@ public class SudokuFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("Game");
         JMenu newGame = new JMenu("New Game");
-        JMenuItem sixBySixGame = new JMenuItem("6 By 6 Game");
-        sixBySixGame.addActionListener(new NewGameListener(SudokuPuzzleType.SIXBYSIX, 30));
-        JMenuItem nineByNineGame = new JMenuItem("9 By 9 Game");
-        nineByNineGame.addActionListener(new NewGameListener(SudokuPuzzleType.NINEBYNINE, 26));
-        JMenuItem twelveByTwelveGame = new JMenuItem("12 By 12 Game");
-        twelveByTwelveGame.addActionListener(new NewGameListener(SudokuPuzzleType.TWELVEBYTWELVE, 20));
+
+        JMenuItem fourByFourGame = new JMenuItem(SudokuPuzzleType.FOUR_BY_FOUR.toString());
+        fourByFourGame.addActionListener(new NewGameListener(SudokuPuzzleType.FOUR_BY_FOUR, 30));
+        JMenuItem sixBySixGame = new JMenuItem(SudokuPuzzleType.SIX_BY_SIX.toString());
+        sixBySixGame.addActionListener(new NewGameListener(SudokuPuzzleType.SIX_BY_SIX, 30));
+        JMenuItem nineByNineGame = new JMenuItem(SudokuPuzzleType.NINE_BY_NINE.toString());
+        nineByNineGame.addActionListener(new NewGameListener(SudokuPuzzleType.NINE_BY_NINE, 26));
+        JMenuItem twelveByTwelveGame = new JMenuItem(SudokuPuzzleType.TWELVE_BY_TWELVE.toString());
+        twelveByTwelveGame.addActionListener(new NewGameListener(SudokuPuzzleType.TWELVE_BY_TWELVE, 20));
 		
 		/*
 		 * need to include this when solving algorithm is improved
 		 JMenuItem sixteenBySizteenGame = new JMenuItem("16 By 16 Game");
 		sixteenBySizteenGame.addActionListener(new NewGameListener(SudokuPuzzleType.SIXTEENBYSIXTEEN,16));
 		*/
+        newGame.add(fourByFourGame);
         newGame.add(sixBySixGame);
         newGame.add(nineByNineGame);
         newGame.add(twelveByTwelveGame);
@@ -52,7 +56,7 @@ public class SudokuFrame extends JFrame {
         windowPanel.add(buttonSelectionPanel);
         this.add(windowPanel);
 
-        rebuildInterface(SudokuPuzzleType.NINEBYNINE, 26);
+        rebuildInterface(SudokuPuzzleType.NINE_BY_NINE, 26);
     }
 
     public void rebuildInterface(SudokuPuzzleType puzzleType, int fontSize) {

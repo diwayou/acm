@@ -282,7 +282,7 @@ public class SudokuGame {
     /**
      * Checks if a solution to the puzzle exists
      */
-    public boolean isSolvable () {
+    public boolean isSolvable() {
         mSolver = new SudokuSolver();
         mSolver.setPuzzle(mCells);
         ArrayList<int[]> finalValues = mSolver.solve();
