@@ -18,19 +18,16 @@
 package com.diwayou.web.http.driver;
 
 import com.diwayou.web.exception.TimeoutException;
-import com.diwayou.web.log.AppLog;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import javafx.application.Platform;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class AppThread {
-    private static final Logger log = AppLog.getRobot();
-
     private static final Random rand = new Random();
 
     public static interface Sync<T> {
@@ -162,7 +159,7 @@ public class AppThread {
                     try {
                         runner.done.wait(timeout);
                     } catch (InterruptedException e) {
-                        log.log(Level.SEVERE, "", e);
+                        log.error("", e);
                     }
                     if (!runner.done.get()) {
                         runner.cancel.set(true);

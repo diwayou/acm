@@ -7,10 +7,10 @@ import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.fetcher.Fetcher;
 import com.diwayou.web.fetcher.FetcherFactory;
-import com.diwayou.web.log.AppLog;
 import com.diwayou.web.store.LevelDbQuery;
 import com.diwayou.web.store.LevelDbStore;
 import com.diwayou.web.store.StoreQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.rocksdb.RocksDBException;
 
 import java.nio.ByteBuffer;
@@ -18,13 +18,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class RequestScheduler implements Scheduler<Request> {
-
-    private static final Logger log = AppLog.getCrawl();
 
     private Spider spider;
 
@@ -82,12 +79,12 @@ public class RequestScheduler implements Scheduler<Request> {
                                     .thenApply(this::commitRequest)
                                     .whenComplete((r, e) -> {
                                         if (e != null) {
-                                            log.log(Level.WARNING, "处理请求失败url=" + r.getUrl(), e);
+                                            log.warn("处理请求失败url=" + r.getUrl(), e);
                                         }
                                     });
                         }
                     } catch (Exception e) {
-                        log.log(Level.WARNING, "", e);
+                        log.warn("", e);
                         break;
                     }
 
@@ -99,7 +96,7 @@ public class RequestScheduler implements Scheduler<Request> {
                     pageResult = requestStore.query(query);
                 } while (true);
             } catch (Exception e) {
-                log.log(Level.WARNING, "", e);
+                log.warn("", e);
             }
         }, 2, 2, TimeUnit.SECONDS);
     }

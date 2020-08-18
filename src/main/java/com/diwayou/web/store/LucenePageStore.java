@@ -2,10 +2,10 @@ package com.diwayou.web.store;
 
 import com.diwayou.db.lucene.ik.IKAnalyzer;
 import com.diwayou.web.domain.Page;
-import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.support.soup.ElementUtil;
 import com.google.common.base.Preconditions;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -24,12 +24,9 @@ import java.nio.file.Path;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class LucenePageStore implements PageStore, Closeable {
-
-    private static final Logger log = AppLog.getCrawl();
 
     private FilePageStore filePageStore;
 
@@ -64,7 +61,7 @@ public class LucenePageStore implements PageStore, Closeable {
             try {
                 indexWriter.commit();
             } catch (IOException e) {
-                log.log(Level.WARNING, "", e);
+                log.warn("", e);
             }
         }, 5, 5, TimeUnit.SECONDS);
     }
@@ -101,7 +98,7 @@ public class LucenePageStore implements PageStore, Closeable {
 
             return new StoreResult(page.getRequest().getUrl());
         } catch (Exception e) {
-            log.log(Level.WARNING, "", e);
+            log.warn("", e);
         }
 
         return StoreResult.empty;

@@ -7,11 +7,11 @@ import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
-import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.URLCanonicalizer;
 import com.diwayou.web.url.UrlUtil;
 import com.google.common.collect.Sets;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -20,21 +20,18 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 
+@Slf4j
 public class ScriptCrawlPageHandler implements PageHandler {
-
-    private static final Logger log = AppLog.getCrawl();
 
     @Override
     public void handle(Page page, Spider spider) {
         if (page.statusCode() != 200) {
-            log.log(Level.WARNING, String.format("拉取%s不是200状态", page.getRequest().getUrl()));
+            log.warn(String.format("拉取%s不是200状态", page.getRequest().getUrl()));
             return;
         }
 

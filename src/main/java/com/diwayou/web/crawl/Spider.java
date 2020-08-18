@@ -4,7 +4,6 @@ import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.scheduler.RequestScheduler;
 import com.diwayou.web.scheduler.Scheduler;
-import com.diwayou.web.script.ScriptRegistry;
 import com.diwayou.web.store.FilePageStore;
 import com.diwayou.web.store.LucenePageStore;
 import com.diwayou.web.store.UrlStore;
@@ -49,12 +48,6 @@ public class Spider implements Closeable {
         this.builder = builder;
         this.pageHandler = builder.getPageHandler();
         this.urlStore = builder.getUrlStore();
-
-        try {
-            ScriptRegistry.one().load(builder.getScriptsPath().toFile());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
         this.filePageStore = new FilePageStore(builder.getStorePath().resolve("doc").toFile());
         try {

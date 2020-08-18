@@ -1,21 +1,18 @@
 package com.diwayou.web.store;
 
 import com.diwayou.web.domain.Page;
-import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.FilenameUtil;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.url.UrlUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class FilePageStore implements PageStore {
-
-    private static final Logger log = AppLog.getCrawl();
 
     public static final String DIR = "dir";
 
@@ -28,7 +25,7 @@ public class FilePageStore implements PageStore {
     @Override
     public StoreResult store(Page page) {
         if (dir == null) {
-            log.warning("dir为空，不能保存文件url=" + page.getRequest().getUrl());
+            log.warn("dir为空，不能保存文件url=" + page.getRequest().getUrl());
             return StoreResult.empty;
         }
 
@@ -48,7 +45,7 @@ public class FilePageStore implements PageStore {
 
             return new StoreResult(path.toString());
         } catch (Exception e) {
-            log.log(Level.WARNING, "保存失败!url=" + page.getRequest().getUrl(), e);
+            log.warn("保存失败!url=" + page.getRequest().getUrl(), e);
         }
 
         return StoreResult.empty;

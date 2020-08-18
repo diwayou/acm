@@ -2,7 +2,6 @@ package com.diwayou.web.http.driver;
 
 import com.diwayou.web.config.RobotConfig;
 import com.diwayou.web.http.robot.RobotDriver;
-import com.diwayou.web.log.AppLog;
 import com.sun.javafx.webkit.Accessor;
 import com.sun.webkit.LoadListenerClient;
 import com.sun.webkit.WebPage;
@@ -11,15 +10,13 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.html.HTMLDocument;
 
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class FxRobotDriver implements RobotDriver {
-
-    private static final Logger log = AppLog.getRobot();
 
     private JFXPanel panel = new JFXPanel();
 
@@ -78,7 +75,7 @@ public class FxRobotDriver implements RobotDriver {
             try {
                 return engine.get().executeScript(script);
             } catch (Throwable t) {
-                log.log(Level.WARNING, "", t);
+                log.warn("", t);
                 return null;
             }
         });

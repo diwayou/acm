@@ -1,8 +1,8 @@
 package com.diwayou.web.store;
 
-import com.diwayou.web.log.AppLog;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
+import lombok.extern.slf4j.Slf4j;
 import org.rocksdb.*;
 
 import java.io.Closeable;
@@ -16,11 +16,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
+@Slf4j
 public class LevelDbStore implements Closeable {
-
-    private static final Logger log = AppLog.getCrawl();
 
     static {
         RocksDB.loadLibrary();

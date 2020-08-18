@@ -1,7 +1,6 @@
 package com.diwayou.web.http.robot;
 
 import com.diwayou.web.http.driver.FxRobotDriver;
-import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.Pool;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -9,18 +8,16 @@ import com.google.common.collect.Sets;
 import com.sun.webkit.LoadListenerClient;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.web.WebView;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.html.HTMLDocument;
 
 import java.io.Closeable;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class HttpRobot implements Closeable {
-
-    private static final Logger log = AppLog.getRobot();
 
     public static final int DEFAULT_TIMEOUT = 3;
 
@@ -138,7 +135,7 @@ public class HttpRobot implements Closeable {
         try {
             driver.close();
         } catch (Exception e) {
-            log.log(Level.SEVERE, "", e);
+            log.error("", e);
         }
     }
 

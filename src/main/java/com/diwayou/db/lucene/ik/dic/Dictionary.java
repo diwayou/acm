@@ -24,18 +24,17 @@
 package com.diwayou.db.lucene.ik.dic;
 
 import com.diwayou.db.lucene.ik.cfg.Configuration;
-import com.diwayou.web.log.AppLog;
 import com.diwayou.web.support.FilenameUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 词典管理类,单子模式
  */
+@Slf4j
 public class Dictionary {
 
     /*
@@ -53,8 +52,6 @@ public class Dictionary {
      * 配置对象
      */
     private Configuration configuration;
-
-    private static final Logger log = AppLog.getBrowser();
 
     private static final String PATH_DIC_MAIN = "main.dic";
     private static final String PATH_DIC_SURNAME = "surname.dic";
@@ -77,11 +74,11 @@ public class Dictionary {
 
         String configFile = FilenameUtil.path(confDir, FILE_NAME);
 
-        log.log(Level.INFO, String.format("try load config from %s", configFile));
+        log.info(String.format("try load config from %s", configFile));
         try (InputStream input = getInputStream(configFile)) {
             props.loadFromXML(input);
         } catch (Exception e) {
-            log.log(Level.WARNING, "", e);
+            log.warn("", e);
         }
     }
 
@@ -138,10 +135,10 @@ public class Dictionary {
                 }
             }
         } catch (FileNotFoundException e) {
-            log.log(Level.WARNING, "ik-analyzer: " + name + " not found", e);
+            log.warn("ik-analyzer: " + name + " not found", e);
             if (critical) throw new RuntimeException("ik-analyzer: " + name + " not found!!!", e);
         } catch (IOException e) {
-            log.log(Level.WARNING, "ik-analyzer: " + name + " loading failed", e);
+            log.warn("ik-analyzer: " + name + " loading failed", e);
         }
     }
 

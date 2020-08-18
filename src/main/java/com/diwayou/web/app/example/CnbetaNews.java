@@ -6,19 +6,16 @@ import com.diwayou.web.crawl.SpiderBuilder;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
-import com.diwayou.web.log.AppLog;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.nio.file.Path;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class CnbetaNews {
-    private static final Logger log = AppLog.getCrawl();
-
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("/Users/gaopeng/Downloads/cnbeta"))
                 .setCrawlThreadNum(2)
@@ -26,7 +23,7 @@ public class CnbetaNews {
                     @Override
                     public void handle(Page page, Spider spider) {
                         if (page.statusCode() != 200) {
-                            log.log(Level.WARNING, String.format("拉取%s不是200状态", page.getRequest().getUrl()));
+                            log.warn(String.format("拉取%s不是200状态", page.getRequest().getUrl()));
                             return;
                         }
 
