@@ -1,6 +1,6 @@
 package com.diwayou.web.store;
 
-import com.diwayou.db.lucene.ik.IKAnalyzer;
+import com.diwayou.lucene.ik.IKAnalyzer;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.support.PageUtil;
 import com.diwayou.web.support.soup.ElementUtil;

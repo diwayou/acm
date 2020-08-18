@@ -1,6 +1,6 @@
 package com.diwayou.web.app;
 
-import com.diwayou.db.lucene.ik.IKAnalyzer;
+import com.diwayou.lucene.ik.IKAnalyzer;
 import com.diwayou.web.store.LucenePageStoreQuery;
 import com.diwayou.web.store.QueryResult;
 import com.diwayou.web.store.StoreQuery;
