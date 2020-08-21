@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class GaokaoUrl {
+public class GaoKaoUrl {
 
     private int year;
 
