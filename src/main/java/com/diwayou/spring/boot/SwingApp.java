@@ -1,4 +1,4 @@
-package com.diwayou.spring;
+package com.diwayou.spring.boot;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

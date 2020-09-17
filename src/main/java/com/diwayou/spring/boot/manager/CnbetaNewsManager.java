@@ -1,6 +1,6 @@
-package com.diwayou.spring.manager;
+package com.diwayou.spring.boot.manager;
 
-import com.diwayou.spring.domain.CnbetaNewsVo;
+import com.diwayou.spring.boot.domain.CnbetaNewsVo;
 import com.diwayou.web.domain.FetcherType;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;

@@ -1,4 +1,4 @@
-package com.diwayou.spring.config;
+package com.diwayou.spring.boot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

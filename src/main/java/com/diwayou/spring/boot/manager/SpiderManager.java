@@ -1,4 +1,4 @@
-package com.diwayou.spring.manager;
+package com.diwayou.spring.boot.manager;
 
 import com.diwayou.web.crawl.PageHandler;
 import com.diwayou.web.crawl.Spider;

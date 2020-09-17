@@ -1,4 +1,4 @@
-package com.diwayou.spring.controller;
+package com.diwayou.spring.boot.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

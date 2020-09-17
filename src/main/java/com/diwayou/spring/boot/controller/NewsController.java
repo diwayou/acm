@@ -1,7 +1,7 @@
-package com.diwayou.spring.controller;
+package com.diwayou.spring.boot.controller;
 
-import com.diwayou.spring.domain.CnbetaNewsVo;
-import com.diwayou.spring.manager.CnbetaNewsManager;
+import com.diwayou.spring.boot.domain.CnbetaNewsVo;
+import com.diwayou.spring.boot.manager.CnbetaNewsManager;
 import com.diwayou.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

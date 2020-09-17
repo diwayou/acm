@@ -1,4 +1,4 @@
-package com.diwayou.spring.domain;
+package com.diwayou.spring.boot.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
