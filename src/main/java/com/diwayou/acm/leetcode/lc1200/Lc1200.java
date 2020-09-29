@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * https://leetcode-cn.com/problems/minimum-absolute-difference/
  *
- * 给你个整数数组 arr，其中每个元素都 不相同。
+ * 给你个整数数组arr，其中每个元素都 不相同。
  * 请你找到所有具有最小绝对差的元素对，并且按升序的顺序返回。
  *
  * 示例 1：
