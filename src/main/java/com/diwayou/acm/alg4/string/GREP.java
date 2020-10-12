@@ -25,9 +25,11 @@
  *
  ******************************************************************************/
 
-package com.diwayou.acm.alg4.util;
+package com.diwayou.acm.alg4.string;
 
 import com.diwayou.acm.alg4.graph.NFA;
+import com.diwayou.acm.alg4.util.StdIn;
+import com.diwayou.acm.alg4.util.StdOut;
 
 /**
  *  The {@code GREP} class provides a client for reading in a sequence of
