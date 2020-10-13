@@ -1,6 +1,7 @@
 package com.diwayou.code.test1024;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -53,7 +54,14 @@ public class GeneratePalindromeData {
         List<String> data = Lists.newArrayListWithCapacity(confuseByLength.length * times + seeds.length);
         for (int i = 0; i < confuseByLength.length; i++) {
             for (int j = 0; j < times; j++) {
-                data.add(confuseByLength[i]);
+                char[] arr = confuseByLength[i].toCharArray();
+                ArrayUtils.shuffle(arr);
+                String s = new String(arr);
+                if (ResolvePalindrome.isPalindrome(s)) {
+                    s = confuseByLength[i];
+                }
+
+                data.add(s);
             }
         }
         for (int i = 0; i < seeds.length; i++) {

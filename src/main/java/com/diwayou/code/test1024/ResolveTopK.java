@@ -14,15 +14,15 @@ import java.util.stream.Collectors;
  * @author gaopeng
  * @date 2020/10/12
  */
-public class ResolveTopN {
+public class ResolveTopK {
 
     public static void main(String[] args) throws IOException {
-        List<String> lines = Files.readAllLines(Path.of(GenerateTopNData.filename), StandardCharsets.UTF_8);
+        List<String> lines = Files.readAllLines(Path.of(GenerateTopKData.filename), StandardCharsets.UTF_8);
 
-        System.out.println(getTopN(lines, 4));
+        System.out.println(getTopK(lines, 4));
     }
 
-    public static List<String> getTopN(List<String> lines, int n) {
+    public static List<String> getTopK(List<String> lines, int k) {
         Map<String, Integer> counts = new HashMap<>();
         for (String line : lines) {
             counts.merge(line, 1, Integer::sum);
@@ -31,7 +31,7 @@ public class ResolveTopN {
         return counts.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .map(Map.Entry::getKey)
-                .limit(n)
+                .limit(k)
                 .collect(Collectors.toList());
     }
 }

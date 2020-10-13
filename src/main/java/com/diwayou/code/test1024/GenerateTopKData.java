@@ -14,9 +14,9 @@ import java.util.List;
  * @author gaopeng
  * @date 2020/10/12
  */
-public class GenerateTopNData {
+public class GenerateTopKData {
 
-    public static final String filename = "topn.txt";
+    public static final String filename = "topk.txt";
 
     public static void main(String[] args) throws IOException {
         String[] seeds = new String[]{
@@ -49,6 +49,6 @@ public class GenerateTopNData {
 
         Files.write(Path.of(filename), data, StandardCharsets.UTF_8);
 
-        System.out.println(ResolveTopN.getTopN(data, seeds.length));
+        System.out.println(ResolveTopK.getTopK(data, seeds.length));
     }
 }
