@@ -3,7 +3,7 @@ package com.diwayou.acm.leetcode.lc600;
 /**
  * https://leetcode-cn.com/problems/valid-palindrome-ii/
  *
- * 给定一个非空字符串 s，最多删除一个字符。判断是否能成为回文字符串。
+ * 给定一个非空字符串s，最多删除一个字符。判断是否能成为回文字符串。
  *
  * 示例 1:
  * 输入: "aba"

@@ -5,9 +5,9 @@ import java.util.Arrays;
 /**
  * https://leetcode-cn.com/problems/compare-strings-by-frequency-of-the-smallest-character/
  *
- * 我们来定义一个函数 f(s)，其中传入参数 s 是一个非空字符串；该函数的功能是统计 s  中（按字典序比较）最小字母的出现频次。
- * 例如，若 s = "dcce"，那么 f(s) = 2，因为最小的字母是 "c"，它出现了 2 次。
- * 现在，给你两个字符串数组待查表 queries 和词汇表 words，请你返回一个整数数组 answer 作为答案，其中每个 answer[i] 是满足 f(queries[i]) < f(W) 的词的数目，W 是词汇表 words 中的词。
+ * 我们来定义一个函数f(s)，其中传入参数s是一个非空字符串；该函数的功能是统计s 中（按字典序比较）最小字母的出现频次。
+ * 例如，若s = "dcce"，那么f(s) = 2，因为最小的字母是"c"，它出现了2 次。
+ * 现在，给你两个字符串数组待查表queries和词汇表words，请你返回一个整数数组answer作为答案，其中每个answer[i]是满足f(queries[i])< f(W)的词的数目，W是词汇表words中的词。
  *
  * 示例 1：
  * 输入：queries = ["cbd"], words = ["zaaaz"]
@@ -23,7 +23,7 @@ import java.util.Arrays;
  * 1 <= queries.length <= 2000
  * 1 <= words.length <= 2000
  * 1 <= queries[i].length, words[i].length <= 10
- * queries[i][j], words[i][j] 都是小写英文字母
+ * queries[i][j], words[i][j]都是小写英文字母
  */
 public class Lc1170 {
 

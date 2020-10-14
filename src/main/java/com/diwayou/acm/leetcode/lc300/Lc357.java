@@ -3,7 +3,7 @@ package com.diwayou.acm.leetcode.lc300;
 /**
  * https://leetcode-cn.com/problems/count-numbers-with-unique-digits/
  *
- * 给定一个非负整数 n，计算各位数字都不同的数字 x 的个数，其中 0 ≤ x < 10^n 。
+ * 给定一个非负整数 n，计算各位数字都不同的数字 x 的个数，其中 0 ≤ x < 10^n。
  *
  * 示例:
  * 输入: 2

@@ -5,10 +5,10 @@ import java.util.Arrays;
 /**
  * https://leetcode-cn.com/problems/di-string-match/
  *
- * 给定只含 "I"（增大）或 "D"（减小）的字符串 S ，令 N = S.length。
- * 返回 [0, 1, ..., N] 的任意排列 A 使得对于所有 i = 0, ..., N-1，都有：
- * 如果 S[i] == "I"，那么 A[i] < A[i+1]
- * 如果 S[i] == "D"，那么 A[i] > A[i+1]
+ * 给定只含"I"（增大）或 "D"（减小）的字符串S，令N = S.length。
+ * 返回[0, 1, ..., N]的任意排列A使得对于所有i = 0,..., N-1，都有：
+ * 如果S[i] == "I"，那么A[i] < A[i+1]
+ * 如果S[i] == "D"，那么A[i] > A[i+1]
  *
  * 示例 1：
  * 输入："IDID"
@@ -24,7 +24,7 @@ import java.util.Arrays;
  *
  * 提示：
  * 1 <= S.length <= 1000
- * S 只包含字符 "I" 或 "D"。
+ * S 只包含字符"I"或"D"。
  */
 public class Lc942 {
 

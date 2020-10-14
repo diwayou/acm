@@ -12,7 +12,7 @@ import java.util.List;
 public class Lc47 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc47().permuteUnique(new int[]{-1,2,0,-1,1,0,1}));
+        System.out.println(new Lc47().permuteUnique(new int[]{1,1,2}));
     }
 
     public List<List<Integer>> permuteUnique(int[] nums) {

@@ -1,6 +1,6 @@
 package com.diwayou.code;
 
-import com.diwayou.acm.book.util.StdRandom;
+import com.diwayou.acm.alg4.util.StdRandom;
 import net.algart.arrays.ArraySelector;
 
 public class KthStudy {

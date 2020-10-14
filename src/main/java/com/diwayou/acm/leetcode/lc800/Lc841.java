@@ -30,9 +30,9 @@ import java.util.Queue;
  * 解释：我们不能进入 2 号房间。
  *
  * 提示：
- * 1 <= rooms.length <= 1000
+ * 1 <= rooms.length <=1000
  * 0 <= rooms[i].length <= 1000
- * 所有房间中的钥匙数量总计不超过 3000。
+ * 所有房间中的钥匙数量总计不超过3000。
  */
 public class Lc841 {
 

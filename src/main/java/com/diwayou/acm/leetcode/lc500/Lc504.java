@@ -12,7 +12,7 @@ package com.diwayou.acm.leetcode.lc500;
  * 示例 2:
  * 输入: -7
  * 输出: "-10"
- * 注意: 输入范围是 [-1e7, 1e7] 。
+ * 注意: 输入范围是[-1e7, 1e7] 。
  */
 public class Lc504 {
 

@@ -3,9 +3,9 @@ package com.diwayou.acm.leetcode.lc900;
 /**
  * https://leetcode-cn.com/problems/smallest-range-i/
  *
- * 给定一个整数数组 A，对于每个整数 A[i]，我们可以选择任意 x 满足 -K <= x <= K，并将 x 加到 A[i] 中。
- * 在此过程之后，我们得到一些数组 B。
- * 返回 B 的最大值和 B 的最小值之间可能存在的最小差值。
+ * 给定一个整数数组 A，对于每个整数 A[i]，我们可以选择任意x 满足-K <= x <= K，并将x加到A[i]中。
+ * 在此过程之后，我们得到一些数组B。
+ * 返回 B的最大值和 B的最小值之间可能存在的最小差值。
  *
  * 示例 1：
  * 输入：A = [1], K = 0
@@ -21,7 +21,7 @@ package com.diwayou.acm.leetcode.lc900;
  * 输入：A = [1,3,6], K = 3
  * 输出：0
  * 解释：B = [3,3,3] 或 B = [4,4,4]
- *  
+ * 
  * 提示：
  * 1 <= A.length <= 10000
  * 0 <= A[i] <= 10000

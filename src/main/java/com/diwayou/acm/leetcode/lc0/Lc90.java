@@ -27,7 +27,7 @@ import java.util.List;
 public class Lc90 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc90().subsetsWithDup(new int[]{}));
+        System.out.println(new Lc90().subsetsWithDup(new int[]{1,1,2}));
     }
 
     private List<List<Integer>> re = new ArrayList<>();

@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * https://leetcode-cn.com/problems/sort-list/
  *
- * 在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
+ * 在O(nlogn) 时间复杂度和常数级空间复杂度下，对链表进行排序。
  *
  * 示例 1:
  * 输入: 4->2->1->3

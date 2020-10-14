@@ -3,7 +3,7 @@ package com.diwayou.acm.leetcode.lc1200;
 /**
  * https://leetcode-cn.com/problems/play-with-chips/
  *
- * 数轴上放置了一些筹码，每个筹码的位置存在数组 chips 当中。
+ * 数轴上放置了一些筹码，每个筹码的位置存在数组chips当中。
  * 你可以对 任何筹码 执行下面两种操作之一（不限操作次数，0 次也可以）：
  * 将第 i 个筹码向左或者右移动 2 个单位，代价为 0。
  * 将第 i 个筹码向左或者右移动 1 个单位，代价为 1。

@@ -23,8 +23,8 @@ import com.diwayou.acm.leetcode.common.TreeNode;
  * 输出：false
  *
  * 提示：
- * 二叉树的节点数介于 2 到 100 之间。
- * 每个节点的值都是唯一的、范围为 1 到 100 的整数。
+ * 二叉树的节点数介于2 到100之间。
+ * 每个节点的值都是唯一的、范围为1 到100的整数。
  */
 public class Lc993 {
 

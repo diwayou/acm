@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * https://leetcode-cn.com/problems/relative-ranks/
  *
- * 给出 N 名运动员的成绩，找出他们的相对名次并授予前三名对应的奖牌。前三名运动员将会被分别授予 “金牌”，“银牌” 和“ 铜牌”（"Gold Medal", "Silver Medal", "Bronze Medal"）。
+ * 给出N 名运动员的成绩，找出他们的相对名次并授予前三名对应的奖牌。前三名运动员将会被分别授予 “金牌”，“银牌” 和“ 铜牌”（"Gold Medal", "Silver Medal", "Bronze Medal"）。
  * (注：分数越高的选手，排名越靠前。)
  *
  * 示例 1:
@@ -15,7 +15,7 @@ import java.util.Arrays;
  * 余下的两名运动员，我们只需要通过他们的成绩计算将其相对名次即可。
  *
  * 提示:
- * N 是一个正整数并且不会超过 10000。
+ * N 是一个正整数并且不会超过10000。
  * 所有运动员的成绩都不相同。
  */
 public class Lc506 {

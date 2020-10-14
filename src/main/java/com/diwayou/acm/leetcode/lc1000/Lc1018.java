@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * https://leetcode-cn.com/problems/binary-prefix-divisible-by-5/
  *
- * 给定由若干 0 和 1 组成的数组 A。我们定义 N_i：从 A[0] 到 A[i] 的第 i 个子数组被解释为一个二进制数（从最高有效位到最低有效位）。
- * 返回布尔值列表 answer，只有当 N_i 可以被 5 整除时，答案 answer[i] 为 true，否则为 false。
+ * 给定由若干0和1组成的数组 A。我们定义N_i：从A[0] 到A[i]的第 i个子数组被解释为一个二进制数（从最高有效位到最低有效位）。
+ * 返回布尔值列表answer，只有当N_i可以被 5整除时，答案answer[i] 为true，否则为 false。
  *
  * 示例 1：
  * 输入：[0,1,1]
@@ -23,13 +23,13 @@ import java.util.List;
  * 输入：[0,1,1,1,1,1]
  * 输出：[true,false,false,false,true,false]
  *
- * 示例 4：
+ * 示例4：
  * 输入：[1,1,1,0,1]
  * 输出：[false,false,false,false,false]
  *
  * 提示：
  * 1 <= A.length <= 30000
- * A[i] 为 0 或 1
+ * A[i] 为0或1
  */
 public class Lc1018 {
 

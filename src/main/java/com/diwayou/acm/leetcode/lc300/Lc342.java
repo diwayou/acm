@@ -3,7 +3,7 @@ package com.diwayou.acm.leetcode.lc300;
 /**
  * https://leetcode-cn.com/problems/power-of-four/
  *
- * 给定一个整数 (32 位有符号整数)，请编写一个函数来判断它是否是 4 的幂次方。
+ * 给定一个整数 (32 位有符号整数)，请编写一个函数来判断它是否是 4的幂次方。
  *
  * 示例 1:
  * 输入: 16

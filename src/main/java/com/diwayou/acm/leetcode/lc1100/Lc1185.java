@@ -6,8 +6,8 @@ import java.time.LocalDate;
  * https://leetcode-cn.com/problems/day-of-the-week/
  * <p>
  * 给你一个日期，请你设计一个算法来判断它是对应一周中的哪一天。
- * 输入为三个整数：day、month 和 year，分别表示日、月、年。
- * 您返回的结果必须是这几个值中的一个 {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}。
+ * 输入为三个整数：day、month 和year，分别表示日、月、年。
+ * 您返回的结果必须是这几个值中的一个{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}。
  */
 public class Lc1185 {
 

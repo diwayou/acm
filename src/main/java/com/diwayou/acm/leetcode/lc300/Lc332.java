@@ -19,7 +19,7 @@ import java.util.*;
  * 示例 2:
  * 输入: [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
  * 输出: ["JFK","ATL","JFK","SFO","ATL","SFO"]
- * 解释: 另一种有效的行程是 ["JFK","SFO","ATL","JFK","ATL","SFO"]。但是它自然排序更大更靠后。
+ * 解释: 另一种有效的行程是["JFK","SFO","ATL","JFK","ATL","SFO"]。但是它自然排序更大更靠后。
  */
 public class Lc332 {
 

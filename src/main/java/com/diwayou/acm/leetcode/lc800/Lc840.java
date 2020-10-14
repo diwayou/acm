@@ -23,8 +23,8 @@ package com.diwayou.acm.leetcode.lc800;
  * 总的来说，在本示例所给定的矩阵中只有一个 3 x 3 的幻方子矩阵。
  *
  * 提示:
- * 1 <= grid.length <= 10
- * 1 <= grid[0].length <= 10
+ * 1 <= grid.length<= 10
+ * 1 <= grid[0].length<= 10
  * 0 <= grid[i][j] <= 15
  */
 public class Lc840 {

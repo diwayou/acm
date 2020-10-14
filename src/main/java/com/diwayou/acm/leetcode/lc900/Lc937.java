@@ -17,11 +17,11 @@ import java.util.Comparator;
  * 示例 ：
  * 输入：["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
  * 输出：["g1 act car","a8 act zoo","ab1 off key dog","a1 9 2 3 1","zo4 4 7"]
- *  
+ * 
  * 提示：
  * 0 <= logs.length <= 100
  * 3 <= logs[i].length <= 100
- * logs[i] 保证有一个标识符，并且标识符后面有一个字。
+ * logs[i]保证有一个标识符，并且标识符后面有一个字。
  */
 public class Lc937 {
 

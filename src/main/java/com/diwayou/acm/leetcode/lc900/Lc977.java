@@ -18,7 +18,7 @@ import java.util.Arrays;
  * 提示：
  * 1 <= A.length <= 10000
  * -10000 <= A[i] <= 10000
- * A 已按非递减顺序排序。
+ * A已按非递减顺序排序。
  */
 public class Lc977 {
 

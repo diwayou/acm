@@ -3,7 +3,7 @@ package com.diwayou.acm.leetcode.lc800;
 /**
  * https://leetcode-cn.com/problems/maximize-distance-to-closest-person/
  *
- * 在一排座位（ seats）中，1 代表有人坐在座位上，0 代表座位上是空的。
+ * 在一排座位（seats）中，1代表有人坐在座位上，0代表座位上是空的。
  * 至少有一个空座位，且至少有一人坐在座位上。
  * 亚历克斯希望坐在一个能够使他与离他最近的人之间的距离达到最大化的座位上。
  * 返回他到离他最近的人的最大距离。
@@ -25,7 +25,7 @@ package com.diwayou.acm.leetcode.lc800;
  *
  * 提示：
  * 1 <= seats.length <= 20000
- * seats 中只含有 0 和 1，至少有一个 0，且至少有一个 1。
+ * seats中只含有 0 和 1，至少有一个 0，且至少有一个 1。
  */
 public class Lc849 {
 

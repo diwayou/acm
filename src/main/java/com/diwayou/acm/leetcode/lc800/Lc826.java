@@ -3,7 +3,7 @@ package com.diwayou.acm.leetcode.lc800;
 /**
  * https://leetcode-cn.com/problems/most-profit-assigning-work/
  *
- * 有一些工作：difficulty[i] 表示第i个工作的难度，profit[i]表示第i个工作的收益。
+ * 有一些工作：difficulty[i]表示第i个工作的难度，profit[i]表示第i个工作的收益。
  * 现在我们有一些工人。worker[i]是第i个工人的能力，即该工人只能完成难度小于等于worker[i]的工作。
  * 每一个工人都最多只能安排一个工作，但是一个工作可以完成多次。
  *
@@ -18,7 +18,7 @@ package com.diwayou.acm.leetcode.lc800;
  * 提示:
  * 1 <= difficulty.length = profit.length <= 10000
  * 1 <= worker.length <= 10000
- * difficulty[i], profit[i], worker[i]  的范围是 [1, 10^5]
+ * difficulty[i], profit[i], worker[i] 的范围是[1, 10^5]
  */
 public class Lc826 {
 

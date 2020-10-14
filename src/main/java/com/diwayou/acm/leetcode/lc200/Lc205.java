@@ -3,8 +3,8 @@ package com.diwayou.acm.leetcode.lc200;
 /**
  * https://leetcode-cn.com/problems/isomorphic-strings/
  *
- * 给定两个字符串 s 和 t，判断它们是否是同构的。
- * 如果 s 中的字符可以被替换得到 t ，那么这两个字符串是同构的。
+ * 给定两个字符串s和t，判断它们是否是同构的。
+ * 如果s中的字符可以被替换得到t，那么这两个字符串是同构的。
  * 所有出现的字符都必须用另一个字符替换，同时保留字符的顺序。两个字符不能映射到同一个字符上，但字符可以映射自己本身。
  *
  * 示例 1:
@@ -20,7 +20,7 @@ package com.diwayou.acm.leetcode.lc200;
  * 输出: true
  *
  * 说明:
- * 你可以假设 s 和 t 具有相同的长度。
+ * 你可以假设s和 t 具有相同的长度。
  */
 public class Lc205 {
 

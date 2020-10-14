@@ -25,7 +25,7 @@ package com.diwayou.acm.leetcode.lc900;
  * 1 <= words.length <= 100
  * 1 <= words[i].length <= 20
  * order.length == 26
- * 在 words[i] 和 order 中的所有字符都是英文小写字母。
+ * 在words[i]和order中的所有字符都是英文小写字母。
  */
 public class Lc953 {
 

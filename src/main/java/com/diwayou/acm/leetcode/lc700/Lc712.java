@@ -12,7 +12,7 @@ package com.diwayou.acm.leetcode.lc700;
  * 在 "eat" 中删除 "t" 并将 116 加入总和。
  * 结束时，两个字符串相等，115 + 116 = 231 就是符合条件的最小和。
  *
- * 示例 2:
+ * 示例2:
  * 输入: s1 = "delete", s2 = "leet"
  * 输出: 403
  * 解释: 在 "delete" 中删除 "dee" 字符串变成 "let"，

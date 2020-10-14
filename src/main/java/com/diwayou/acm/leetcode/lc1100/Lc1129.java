@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * https://leetcode-cn.com/problems/shortest-path-with-alternating-colors/
  *
- * 在一个有向图中，节点分别标记为 0, 1, ..., n-1。这个图中的每条边不是红色就是蓝色，且存在自环或平行边。
- * red_edges 中的每一个 [i, j] 对表示从节点 i 到节点 j 的红色有向边。类似地，blue_edges 中的每一个 [i, j] 对表示从节点 i 到节点 j 的蓝色有向边。
- * 返回长度为 n 的数组 answer，其中 answer[X] 是从节点 0 到节点 X 的最短路径的长度，且路径上红色边和蓝色边交替出现。如果不存在这样的路径，那么 answer[x] = -1。
+ * 在一个有向图中，节点分别标记为0, 1, ..., n-1。这个图中的每条边不是红色就是蓝色，且存在自环或平行边。
+ * red_edges中的每一个[i, j]对表示从节点 i 到节点 j 的红色有向边。类似地，blue_edges中的每一个[i, j]对表示从节点 i 到节点 j 的蓝色有向边。
+ * 返回长度为 n 的数组answer，其中answer[X]是从节点0到节点X的最短路径的长度，且路径上红色边和蓝色边交替出现。如果不存在这样的路径，那么 answer[x] = -1。
  *
  * 示例 1：
  * 输入：n = 3, red_edges = [[0,1],[1,2]], blue_edges = []

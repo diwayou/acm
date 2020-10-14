@@ -14,7 +14,7 @@ package com.diwayou.acm.leetcode.lc500;
  *
  * 说明:
  * 两个字符串长度均小于100。
- * 字符串中的字符仅含有 'a'~'z'。
+ * 字符串中的字符仅含有'a'~'z'。
  */
 public class Lc521 {
 

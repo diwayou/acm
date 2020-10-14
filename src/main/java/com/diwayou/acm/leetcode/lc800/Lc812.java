@@ -14,8 +14,8 @@ package com.diwayou.acm.leetcode.lc800;
  * 注意:
  * 3 <= points.length <= 50.
  * 不存在重复的点。
- *  -50 <= points[i][j] <= 50.
- * 结果误差值在 10^-6 以内都认为是正确答案。
+ * -50 <= points[i][j] <= 50.
+ * 结果误差值在10^-6以内都认为是正确答案。
  */
 public class Lc812 {
 

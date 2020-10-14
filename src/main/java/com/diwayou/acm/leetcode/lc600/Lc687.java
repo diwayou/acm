@@ -27,7 +27,7 @@ import com.diwayou.acm.leetcode.common.TreeNode;
  *           4   4   5
  * 输出:
  * 2
- * 注意: 给定的二叉树不超过10000个结点。 树的高度不超过1000。
+ * 注意: 给定的二叉树不超过10000个结点。树的高度不超过1000。
  */
 public class Lc687 {
 

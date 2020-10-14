@@ -13,7 +13,7 @@ import com.diwayou.acm.leetcode.common.ListNode;
  * 输出：true
  * 解释：链表中有一个环，其尾部连接到第二个节点。
  *
- * 示例 2：
+ * 示例2：
  * 输入：head = [1,2], pos = 0
  * 输出：true
  * 解释：链表中有一个环，其尾部连接到第一个节点。
