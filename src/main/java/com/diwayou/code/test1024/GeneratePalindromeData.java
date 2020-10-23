@@ -21,19 +21,18 @@ public class GeneratePalindromeData {
 
     public static void main(String[] args) throws IOException {
         String[] seeds = new String[]{
-                "a",
-                "bc",
-                "cd",
-                "def"
+                "男歌手",
+                "嘿，饲养员，由于你不小心的bug,你养的猪从笼子跑出去了，现在你要负责往猪圈里哄它们。",
+                "已婚，宇宙无敌超级帅"
         };
         String[] confuse = new String[]{
-                "xfds",
-                "yg",
-                "zf"
+                "是时候表演真正的技术了",
+                "谢谢惠顾，请您下次光临",
+                "你正在进行的工作，可以简单的理解为一种计算机和人都能识别的语言"
         };
 
         for (int i = 0; i < seeds.length; i++) {
-            seeds[i] = seeds[i] + StringUtils.reverse(seeds[i]);
+            seeds[i] = seeds[i] + ";" + StringUtils.reverse(seeds[i]);
         }
 
         String[] confuseByLength = new String[seeds.length * confuse.length];
@@ -50,7 +49,7 @@ public class GeneratePalindromeData {
         System.out.println(Arrays.toString(seeds));
         System.out.println(Arrays.toString(confuseByLength));
 
-        int times = 10;
+        int times = 100;
         List<String> data = Lists.newArrayListWithCapacity(confuseByLength.length * times + seeds.length);
         for (int i = 0; i < confuseByLength.length; i++) {
             for (int j = 0; j < times; j++) {

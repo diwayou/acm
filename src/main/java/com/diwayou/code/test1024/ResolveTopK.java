@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class ResolveTopK {
     public static void main(String[] args) throws IOException {
         List<String> lines = Files.readAllLines(Path.of(GenerateTopKData.filename), StandardCharsets.UTF_8);
 
-        System.out.println(getTopK(lines, 4));
+        System.out.println(getTopK(lines, 3));
     }
 
     public static List<String> getTopK(List<String> lines, int k) {
@@ -29,7 +28,7 @@ public class ResolveTopK {
         }
 
         return counts.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .sorted(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
                 .limit(k)
                 .collect(Collectors.toList());
