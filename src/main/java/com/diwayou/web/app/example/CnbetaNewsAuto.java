@@ -33,11 +33,12 @@ public class CnbetaNewsAuto {
 
                         String title = document.title();
                         String meta = document.select(".meta").text();
-                        String body = document.select("#artibody").text();
+                        String body = document.select("#artibody > p").text();
 
                         System.out.println(title);
                         System.out.println(meta);
                         System.out.println(page.getRequest().getUrl());
+
                         System.out.println(body);
                     }
                 })
@@ -56,7 +57,7 @@ public class CnbetaNewsAuto {
         String content = page.bodyAsString();
         Document document = Jsoup.parse(content);
 
-        String maxId = document.select(".items-area .item").next().next().attr("id");
+        String maxId = document.select(".items-area .item").next().next().next().attr("id");
 
         Scanner in = new Scanner(System.in);
         for (long l = Long.parseLong(maxId.substring(maxId.lastIndexOf('_') + 1)); l > 900000; l -= 2) {
