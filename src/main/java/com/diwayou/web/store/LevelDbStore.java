@@ -9,7 +9,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -88,11 +87,7 @@ public class LevelDbStore implements Closeable {
 
                 callback.accept(new LevelDbWriteCallback(batch));
 
-                if (db != null) {
-                    db.write(writeOptions, batch);
-                } else {
-                    log.warn("write after db close");
-                }
+                db.write(writeOptions, batch);
             }
         } finally {
             writeLock.unlock();
@@ -106,10 +101,6 @@ public class LevelDbStore implements Closeable {
         try {
             LevelDbQuery query = storeQuery.getQuery();
             try (final ReadOptions readOptions = new ReadOptions()) {
-                if (db == null) {
-                    return Collections.emptyList();
-                }
-
                 try (RocksIterator iterator = db.newIterator(readOptions)) {
                     if (query.getOffset() != null) {
                         iterator.seek(genKey(query.getNamespace(), query.getOffset()));
