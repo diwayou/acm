@@ -6,7 +6,7 @@ package com.diwayou.acm.leetcode.lc100;
 public class Lc169 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc169().majorityElement(new int[] {2,2,1,1,1,2,2}));
+        System.out.println(new Lc169().majorityElement(new int[]{2, 2, 1, 1, 1, 2, 2}));
     }
 
     public int majorityElement(int[] nums) {

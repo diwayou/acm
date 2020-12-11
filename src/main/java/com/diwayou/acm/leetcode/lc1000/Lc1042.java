@@ -6,25 +6,25 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/flower-planting-with-no-adjacent/
- *
+ * <p>
  * 有N个花园，按从1到N标记。在每个花园中，你打算种下四种花之一。
  * paths[i] = [x, y]描述了花园x 到花园y的双向路径。
  * 另外，没有花园有 3 条以上的路径可以进入或者离开。
  * 你需要为每个花园选择一种花，使得通过路径相连的任何两个花园中的花的种类互不相同。
  * 以数组形式返回选择的方案作为答案answer，其中answer[i]为在第(i+1)个花园中种植的花的种类。花的种类用 1, 2, 3,4 表示。保证存在答案。
- *
+ * <p>
  * 示例 1：
  * 输入：N = 3, paths = [[1,2],[2,3],[3,1]]
  * 输出：[1,2,3]
- *
+ * <p>
  * 示例 2：
  * 输入：N = 4, paths = [[1,2],[3,4]]
  * 输出：[1,2,1,2]
- *
+ * <p>
  * 示例 3：
  * 输入：N = 4, paths = [[1,2],[2,3],[3,4],[4,1],[1,3],[2,4]]
  * 输出：[1,2,3,4]
- *
+ * <p>
  * 提示：
  * 1 <= N <= 10000
  * 0 <= paths.size <= 20000
@@ -35,7 +35,7 @@ public class Lc1042 {
 
     public static void main(String[] args) {
         int N = 4;
-        int[][] paths = new int[][]{{1,2},{2,3},{3,4},{4,1},{1,3},{2,4}};
+        int[][] paths = new int[][]{{1, 2}, {2, 3}, {3, 4}, {4, 1}, {1, 3}, {2, 4}};
 
         System.out.println(Arrays.toString(new Lc1042().gardenNoAdj(N, paths)));
     }

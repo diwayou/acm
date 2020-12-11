@@ -11,7 +11,7 @@ public class Lc88 {
         }
 
         int j = m - 1, k = n - 1;
-        for (int i = m + n - 1; i >=0; i--) {
+        for (int i = m + n - 1; i >= 0; i--) {
             if (j < 0) {
                 nums1[i] = nums2[k--];
                 continue;

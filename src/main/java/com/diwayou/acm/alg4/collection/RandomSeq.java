@@ -20,19 +20,20 @@ import com.diwayou.acm.alg4.util.StdOut;
 import com.diwayou.acm.alg4.util.StdRandom;
 
 /**
- *  The {@code RandomSeq} class is a client that prints out a pseudorandom
- *  sequence of real numbers in a given range.
- *  <p>
- *  For additional documentation, see <a href="https://algs4.cs.princeton.edu/11model">Section 1.1</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The {@code RandomSeq} class is a client that prints out a pseudorandom
+ * sequence of real numbers in a given range.
+ * <p>
+ * For additional documentation, see <a href="https://algs4.cs.princeton.edu/11model">Section 1.1</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
-public class RandomSeq { 
+public class RandomSeq {
 
     // this class should not be instantiated
-    private RandomSeq() { }
+    private RandomSeq() {
+    }
 
 
     /**
@@ -53,9 +54,7 @@ public class RandomSeq {
                 double x = StdRandom.uniform();
                 StdOut.println(x);
             }
-        }
-
-        else if (args.length == 3) {
+        } else if (args.length == 3) {
             double lo = Double.parseDouble(args[1]);
             double hi = Double.parseDouble(args[2]);
 
@@ -64,9 +63,7 @@ public class RandomSeq {
                 double x = StdRandom.uniform(lo, hi);
                 StdOut.printf("%.2f\n", x);
             }
-        }
-
-        else {
+        } else {
             throw new IllegalArgumentException("Invalid number of arguments");
         }
     }

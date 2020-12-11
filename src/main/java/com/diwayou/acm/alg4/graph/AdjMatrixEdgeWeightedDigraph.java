@@ -5,7 +5,7 @@
  *
  *  An edge-weighted digraph, implemented using an adjacency matrix.
  *  Parallel edges are disallowed; self-loops are allowed.
- *  
+ *
  ******************************************************************************/
 
 package com.diwayou.acm.alg4.graph;
@@ -17,26 +17,26 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *  The {@code AdjMatrixEdgeWeightedDigraph} class represents a edge-weighted
- *  digraph of vertices named 0 through <em>V</em> - 1, where each
- *  directed edge is of type {@link DirectedEdge} and has a real-valued weight.
- *  It supports the following two primary operations: add a directed edge
- *  to the digraph and iterate over all of edges incident from a given vertex.
- *  It also provides
- *  methods for returning the number of vertices <em>V</em> and the number
- *  of edges <em>E</em>. Parallel edges are disallowed; self-loops are permitted.
- *  <p>
- *  This implementation uses an adjacency-matrix representation.
- *  All operations take constant time (in the worst case) except
- *  iterating over the edges incident from a given vertex, which takes
- *  time proportional to <em>V</em>.
- *  <p>
- *  For additional documentation,
- *  see <a href="https://algs4.cs.princeton.edu/44sp">Section 4.4</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The {@code AdjMatrixEdgeWeightedDigraph} class represents a edge-weighted
+ * digraph of vertices named 0 through <em>V</em> - 1, where each
+ * directed edge is of type {@link DirectedEdge} and has a real-valued weight.
+ * It supports the following two primary operations: add a directed edge
+ * to the digraph and iterate over all of edges incident from a given vertex.
+ * It also provides
+ * methods for returning the number of vertices <em>V</em> and the number
+ * of edges <em>E</em>. Parallel edges are disallowed; self-loops are permitted.
+ * <p>
+ * This implementation uses an adjacency-matrix representation.
+ * All operations take constant time (in the worst case) except
+ * iterating over the edges incident from a given vertex, which takes
+ * time proportional to <em>V</em>.
+ * <p>
+ * For additional documentation,
+ * see <a href="https://algs4.cs.princeton.edu/44sp">Section 4.4</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 public class AdjMatrixEdgeWeightedDigraph {
     private static final String NEWLINE = System.getProperty("line.separator");
@@ -44,9 +44,10 @@ public class AdjMatrixEdgeWeightedDigraph {
     private final int V;
     private int E;
     private DirectedEdge[][] adj;
-    
+
     /**
      * Initializes an empty edge-weighted digraph with {@code V} vertices and 0 edges.
+     *
      * @param V the number of vertices
      * @throws IllegalArgumentException if {@code V < 0}
      */
@@ -59,6 +60,7 @@ public class AdjMatrixEdgeWeightedDigraph {
 
     /**
      * Initializes a random edge-weighted digraph with {@code V} vertices and <em>E</em> edges.
+     *
      * @param V the number of vertices
      * @param E the number of edges
      * @throws IllegalArgumentException if {@code V < 0}
@@ -67,7 +69,7 @@ public class AdjMatrixEdgeWeightedDigraph {
     public AdjMatrixEdgeWeightedDigraph(int V, int E) {
         this(V);
         if (E < 0) throw new IllegalArgumentException("number of edges must be nonnegative");
-        if (E > V*V) throw new IllegalArgumentException("too many edges");
+        if (E > V * V) throw new IllegalArgumentException("too many edges");
 
         // can be inefficient
         while (this.E != E) {
@@ -80,6 +82,7 @@ public class AdjMatrixEdgeWeightedDigraph {
 
     /**
      * Returns the number of vertices in the edge-weighted digraph.
+     *
      * @return the number of vertices in the edge-weighted digraph
      */
     public int V() {
@@ -88,6 +91,7 @@ public class AdjMatrixEdgeWeightedDigraph {
 
     /**
      * Returns the number of edges in the edge-weighted digraph.
+     *
      * @return the number of edges in the edge-weighted digraph
      */
     public int E() {
@@ -97,6 +101,7 @@ public class AdjMatrixEdgeWeightedDigraph {
     /**
      * Adds the directed edge {@code e} to the edge-weighted digraph (if there
      * is not already an edge with the same endpoints).
+     *
      * @param e the edge
      */
     public void addEdge(DirectedEdge e) {
@@ -112,6 +117,7 @@ public class AdjMatrixEdgeWeightedDigraph {
 
     /**
      * Returns the directed edges incident from vertex {@code v}.
+     *
      * @param v the vertex
      * @return the directed edges incident from vertex {@code v} as an Iterable
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
@@ -157,8 +163,9 @@ public class AdjMatrixEdgeWeightedDigraph {
     /**
      * Returns a string representation of the edge-weighted digraph. This method takes
      * time proportional to <em>V</em><sup>2</sup>.
+     *
      * @return the number of vertices <em>V</em>, followed by the number of edges <em>E</em>,
-     *   followed by the <em>V</em> adjacency lists of edges
+     * followed by the <em>V</em> adjacency lists of edges
      */
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -176,7 +183,7 @@ public class AdjMatrixEdgeWeightedDigraph {
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
     private void validateVertex(int v) {
         if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 
 

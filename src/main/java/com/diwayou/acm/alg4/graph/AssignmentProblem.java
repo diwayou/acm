@@ -14,25 +14,25 @@ import com.diwayou.acm.alg4.util.StdOut;
 import com.diwayou.acm.alg4.util.StdRandom;
 
 /**
- *  The {@code AssignmentProblem} class represents a data type for computing
- *  an optimal solution to an <em>n</em>-by-<em>n</em> <em>assignment problem</em>.
- *  The assignment problem is to find a minimum weight matching in an
- *  edge-weighted complete bipartite graph.
- *  <p>
- *  The data type supplies methods for determining the optimal solution
- *  and the corresponding dual solution.
- *  <p>
- *  This implementation uses the <em>successive shortest paths algorithm</em>.
- *  The order of growth of the running time in the worst case is
- *  O(<em>n</em>^3 log <em>n</em>) to solve an <em>n</em>-by-<em>n</em>
- *  instance.
- *  <p>
- *  For additional documentation, see
- *  <a href="https://algs4.cs.princeton.edu/65reductions">Section 6.5</a>
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The {@code AssignmentProblem} class represents a data type for computing
+ * an optimal solution to an <em>n</em>-by-<em>n</em> <em>assignment problem</em>.
+ * The assignment problem is to find a minimum weight matching in an
+ * edge-weighted complete bipartite graph.
+ * <p>
+ * The data type supplies methods for determining the optimal solution
+ * and the corresponding dual solution.
+ * <p>
+ * This implementation uses the <em>successive shortest paths algorithm</em>.
+ * The order of growth of the running time in the worst case is
+ * O(<em>n</em>^3 log <em>n</em>) to solve an <em>n</em>-by-<em>n</em>
+ * instance.
+ * <p>
+ * For additional documentation, see
+ * <a href="https://algs4.cs.princeton.edu/65reductions">Section 6.5</a>
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 public class AssignmentProblem {
     private static final double FLOATING_POINT_EPSILON = 1E-14;
@@ -49,10 +49,10 @@ public class AssignmentProblem {
     /**
      * Determines an optimal solution to the assignment problem.
      *
-     * @param  weight the <em>n</em>-by-<em>n</em> matrix of weights
+     * @param weight the <em>n</em>-by-<em>n</em> matrix of weights
      * @throws IllegalArgumentException unless all weights are nonnegative
      * @throws IllegalArgumentException if {@code weight} is {@code null}
-     */ 
+     */
     public AssignmentProblem(double[][] weight) {
         if (weight == null) throw new IllegalArgumentException("constructor argument is null");
 
@@ -61,7 +61,7 @@ public class AssignmentProblem {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (Double.isNaN(weight[i][j]))
-                    throw new IllegalArgumentException("weight " + i + "-" + j  + " is NaN");
+                    throw new IllegalArgumentException("weight " + i + "-" + j + " is NaN");
                 if (weight[i][j] < minWeight) minWeight = weight[i][j];
                 this.weight[i][j] = weight[i][j];
             }
@@ -75,9 +75,9 @@ public class AssignmentProblem {
         xy = new int[n];
         yx = new int[n];
         for (int i = 0; i < n; i++)
-             xy[i] = UNMATCHED;
+            xy[i] = UNMATCHED;
         for (int j = 0; j < n; j++)
-             yx[j] = UNMATCHED;
+            yx[j] = UNMATCHED;
 
         // add n edges to matching
         for (int k = 0; k < n; k++) {
@@ -92,20 +92,20 @@ public class AssignmentProblem {
     private void augment() {
 
         // build residual graph
-        EdgeWeightedDigraph G = new EdgeWeightedDigraph(2*n+2);
-        int s = 2*n, t = 2*n+1;
+        EdgeWeightedDigraph G = new EdgeWeightedDigraph(2 * n + 2);
+        int s = 2 * n, t = 2 * n + 1;
         for (int i = 0; i < n; i++) {
             if (xy[i] == UNMATCHED)
                 G.addEdge(new DirectedEdge(s, i, 0.0));
         }
         for (int j = 0; j < n; j++) {
             if (yx[j] == UNMATCHED)
-                G.addEdge(new DirectedEdge(n+j, t, py[j]));
+                G.addEdge(new DirectedEdge(n + j, t, py[j]));
         }
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (xy[i] == j) G.addEdge(new DirectedEdge(n+j, i, 0.0));
-                else            G.addEdge(new DirectedEdge(i, n+j, reducedCost(i, j)));
+                if (xy[i] == j) G.addEdge(new DirectedEdge(n + j, i, 0.0));
+                else G.addEdge(new DirectedEdge(i, n + j, reducedCost(i, j)));
             }
         }
 
@@ -125,7 +125,7 @@ public class AssignmentProblem {
         for (int i = 0; i < n; i++)
             px[i] += spt.distTo(i);
         for (int j = 0; j < n; j++)
-            py[j] += spt.distTo(n+j);
+            py[j] += spt.distTo(n + j);
     }
 
     // reduced cost of i-j
@@ -144,10 +144,9 @@ public class AssignmentProblem {
     /**
      * Returns the dual optimal value for the specified row.
      *
-     * @param  i the row index
+     * @param i the row index
      * @return the dual optimal value for row {@code i}
      * @throws IllegalArgumentException unless {@code 0 <= i < n}
-     *
      */
     // dual variable for row i
     public double dualRow(int i) {
@@ -158,10 +157,9 @@ public class AssignmentProblem {
     /**
      * Returns the dual optimal value for the specified column.
      *
-     * @param  j the column index
+     * @param j the column index
      * @return the dual optimal value for column {@code j}
      * @throws IllegalArgumentException unless {@code 0 <= j < n}
-     *
      */
     public double dualCol(int j) {
         validate(j);
@@ -171,10 +169,9 @@ public class AssignmentProblem {
     /**
      * Returns the column associated with the specified row in the optimal solution.
      *
-     * @param  i the row index
+     * @param i the row index
      * @return the column matched to row {@code i} in the optimal solution
      * @throws IllegalArgumentException unless {@code 0 <= i < n}
-     *
      */
     public int sol(int i) {
         validate(i);
@@ -185,7 +182,6 @@ public class AssignmentProblem {
      * Returns the total weight of the optimal solution
      *
      * @return the total weight of the optimal solution
-     *
      */
     public double weight() {
         double total = 0.0;
@@ -197,7 +193,7 @@ public class AssignmentProblem {
     }
 
     private void validate(int i) {
-        if (i < 0 || i >= n) throw new IllegalArgumentException("index is not between 0 and " + (n-1) + ": " + i);
+        if (i < 0 || i >= n) throw new IllegalArgumentException("index is not between 0 and " + (n - 1) + ": " + i);
     }
 
 

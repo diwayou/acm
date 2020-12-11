@@ -102,14 +102,14 @@ public class Lc494 {
         dp[0][0] = 1;
         for (int i = 1; i <= nums.length; i++) {
             for (int j = 0; j <= sumLen; j++) {
-                dp[i%2][j] = dp[(i - 1)%2][Math.abs(j - nums[i - 1])];
+                dp[i % 2][j] = dp[(i - 1) % 2][Math.abs(j - nums[i - 1])];
                 if (j + nums[i - 1] <= sumLen) {
-                    dp[i%2][j] += dp[(i - 1)%2][j + nums[i - 1]];
+                    dp[i % 2][j] += dp[(i - 1) % 2][j + nums[i - 1]];
                 }
             }
         }
 
-        return dp[nums.length%2][Math.abs(S)];
+        return dp[nums.length % 2][Math.abs(S)];
     }
 
     public int findTargetSumWays5(int[] nums, int S) {

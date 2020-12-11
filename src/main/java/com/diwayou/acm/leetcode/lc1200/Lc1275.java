@@ -2,7 +2,7 @@ package com.diwayou.acm.leetcode.lc1200;
 
 /**
  * https://leetcode-cn.com/problems/find-winner-on-a-tic-tac-toe-game/
- *
+ * <p>
  * A 和B在一个3x3的网格上玩井字棋。
  * 井字棋游戏的规则如下：
  * 玩家轮流将棋子放在空方格 (" ") 上。
@@ -14,7 +14,7 @@ package com.diwayou.acm.leetcode.lc1200;
  * 给你一个数组 moves，其中每个元素是大小为 2 的另一个数组（元素分别对应网格的行和列），它按照 A 和 B 的行动顺序（先 A 后 B）记录了两人各自的棋子位置。
  * 如果游戏存在获胜者（A 或 B），就返回该游戏的获胜者；如果游戏以平局结束，则返回 "Draw"；如果仍会有行动（游戏未结束），则返回 "Pending"。
  * 你可以假设moves都 有效（遵循井字棋规则），网格最初是空的，A 将先行动。
- *
+ * <p>
  * 示例 1：
  * 输入：moves = [[0,0],[2,0],[1,1],[2,1],[2,2]]
  * 输出："A"
@@ -22,7 +22,7 @@ package com.diwayou.acm.leetcode.lc1200;
  * "X  "    "X  "    "X  "    "X  "    "X  "
  * "   " -> "   " -> " X " -> " X " -> " X "
  * "   "    "O  "    "O  "    "OO "    "OOX"
- *
+ * <p>
  * 示例 2：
  * 输入：moves = [[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]]
  * 输出："B"
@@ -30,7 +30,7 @@ package com.diwayou.acm.leetcode.lc1200;
  * "X  "    "X  "    "XX "    "XXO"    "XXO"    "XXO"
  * "   " -> " O " -> " O " -> " O " -> "XO " -> "XO "
  * "   "    "   "    "   "    "   "    "   "    "O  "
- *
+ * <p>
  * 示例 3：
  * 输入：moves = [[0,0],[1,1],[2,0],[1,0],[1,2],[2,1],[0,1],[0,2],[2,2]]
  * 输出："Draw"
@@ -38,7 +38,7 @@ package com.diwayou.acm.leetcode.lc1200;
  * "XXO"
  * "OOX"
  * "XOX"
- *
+ * <p>
  * 示例 4：
  * 输入：moves = [[0,0],[1,1]]
  * 输出："Pending"
@@ -46,7 +46,7 @@ package com.diwayou.acm.leetcode.lc1200;
  * "X  "
  * " O "
  * "   "
- * 
+ * <p>
  * 提示：
  * 1 <= moves.length <= 9
  * moves[i].length == 2
@@ -57,7 +57,7 @@ package com.diwayou.acm.leetcode.lc1200;
 public class Lc1275 {
 
     public static void main(String[] args) {
-        int[][] moves = new int[][]{{0,0},{1,1},{0,1},{0,2},{1,0},{2,0}};
+        int[][] moves = new int[][]{{0, 0}, {1, 1}, {0, 1}, {0, 2}, {1, 0}, {2, 0}};
 
         System.out.println(new Lc1275().tictactoe(moves));
     }
@@ -98,12 +98,12 @@ public class Lc1275 {
             if ((m[0] == 1 && m[1] == 1) || Math.abs(m[0] - m[1]) == 2) {
                 xb += a;
 
-                 if (xb == 3) {
-                     return "A";
-                 }
-                 if (xb == -3) {
-                     return "B";
-                 }
+                if (xb == 3) {
+                    return "A";
+                }
+                if (xb == -3) {
+                    return "B";
+                }
             }
 
             a = -a;

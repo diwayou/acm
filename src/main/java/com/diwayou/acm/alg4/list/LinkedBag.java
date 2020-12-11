@@ -37,20 +37,20 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *  The {@code LinkedBag} class represents a bag (or multiset) of 
- *  generic items. It supports insertion and iterating over the 
- *  items in arbitrary order.
- *  <p>
- *  This implementation uses a singly linked list with a non-static nested class Node.
- *  See {@link Bag} for a version that uses a static nested class.
- *  The <em>add</em>, <em>isEmpty</em>, and <em>size</em> operations
- *  take constant time. Iteration takes time proportional to the number of items.
- *  <p>
- *  For additional documentation, see <a href="https://algs4.cs.princeton.edu/13stacks">Section 1.3</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The {@code LinkedBag} class represents a bag (or multiset) of
+ * generic items. It supports insertion and iterating over the
+ * items in arbitrary order.
+ * <p>
+ * This implementation uses a singly linked list with a non-static nested class Node.
+ * See {@link Bag} for a version that uses a static nested class.
+ * The <em>add</em>, <em>isEmpty</em>, and <em>size</em> operations
+ * take constant time. Iteration takes time proportional to the number of items.
+ * <p>
+ * For additional documentation, see <a href="https://algs4.cs.princeton.edu/13stacks">Section 1.3</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 public class LinkedBag<Item> implements Iterable<Item> {
     private Node first;    // beginning of bag
@@ -72,6 +72,7 @@ public class LinkedBag<Item> implements Iterable<Item> {
 
     /**
      * Is this bag empty?
+     *
      * @return true if this bag is empty; false otherwise
      */
     public boolean isEmpty() {
@@ -80,6 +81,7 @@ public class LinkedBag<Item> implements Iterable<Item> {
 
     /**
      * Returns the number of items in this bag.
+     *
      * @return the number of items in this bag
      */
     public int size() {
@@ -88,6 +90,7 @@ public class LinkedBag<Item> implements Iterable<Item> {
 
     /**
      * Adds the item to this bag.
+     *
      * @param item the item to add to this bag
      */
     public void add(Item item) {
@@ -102,8 +105,8 @@ public class LinkedBag<Item> implements Iterable<Item> {
     /**
      * Returns an iterator that iterates over the items in the bag.
      */
-    public Iterator<Item> iterator()  {
-        return new LinkedIterator();  
+    public Iterator<Item> iterator() {
+        return new LinkedIterator();
     }
 
     // an iterator over a linked list
@@ -129,7 +132,7 @@ public class LinkedBag<Item> implements Iterable<Item> {
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
             Item item = current.item;
-            current = current.next; 
+            current = current.next;
             return item;
         }
     }

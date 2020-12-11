@@ -10,9 +10,9 @@ public class Lc37 {
     // row size
     int N = n * n;
 
-    int [][] rows = new int[N][N + 1];
-    int [][] columns = new int[N][N + 1];
-    int [][] boxes = new int[N][N + 1];
+    int[][] rows = new int[N][N + 1];
+    int[][] columns = new int[N][N + 1];
+    int[][] boxes = new int[N][N + 1];
 
     char[][] board;
 
@@ -22,7 +22,7 @@ public class Lc37 {
     /*
     Check if one could place a number d in (row, col) cell
     */
-        int idx = (row / n ) * n + col / n;
+        int idx = (row / n) * n + col / n;
         return rows[row][d] + columns[col][d] + boxes[idx][d] == 0;
     }
 
@@ -30,19 +30,19 @@ public class Lc37 {
     /*
     Place a number d in (row, col) cell
     */
-        int idx = (row / n ) * n + col / n;
+        int idx = (row / n) * n + col / n;
 
         rows[row][d]++;
         columns[col][d]++;
         boxes[idx][d]++;
-        board[row][col] = (char)(d + '0');
+        board[row][col] = (char) (d + '0');
     }
 
     public void removeNumber(int d, int row, int col) {
     /*
     Remove a number which didn't lead to a solution
     */
-        int idx = (row / n ) * n + col / n;
+        int idx = (row / n) * n + col / n;
         rows[row][d]--;
         columns[col][d]--;
         boxes[idx][d]--;
@@ -86,8 +86,7 @@ public class Lc37 {
                     if (!sudokuSolved) removeNumber(d, row, col);
                 }
             }
-        }
-        else placeNextNumbers(row, col);
+        } else placeNextNumbers(row, col);
     }
 
     public void solveSudoku(char[][] board) {

@@ -59,7 +59,7 @@ public class FetchCity {
         int count = 0;
         boolean save = false;
         try (LevelDbStore cache = new LevelDbStore(Path.of("cache").toFile(), config);
-                Writer writer = Files.newBufferedWriter(Path.of("city.csv"))) {
+             Writer writer = Files.newBufferedWriter(Path.of("city.csv"))) {
             for (Element pe : provinces) {
                 String provinceName = pe.text();
 
@@ -77,7 +77,7 @@ public class FetchCity {
                 if (!province.isEmpty()) {
                     count += province.size();
 
-                    for(Row row : province) {
+                    for (Row row : province) {
                         if (save) {
                             writer.write(String.format("%s,%s,%s\n", row.getCode(), row.getName(), row.getType()));
                         }
@@ -229,7 +229,7 @@ public class FetchCity {
                     }
 
                     return new Row(row.get(0).text(), row.get(2).text(),
-                            RowType.village.getName(),row.get(1).text());
+                            RowType.village.getName(), row.get(1).text());
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

@@ -6,18 +6,18 @@ import java.util.Map;
 
 /**
  * https://leetcode-cn.com/problems/evaluate-division/
- *
+ * <p>
  * 给出方程式A / B = k, 其中A 和B 均为代表字符串的变量，k 是一个浮点型数字。根据已知方程式求解问题，并返回计算结果。如果结果不存在，则返回-1.0。
- *
+ * <p>
  * 示例 :
  * 给定a / b = 2.0, b / c = 3.0
  * 问题: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ?
  * 返回[6.0, 0.5, -1.0, 1.0, -1.0 ]
- *
+ * <p>
  * 输入为: vector<pair<string, string>> equations, vector<double>& values, vector<pair<string, string>>
- *     queries(方程式，方程式结果，问题方程式)，其中equations.size() == values.size()，即方程式的长度与方程式结果长度相等（程式与
- *     结果一一对应），并且结果值均为正数。以上为方程式的描述。返回vector<double>类型。
- *
+ * queries(方程式，方程式结果，问题方程式)，其中equations.size() == values.size()，即方程式的长度与方程式结果长度相等（程式与
+ * 结果一一对应），并且结果值均为正数。以上为方程式的描述。返回vector<double>类型。
+ * <p>
  * 基于上述例子，输入如下：
  * equations(方程式) = [ ["a", "b"], ["b", "c"] ],
  * values(方程式结果) = [2.0, 3.0],
@@ -33,24 +33,24 @@ public class Lc399 {
      * 比如
      * a/b = 5 b.value=5
      * c/d=3 c.value=3
-     *
+     * <p>
      * b/d=2 这时候不会去更新d的数值，而是会去找d的parent c b的parent a 让这两个parent连接起来
-     *
+     * <p>
      * 相当于图的连接
-     *
+     * <p>
      * 那么就要求 a和c的关系
      * 这里就涉及数学推导
-     *
+     * <p>
      * a/b=v1//value.get(parent)
      * c/d=v2//value.get(child)
-     *
+     * <p>
      * b/d=v3//value[i]
-     *
+     * <p>
      * a=(v1b)=v1v3d
      * c=v2d
      * a/c=(v1*v3)/v2
      * 所以 推导关系 出来了：
-     *
+     * <p>
      * value.put(c,value[i]*value.get(parent)/value.get(child))
      */
     //child parent

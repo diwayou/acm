@@ -17,7 +17,7 @@ public class Lc709 {
         for (int i = 0; i < str.length(); i++) {
             ch = str.charAt(i);
             if (ch >= 'A' && ch <= 'Z') {
-                ch = (char)(ch - 'A' + 'a');
+                ch = (char) (ch - 'A' + 'a');
             }
 
             sb.append(ch);

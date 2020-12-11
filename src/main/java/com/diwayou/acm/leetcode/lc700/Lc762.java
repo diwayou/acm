@@ -2,10 +2,10 @@ package com.diwayou.acm.leetcode.lc700;
 
 /**
  * https://leetcode-cn.com/problems/prime-number-of-set-bits-in-binary-representation/
- *
+ * <p>
  * 给定两个整数L和R，找到闭区间[L, R]范围内，计算置位位数为质数的整数个数。
  * （注意，计算置位代表二进制表示中1的个数。例如21的二进制表示10101有 3 个计算置位。还有，1 不是质数。）
- *
+ * <p>
  * 示例 1:
  * 输入: L = 6, R = 10
  * 输出: 4
@@ -14,7 +14,7 @@ package com.diwayou.acm.leetcode.lc700;
  * 7 -> 111 (3 个计算置位，3 是质数)
  * 9 -> 1001 (2 个计算置位，2 是质数)
  * 10-> 1010 (2 个计算置位，2 是质数)
- *
+ * <p>
  * 示例 2:
  * 输入: L = 10, R = 15
  * 输出: 5
@@ -25,7 +25,7 @@ package com.diwayou.acm.leetcode.lc700;
  * 13 -> 1101 (3 个计算置位, 3 是质数)
  * 14 -> 1110 (3 个计算置位, 3 是质数)
  * 15 -> 1111 (4 个计算置位, 4 不是质数)
- *
+ * <p>
  * 注意:
  * L, R是L <= R且在[1, 10^6]中的整数。
  * R - L的最大值为 10000。

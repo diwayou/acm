@@ -7,27 +7,27 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/subsets-ii/
- *
+ * <p>
  * 给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
- *
+ * <p>
  * 说明：解集不能包含重复的子集。
- *
+ * <p>
  * 示例:
  * 输入: [1,2,2]
  * 输出:
  * [
- *   [2],
- *   [1],
- *   [1,2,2],
- *   [2,2],
- *   [1,2],
- *   []
+ * [2],
+ * [1],
+ * [1,2,2],
+ * [2,2],
+ * [1,2],
+ * []
  * ]
  */
 public class Lc90 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc90().subsetsWithDup(new int[]{1,1,2}));
+        System.out.println(new Lc90().subsetsWithDup(new int[]{1, 1, 2}));
     }
 
     private List<List<Integer>> re = new ArrayList<>();

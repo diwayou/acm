@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TmallItemDetail {
     public static void main(String[] args) throws Exception {
-        Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
+        Spider spider = SpiderBuilder.newBuilder(Path.of("tmall"))
                 .setCrawlThreadNum(1)
                 .build();
 

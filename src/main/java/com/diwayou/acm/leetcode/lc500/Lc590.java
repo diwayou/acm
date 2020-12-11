@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/
- *
+ * <p>
  * 给定一个 N 叉树，返回其节点值的后序遍历。
  */
 public class Lc590 {
@@ -30,7 +30,8 @@ public class Lc590 {
         public int val;
         public List<Node> children;
 
-        public Node() {}
+        public Node() {
+        }
 
         public Node(int _val) {
             val = _val;
@@ -40,5 +41,7 @@ public class Lc590 {
             val = _val;
             children = _children;
         }
-    };
+    }
+
+    ;
 }

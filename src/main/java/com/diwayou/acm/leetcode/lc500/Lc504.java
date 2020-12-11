@@ -2,13 +2,13 @@ package com.diwayou.acm.leetcode.lc500;
 
 /**
  * https://leetcode-cn.com/problems/base-7/
- *
+ * <p>
  * 给定一个整数，将其转化为7进制，并以字符串形式输出。
- *
+ * <p>
  * 示例 1:
  * 输入: 100
  * 输出: "202"
- *
+ * <p>
  * 示例 2:
  * 输入: -7
  * 输出: "-10"

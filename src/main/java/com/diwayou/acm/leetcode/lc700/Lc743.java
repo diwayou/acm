@@ -6,11 +6,11 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/network-delay-time/
- *
+ * <p>
  * 有N个网络节点，标记为1到N。
  * 给定一个列表times，表示信号经过有向边的传递时间。times[i] = (u, v, w)，其中u是源节点，v是目标节点， w是一个信号从源节点传递到目标节点的时间。
  * 现在，我们向当前的节点K发送了一个信号。需要多久才能使所有节点都收到信号？如果不能使所有节点收到信号，返回-1。
- *
+ * <p>
  * 注意:
  * N的范围在[1, 100]之间。
  * K的范围在[1, N]之间。
@@ -20,7 +20,7 @@ import java.util.List;
 public class Lc743 {
 
     public static void main(String[] args) {
-        int[][] times = {{2,1,1},{2,3,1},{3,4,1}};
+        int[][] times = {{2, 1, 1}, {2, 3, 1}, {3, 4, 1}};
         int N = 4;
         int K = 2;
 
@@ -140,7 +140,7 @@ public class Lc743 {
             mark[i] = 0;
         }
 
-        mark[K-1] = 1;
+        mark[K - 1] = 1;
 
         for (int i = 0; i < N; i++) {
             int min = MAX_VAL;

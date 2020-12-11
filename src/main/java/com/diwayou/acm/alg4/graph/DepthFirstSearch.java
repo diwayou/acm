@@ -24,25 +24,25 @@ import com.diwayou.acm.alg4.util.In;
 import com.diwayou.acm.alg4.util.StdOut;
 
 /**
- *  The {@code DepthFirstSearch} class represents a data type for 
- *  determining the vertices connected to a given source vertex <em>s</em>
- *  in an undirected graph. For versions that find the paths, see
- *  {@link DepthFirstPaths} and {@link BreadthFirstPaths}.
- *  <p>
- *  This implementation uses depth-first search.
- *  See {@link NonrecursiveDFS} for a non-recursive version.
- *  The constructor takes &Theta;(<em>V</em> + <em>E</em>) time in the worst
- *  case, where <em>V</em> is the number of vertices and <em>E</em>
- *  is the number of edges.
- *  Each instance method takes &Theta;(1) time.
- *  It uses &Theta;(<em>V</em>) extra space (not including the graph). 
- *  <p>
- *  For additional documentation, see
- *  <a href="https://algs4.cs.princeton.edu/41graph">Section 4.1</a>   
- *  of <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * The {@code DepthFirstSearch} class represents a data type for
+ * determining the vertices connected to a given source vertex <em>s</em>
+ * in an undirected graph. For versions that find the paths, see
+ * {@link DepthFirstPaths} and {@link BreadthFirstPaths}.
+ * <p>
+ * This implementation uses depth-first search.
+ * See {@link NonrecursiveDFS} for a non-recursive version.
+ * The constructor takes &Theta;(<em>V</em> + <em>E</em>) time in the worst
+ * case, where <em>V</em> is the number of vertices and <em>E</em>
+ * is the number of edges.
+ * Each instance method takes &Theta;(1) time.
+ * It uses &Theta;(<em>V</em>) extra space (not including the graph).
+ * <p>
+ * For additional documentation, see
+ * <a href="https://algs4.cs.princeton.edu/41graph">Section 4.1</a>
+ * of <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 public class DepthFirstSearch {
     private boolean[] marked;    // marked[v] = is there an s-v path?
@@ -51,6 +51,7 @@ public class DepthFirstSearch {
     /**
      * Computes the vertices in graph {@code G} that are
      * connected to the source vertex {@code s}.
+     *
      * @param G the graph
      * @param s the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
@@ -74,6 +75,7 @@ public class DepthFirstSearch {
 
     /**
      * Is there a path between the source vertex {@code s} and vertex {@code v}?
+     *
      * @param v the vertex
      * @return {@code true} if there is a path, {@code false} otherwise
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
@@ -85,6 +87,7 @@ public class DepthFirstSearch {
 
     /**
      * Returns the number of vertices connected to the source vertex {@code s}.
+     *
      * @return the number of vertices connected to the source vertex {@code s}
      */
     public int count() {
@@ -95,7 +98,7 @@ public class DepthFirstSearch {
     private void validateVertex(int v) {
         int V = marked.length;
         if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 
     /**
@@ -115,7 +118,7 @@ public class DepthFirstSearch {
 
         StdOut.println();
         if (search.count() != G.V()) StdOut.println("NOT connected");
-        else                         StdOut.println("connected");
+        else StdOut.println("connected");
     }
 
 }

@@ -2,22 +2,22 @@ package com.diwayou.acm.leetcode.lc900;
 
 /**
  * https://leetcode-cn.com/problems/n-repeated-element-in-size-2n-array/
- *
+ * <p>
  * 在大小为 2N的数组 A中有 N+1 个不同的元素，其中有一个元素重复了 N 次。
  * 返回重复了 N次的那个元素。
- *
+ * <p>
  * 示例 1：
  * 输入：[1,2,3,3]
  * 输出：3
- *
+ * <p>
  * 示例 2：
  * 输入：[2,1,2,5,3,2]
  * 输出：2
- *
+ * <p>
  * 示例3：
  * 输入：[5,1,5,2,5,3,5,4]
  * 输出：5
- *
+ * <p>
  * 提示：
  * 4 <= A.length <= 10000
  * 0 <= A[i] < 10000
@@ -26,7 +26,7 @@ package com.diwayou.acm.leetcode.lc900;
 public class Lc961 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc961().repeatedNTimes(new int[]{5,1,4,2,5,3,5,5}));
+        System.out.println(new Lc961().repeatedNTimes(new int[]{5, 1, 4, 2, 5, 3, 5, 5}));
     }
 
     public int repeatedNTimes(int[] A) {

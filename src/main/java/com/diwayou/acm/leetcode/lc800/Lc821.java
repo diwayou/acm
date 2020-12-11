@@ -4,13 +4,13 @@ import java.util.Arrays;
 
 /**
  * https://leetcode-cn.com/problems/shortest-distance-to-a-character/
- *
+ * <p>
  * 给定一个字符串S和一个字符C。返回一个代表字符串S中每个字符到字符串S中的字符C的最短距离的数组。
- *
+ * <p>
  * 示例 1:
  * 输入: S = "loveleetcode", C = 'e'
  * 输出: [3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0]
- *
+ * <p>
  * 说明:
  * 字符串S的长度范围为[1, 10000]。
  * C是一个单字符，且保证是字符串S里的字符。

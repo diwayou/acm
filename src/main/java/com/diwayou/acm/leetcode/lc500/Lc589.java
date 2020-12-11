@@ -5,11 +5,11 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/
- *
+ * <p>
  * 给定一个 N 叉树，返回其节点值的前序遍历。
  * 例如，给定一个3叉树:
  * 返回其前序遍历: [1,3,5,6,2,4]。
- *
+ * <p>
  * 说明:递归法很简单，你可以使用迭代法完成此题吗?
  */
 public class Lc589 {
@@ -34,7 +34,8 @@ public class Lc589 {
         public int val;
         public List<Node> children;
 
-        public Node() {}
+        public Node() {
+        }
 
         public Node(int _val) {
             val = _val;
@@ -44,5 +45,7 @@ public class Lc589 {
             val = _val;
             children = _children;
         }
-    };
+    }
+
+    ;
 }

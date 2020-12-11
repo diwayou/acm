@@ -7,26 +7,26 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/4sum/
- *
+ * <p>
  * 给定一个包含n 个整数的数组nums和一个目标值target，判断nums中是否存在四个元素 a，b，c和 d，使得a + b + c + d的值与
  * target相等？找出所有满足条件且不重复的四元组。
- *
+ * <p>
  * 注意：
  * 答案中不可以包含重复的四元组。
- *
+ * <p>
  * 示例：
  * 给定数组 nums = [1, 0, -1, 0, -2, 2]，和 target = 0。
  * 满足要求的四元组集合为：
  * [
- *   [-1,  0, 0, 1],
- *   [-2, -1, 1, 2],
- *   [-2,  0, 0, 2]
+ * [-1,  0, 0, 1],
+ * [-2, -1, 1, 2],
+ * [-2,  0, 0, 2]
  * ]
  */
 public class Lc18 {
 
     public static void main(String[] args) {
-        int[] nums = new int[]{1,-2,-5,-4,-3,3,3,5};
+        int[] nums = new int[]{1, -2, -5, -4, -3, 3, 3, 5};
         int target = -11;
 
         System.out.println(new Lc18().fourSum(nums, target));

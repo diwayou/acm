@@ -2,15 +2,15 @@ package com.diwayou.acm.leetcode.lc500;
 
 /**
  * https://leetcode-cn.com/problems/perfect-number/
- *
+ * <p>
  * 对于一个正整数，如果它和除了它自身以外的所有正因子之和相等，我们称它为“完美数”。
  * 给定一个整数n，如果他是完美数，返回True，否则返回False
- *
+ * <p>
  * 示例：
  * 输入: 28
  * 输出: True
  * 解释: 28 = 1 + 2 + 4 + 7 + 14
- * 
+ * <p>
  * 提示：
  * 输入的数字n 不会超过 100,000,000. (1e8)
  */

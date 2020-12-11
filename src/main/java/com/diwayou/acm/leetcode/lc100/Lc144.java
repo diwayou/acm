@@ -8,19 +8,19 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
- *
+ * <p>
  * 给定一个二叉树，返回它的前序遍历。
- *
+ * <p>
  * 示例:
  * 输入: [1,null,2,3]
- *    1
- *     \
- *      2
- *     /
- *    3
- *
+ * 1
+ * \
+ * 2
+ * /
+ * 3
+ * <p>
  * 输出: [1,2,3]
- *
+ * <p>
  * 进阶:递归算法很简单，你可以通过迭代算法完成吗？
  */
 public class Lc144 {

@@ -13,7 +13,7 @@ public class SelectionBars {
         int n = a.length;
         for (int i = 0; i < n; i++) {
             int min = i;
-            for (int j = i+1; j < n; j++)
+            for (int j = i + 1; j < n; j++)
                 if (less(a[j], a[min])) min = j;
             show(a, i, min);
             exch(a, i, min);
@@ -45,7 +45,7 @@ public class SelectionBars {
     public static void main(String[] args) {
         int n = 100;
         StdDraw.setCanvasSize(160, 640);
-        StdDraw.setXscale(-1, n+1);
+        StdDraw.setXscale(-1, n + 1);
         StdDraw.setPenRadius(0.006);
         double[] a = new double[n];
         for (int i = 0; i < n; i++)

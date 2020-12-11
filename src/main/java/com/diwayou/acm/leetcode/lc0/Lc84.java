@@ -8,8 +8,8 @@ import java.util.Stack;
 public class Lc84 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc84().largestRectangleArea(new int[]{2,1,5,6,2,3}));
-        System.out.println(new Lc84().largestRectangleArea(new int[]{2,1,2,2,1}));
+        System.out.println(new Lc84().largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3}));
+        System.out.println(new Lc84().largestRectangleArea(new int[]{2, 1, 2, 2, 1}));
     }
 
     public int largestRectangleArea1(int[] heights) {

@@ -17,7 +17,7 @@ import java.util.Scanner;
 @Slf4j
 public class GamerskyNews {
     public static void main(String[] args) throws Exception {
-        Spider spider = SpiderBuilder.newBuilder(Path.of("/Users/gaopeng/Downloads/cnbeta"))
+        Spider spider = SpiderBuilder.newBuilder(Path.of("gamersky"))
                 .setCrawlThreadNum(2)
                 .setPageHandler(new PageHandler() {
                     @Override

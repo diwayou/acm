@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 public class DoubanPhoto {
     public static void main(String[] args) throws Exception {
-        Spider spider = SpiderBuilder.newBuilder(Path.of("/Users/gaopeng/Downloads/douban"))
+        Spider spider = SpiderBuilder.newBuilder(Path.of("douban-photo"))
                 .setCrawlThreadNum(2)
                 .build();
 

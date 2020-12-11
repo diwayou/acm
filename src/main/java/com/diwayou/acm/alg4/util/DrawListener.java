@@ -9,18 +9,18 @@
 package com.diwayou.acm.alg4.util;
 
 /**
- *  <i>DrawListener</i>. This interface provides a basic capability for
- *  responding to keyboard in mouse events from {@link Draw} via callbacks.
- *  You can see some examples in
- *  <a href="https://introcs.cs.princeton.edu/java/36inheritance">Section 3.6</a>.
+ * <i>DrawListener</i>. This interface provides a basic capability for
+ * responding to keyboard in mouse events from {@link Draw} via callbacks.
+ * You can see some examples in
+ * <a href="https://introcs.cs.princeton.edu/java/36inheritance">Section 3.6</a>.
  *
- *  <p>
- *  For additional documentation, see
- *  <a href="https://introcs.cs.princeton.edu/31datatype">Section 3.1</a> of
- *  <i>Computer Science: An Interdisciplinary Approach</i> by Robert Sedgewick and Kevin Wayne.
+ * <p>
+ * For additional documentation, see
+ * <a href="https://introcs.cs.princeton.edu/31datatype">Section 3.1</a> of
+ * <i>Computer Science: An Interdisciplinary Approach</i> by Robert Sedgewick and Kevin Wayne.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 
 public interface DrawListener {

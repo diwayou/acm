@@ -6,13 +6,13 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/keyboard-row/
- *
+ * <p>
  * 给定一个单词列表，只返回可以使用在键盘同一行的字母打印出来的单词。键盘如下图所示。
- *
+ * <p>
  * 示例：
  * 输入: ["Hello", "Alaska", "Dad", "Peace"]
  * 输出: ["Alaska", "Dad"]
- *
+ * <p>
  * 注意：
  * 你可以重复使用键盘上同一字符。
  * 你可以假设输入的字符串将只包含字母。
@@ -46,7 +46,7 @@ public class Lc500 {
 
     private static char toLower(char c) {
         if (c >= 'A' && c <= 'Z') {
-            return (char)(c + 'a' - 'A');
+            return (char) (c + 'a' - 'A');
         }
 
         return c;

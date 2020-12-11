@@ -6,24 +6,24 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/spiral-matrix/
- *
+ * <p>
  * 给定一个包含m x n个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
- *
+ * <p>
  * 示例1:
  * 输入:
  * [
- *  [ 1, 2, 3 ],
- *  [ 4, 5, 6 ],
- *  [ 7, 8, 9 ]
+ * [ 1, 2, 3 ],
+ * [ 4, 5, 6 ],
+ * [ 7, 8, 9 ]
  * ]
  * 输出: [1,2,3,6,9,8,7,4,5]
- *
+ * <p>
  * 示例2:
  * 输入:
  * [
- *   [1, 2, 3, 4],
- *   [5, 6, 7, 8],
- *   [9,10,11,12]
+ * [1, 2, 3, 4],
+ * [5, 6, 7, 8],
+ * [9,10,11,12]
  * ]
  * 输出: [1,2,3,4,8,12,11,10,9,5,6,7]
  */
@@ -46,7 +46,7 @@ public class Lc54 {
 
             int cr = r + dr[di];
             int cc = c + dc[di];
-            if (0 <= cr && cr < R && 0 <= cc && cc < C && !seen[cr][cc]){
+            if (0 <= cr && cr < R && 0 <= cc && cc < C && !seen[cr][cc]) {
                 r = cr;
                 c = cc;
             } else {
@@ -59,7 +59,7 @@ public class Lc54 {
         return ans;
     }
 
-    public List < Integer > spiralOrder1(int[][] matrix) {
+    public List<Integer> spiralOrder1(int[][] matrix) {
         if (matrix.length == 0) {
             return Collections.emptyList();
         }

@@ -2,16 +2,16 @@ package com.diwayou.acm.leetcode.lc100;
 
 /**
  * https://leetcode-cn.com/problems/gas-station/
- *
+ * <p>
  * 在一条环路上有N个加油站，其中第i个加油站有汽油gas[i]升。
  * 你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1个加油站需要消耗汽油cost[i]升。你从其中的一个加油站出发，开始时油箱为空。
  * 如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。
- *
+ * <p>
  * 说明:
  * 如果题目有解，该答案即为唯一答案。
  * 输入数组均为非空数组，且长度相同。
  * 输入数组中的元素均为非负数。
- *
+ * <p>
  * 示例1:
  * 输入:
  * gas  = [1,2,3,4,5]
@@ -25,7 +25,7 @@ package com.diwayou.acm.leetcode.lc100;
  * 开往 2 号加油站，此时油箱有 6 - 4 + 3 = 5 升汽油
  * 开往 3 号加油站，你需要消耗 5 升汽油，正好足够你返回到 3 号加油站。
  * 因此，3 可为起始索引。
- *
+ * <p>
  * 示例 2:
  * 输入:
  * gas  = [2,3,4]
@@ -42,7 +42,7 @@ package com.diwayou.acm.leetcode.lc100;
 public class Lc134 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc134().canCompleteCircuit(new int[]{2,3,4}, new int[]{3,4,3}));
+        System.out.println(new Lc134().canCompleteCircuit(new int[]{2, 3, 4}, new int[]{3, 4, 3}));
     }
 
     public int canCompleteCircuit(int[] gas, int[] cost) {

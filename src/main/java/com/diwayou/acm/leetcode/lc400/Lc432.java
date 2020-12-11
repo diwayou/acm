@@ -7,14 +7,14 @@ import java.util.Set;
 
 /**
  * https://leetcode-cn.com/problems/all-oone-data-structure/
- *
+ * <p>
  * 实现一个数据结构支持以下操作：
- *
+ * <p>
  * Inc(key) - 插入一个新的值为 1 的 key。或者使一个存在的 key 增加一，保证 key 不为空字符串。
  * Dec(key) - 如果这个 key 的值是 1，那么把他从数据结构中移除掉。否者使一个存在的 key 值减一。如果这个 key 不存在，这个函数不做任何事情。key 保证不为空字符串。
  * GetMaxKey() - 返回 key 中值最大的任意一个。如果没有元素存在，返回一个空字符串""。
  * GetMinKey() - 返回 key 中值最小的任意一个。如果没有元素存在，返回一个空字符串""。
- *
+ * <p>
  * 挑战：以 O(1) 的时间复杂度实现所有操作。
  */
 public class Lc432 {
@@ -34,7 +34,9 @@ public class Lc432 {
 
         private Node head, tail;
 
-        /** Initialize your data structure here. */
+        /**
+         * Initialize your data structure here.
+         */
         public AllOne() {
             this.map = new HashMap<>();
             this.head = new Node();
@@ -43,7 +45,9 @@ public class Lc432 {
             this.tail.prev = head;
         }
 
-        /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+        /**
+         * Inserts a new key <Key> with value 1. Or increments an existing key by 1.
+         */
         public void inc(String key) {
             Node n = map.get(key);
             if (n == null) {
@@ -87,7 +91,9 @@ public class Lc432 {
             }
         }
 
-        /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+        /**
+         * Decrements an existing key by 1. If Key's value is 1, remove it from the data structure.
+         */
         public void dec(String key) {
             Node n = map.get(key);
             if (n == null) {
@@ -126,7 +132,9 @@ public class Lc432 {
             n.next.prev = n.prev;
         }
 
-        /** Returns one of the keys with maximal value. */
+        /**
+         * Returns one of the keys with maximal value.
+         */
         public String getMaxKey() {
             if (map.isEmpty()) {
                 return "";
@@ -135,7 +143,9 @@ public class Lc432 {
             return tail.prev.keys.iterator().next();
         }
 
-        /** Returns one of the keys with Minimal value. */
+        /**
+         * Returns one of the keys with Minimal value.
+         */
         public String getMinKey() {
             if (map.isEmpty()) {
                 return "";

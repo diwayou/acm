@@ -7,11 +7,11 @@ import com.diwayou.acm.alg4.util.StdDraw;
 /******************************************************************************
  *  Compilation:  javac-algs4 TestAlgs4.java
  *  Execution:    java-algs4 TestAlgs4 n
- *  
+ *
  *  Simulates the motion of n hard disks, subject to the laws of elastic
  *  collisions. This program is intended to test that algs4.jar is properly
  *  installed.
- * 
+ *
  ******************************************************************************/
 
 public class TestAlgs4 {

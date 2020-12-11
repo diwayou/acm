@@ -4,29 +4,29 @@ import com.diwayou.acm.leetcode.common.TreeNode;
 
 /**
  * https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/
- *
+ * <p>
  * 给定一个二叉树，原地将它展开为链表。
- *
+ * <p>
  * 例如，给定二叉树
- *
- *     1
- *    / \
- *   2   5
- *  / \   \
+ * <p>
+ * 1
+ * / \
+ * 2   5
+ * / \   \
  * 3   4   6
  * 将其展开为：
- *
+ * <p>
  * 1
- *  \
- *   2
- *    \
- *     3
- *      \
- *       4
- *        \
- *         5
- *          \
- *           6
+ * \
+ * 2
+ * \
+ * 3
+ * \
+ * 4
+ * \
+ * 5
+ * \
+ * 6
  */
 public class Lc114 {
 

@@ -18,15 +18,15 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 
 /**
- *  The {@code StopwatchCPU} data type is for measuring
- *  the CPU time used during a programming task.
+ * The {@code StopwatchCPU} data type is for measuring
+ * the CPU time used during a programming task.
+ * <p>
+ * See {@link Stopwatch} for a version that measures wall-clock time
+ * (the real time that elapses).
  *
- *  See {@link Stopwatch} for a version that measures wall-clock time
- *  (the real time that elapses).
- *
- *  @author Josh Hug
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Josh Hug
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 
 public class StopwatchCPU {
@@ -34,15 +34,15 @@ public class StopwatchCPU {
 
     private final ThreadMXBean threadTimer;
     private final long start;
-            
+
     /**
      * Initializes a new stopwatch.
      */
-    public StopwatchCPU() {  
+    public StopwatchCPU() {
         threadTimer = ManagementFactory.getThreadMXBean();
         start = threadTimer.getCurrentThreadCpuTime();
-    }   
-        
+    }
+
     /**
      * Returns the elapsed CPU time (in seconds) since the stopwatch was created.
      *
@@ -55,7 +55,7 @@ public class StopwatchCPU {
 
     /**
      * Unit tests the {@code StopwatchCPU} data type.
-     * Takes a command-line argument {@code n} and computes the 
+     * Takes a command-line argument {@code n} and computes the
      * sum of the square roots of the first {@code n} positive integers,
      * first using {@code Math.sqrt()}, then using {@code Math.pow()}.
      * It prints to standard output the sum and the amount of time to

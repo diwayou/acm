@@ -15,7 +15,7 @@ public class Lc9 {
 
         StringBuilder sb = new StringBuilder();
         while (x != 0) {
-            sb.append((char)(x % 10 + '0'));
+            sb.append((char) (x % 10 + '0'));
             x /= 10;
         }
 

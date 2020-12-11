@@ -5,13 +5,13 @@ import java.util.LinkedList;
 
 /**
  * https://leetcode-cn.com/problems/implement-queue-using-stacks/
- *
+ * <p>
  * 使用栈实现队列的下列操作：
  * push(x) -- 将一个元素放入队列的尾部。
  * pop() -- 从队列首部移除元素。
  * peek() -- 返回队列首部的元素。
  * empty() -- 返回队列是否为空。
- *
+ * <p>
  * 示例:
  * MyQueue queue = new MyQueue();
  * queue.push(1);
@@ -19,7 +19,7 @@ import java.util.LinkedList;
  * queue.peek();  // 返回 1
  * queue.pop();   // 返回 1
  * queue.empty(); // 返回 false
- *
+ * <p>
  * 说明:
  * 你只能使用标准的栈操作 -- 也就是只有push to top,peek/pop from top,size, 和is empty操作是合法的。
  * 你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。
@@ -32,32 +32,42 @@ public class Lc232 {
         private Deque<Integer> stackIn;
         private Deque<Integer> stackOut;
 
-        /** Initialize your data structure here. */
+        /**
+         * Initialize your data structure here.
+         */
         public MyQueue() {
             stackIn = new LinkedList<>();
             stackOut = new LinkedList<>();
         }
 
-        /** Push element x to the back of queue. */
+        /**
+         * Push element x to the back of queue.
+         */
         public void push(int x) {
             stackIn.offerLast(x);
         }
 
-        /** Removes the element from in front of queue and returns that element. */
+        /**
+         * Removes the element from in front of queue and returns that element.
+         */
         public int pop() {
             move();
 
             return stackOut.removeLast();
         }
 
-        /** Get the front element. */
+        /**
+         * Get the front element.
+         */
         public int peek() {
             move();
 
             return stackOut.getLast();
         }
 
-        /** Returns whether the queue is empty. */
+        /**
+         * Returns whether the queue is empty.
+         */
         public boolean empty() {
             return stackIn.isEmpty() && stackOut.isEmpty();
         }

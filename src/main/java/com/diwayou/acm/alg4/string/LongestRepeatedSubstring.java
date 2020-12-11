@@ -5,17 +5,17 @@
  *  Data files:   https://algs4.cs.princeton.edu/63suffix/tale.txt
  *                https://algs4.cs.princeton.edu/63suffix/tinyTale.txt
  *                https://algs4.cs.princeton.edu/63suffix/mobydick.txt
- *  
+ *
  *  Reads a text string from stdin, replaces all consecutive blocks of
  *  whitespace with a single space, and then computes the longest
  *  repeated substring in that text using a suffix array.
- * 
+ *
  *  % java LongestRepeatedSubstring < tinyTale.txt 
  *  'st of times it was the '
  *
  *  % java LongestRepeatedSubstring < mobydick.txt
  *  ',- Such a funny, sporty, gamy, jesty, joky, hoky-poky lad, is the Ocean, oh! Th'
- * 
+ *
  *  % java LongestRepeatedSubstring
  *  aaaaaaaaa
  *  'aaaaaaaa'
@@ -33,24 +33,25 @@ import com.diwayou.acm.alg4.util.StdIn;
 import com.diwayou.acm.alg4.util.StdOut;
 
 /**
- *  The {@code LongestRepeatedSubstring} class provides a {@link SuffixArray}
- *  client for computing the longest repeated substring of a string that
- *  appears at least twice. The repeated substrings may overlap (but must
- *  be distinct).
- *  <p>
- *  For additional documentation,
- *  see <a href="https://algs4.cs.princeton.edu/63suffix">Section 6.3</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
- *  <p>
- *  See also {@link LongestCommonSubstring}.
+ * The {@code LongestRepeatedSubstring} class provides a {@link SuffixArray}
+ * client for computing the longest repeated substring of a string that
+ * appears at least twice. The repeated substrings may overlap (but must
+ * be distinct).
+ * <p>
+ * For additional documentation,
+ * see <a href="https://algs4.cs.princeton.edu/63suffix">Section 6.3</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
+ * <p>
+ * See also {@link LongestCommonSubstring}.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 public class LongestRepeatedSubstring {
 
     // Do not instantiate.
-    private LongestRepeatedSubstring() { }
+    private LongestRepeatedSubstring() {
+    }
 
     /**
      * Returns the longest common string of the two specified strings.
@@ -63,9 +64,9 @@ public class LongestRepeatedSubstring {
     /**
      * Returns the longest repeated substring of the specified string.
      *
-     * @param  text the string
+     * @param text the string
      * @return the longest repeated substring that appears in {@code text};
-     *         the empty string if no such string
+     * the empty string if no such string
      */
     public static String lrs(String text) {
         int n = text.length();

@@ -29,7 +29,7 @@ public class Lc1080 {
             // 非叶子结点如果子节点都被删除了，也要删除掉
             if (!isLeaf) {
                 return null;
-            } else if (cur + root.val < limit){
+            } else if (cur + root.val < limit) {
                 return null;
             }
         }

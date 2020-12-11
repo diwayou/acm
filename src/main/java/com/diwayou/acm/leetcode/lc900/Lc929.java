@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * https://leetcode-cn.com/problems/unique-email-addresses/
- *
+ * <p>
  * 每封电子邮件都由一个本地名称和一个域名组成，以 @ 符号分隔。
  * 例如，在alice@leetcode.com中，alice是本地名称，而leetcode.com是域名。
  * 除了小写字母，这些电子邮件还可能包含 '.' 或 '+'。
@@ -17,12 +17,12 @@ import java.util.Set;
  * my@email.com。 （同样，此规则不适用于域名。）
  * 可以同时使用这两个规则。
  * 给定电子邮件列表 emails，我们会向列表中的每个地址发送一封电子邮件。实际收到邮件的不同地址有多少？
- *
+ * <p>
  * 示例：
  * 输入：["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
  * 输出：2
  * 解释：实际收到邮件的是 "testemail@leetcode.com" 和 "testemail@lee.tcode.com"。
- * 
+ * <p>
  * 提示：
  * 1 <= emails[i].length<= 100
  * 1 <= emails.length <= 100
@@ -31,7 +31,7 @@ import java.util.Set;
 public class Lc929 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc929().numUniqueEmails(new String[]{"test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"}));
+        System.out.println(new Lc929().numUniqueEmails(new String[]{"test.email+alex@leetcode.com", "test.e.mail+bob.cathy@leetcode.com", "testemail+david@lee.tcode.com"}));
     }
 
     public int numUniqueEmails1(String[] emails) {
@@ -43,7 +43,7 @@ public class Lc929 {
             String s = sa[0];
             int p = s.indexOf('+');
             if (p >= 0) {
-               s = s.substring(0, p);
+                s = s.substring(0, p);
             }
 
             s = s.replaceAll("\\.", "");

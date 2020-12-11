@@ -4,9 +4,9 @@ import java.util.*;
 
 /**
  * https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/
- *
+ * <p>
  * 给定一个 N 叉树，返回其节点值的层序遍历。 (即从左到右，逐层遍历)。
- *
+ * <p>
  * 说明:
  * 树的深度不会超过 1000。
  * 树的节点总数不会超过 5000。
@@ -63,7 +63,8 @@ public class Lc429 {
         public int val;
         public List<Node> children;
 
-        public Node() {}
+        public Node() {
+        }
 
         public Node(int _val) {
             val = _val;
@@ -73,5 +74,7 @@ public class Lc429 {
             val = _val;
             children = _children;
         }
-    };
+    }
+
+    ;
 }

@@ -6,13 +6,13 @@ import java.util.stream.Collectors;
 
 /**
  * https://leetcode-cn.com/problems/largest-number/
- *
+ * <p>
  * 给定一组非负整数，重新排列它们的顺序使之组成一个最大的整数。
- *
+ * <p>
  * 示例 1:
  * 输入: [10,2]
  * 输出: 210
- *
+ * <p>
  * 示例2:
  * 输入: [3,30,34,5,9]
  * 输出: 9534330
@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 public class Lc179 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc179().largestNumber(new int[]{3,30,34,5,9}));
+        System.out.println(new Lc179().largestNumber(new int[]{3, 30, 34, 5, 9}));
         System.out.println(new Lc179().largestNumber(new int[]{121, 12}));
-        System.out.println(new Lc179().largestNumber(new int[]{1440,7548,4240,6616,733,4712,883,8,9576}));
+        System.out.println(new Lc179().largestNumber(new int[]{1440, 7548, 4240, 6616, 733, 4712, 883, 8, 9576}));
     }
 
     public String largestNumber(int[] nums) {

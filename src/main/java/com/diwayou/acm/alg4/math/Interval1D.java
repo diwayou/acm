@@ -2,7 +2,7 @@
  *  Compilation:  javac Interval1D.java
  *  Execution:    java Interval1D
  *  Dependencies: StdOut.java
- *  
+ *
  *  1-dimensional interval data type.
  *
  ******************************************************************************/
@@ -15,25 +15,25 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- *  The {@code Interval1D} class represents a one-dimensional interval.
- *  The interval is <em>closed</em>—it contains both endpoints.
- *  Intervals are immutable: their values cannot be changed after they are created.
- *  The class {@code Interval1D} includes methods for checking whether
- *  an interval contains a point and determining whether two intervals intersect.
- *  <p>
- *  For additional documentation, 
- *  see <a href="https://algs4.cs.princeton.edu/12oop">Section 1.2</a> of 
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne. 
+ * The {@code Interval1D} class represents a one-dimensional interval.
+ * The interval is <em>closed</em>—it contains both endpoints.
+ * Intervals are immutable: their values cannot be changed after they are created.
+ * The class {@code Interval1D} includes methods for checking whether
+ * an interval contains a point and determining whether two intervals intersect.
+ * <p>
+ * For additional documentation,
+ * see <a href="https://algs4.cs.princeton.edu/12oop">Section 1.2</a> of
+ * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
+ * @author Robert Sedgewick
+ * @author Kevin Wayne
  */
 public class Interval1D {
 
     /**
      * Compares two intervals by min endpoint.
      */
-    public static final Comparator<Interval1D> MIN_ENDPOINT_ORDER  = new MinEndpointComparator();
+    public static final Comparator<Interval1D> MIN_ENDPOINT_ORDER = new MinEndpointComparator();
 
     /**
      * Compares two intervals by max endpoint.
@@ -51,13 +51,12 @@ public class Interval1D {
     /**
      * Initializes a closed interval [min, max].
      *
-     * @param  min the smaller endpoint
-     * @param  max the larger endpoint
+     * @param min the smaller endpoint
+     * @param max the larger endpoint
      * @throws IllegalArgumentException if the min endpoint is greater than the max endpoint
      * @throws IllegalArgumentException if either {@code min} or {@code max}
-     *         is {@code Double.NaN}, {@code Double.POSITIVE_INFINITY} or
-     *         {@code Double.NEGATIVE_INFINITY}
-
+     *                                  is {@code Double.NaN}, {@code Double.POSITIVE_INFINITY} or
+     *                                  {@code Double.NEGATIVE_INFINITY}
      */
     public Interval1D(double min, double max) {
         if (Double.isInfinite(min) || Double.isInfinite(max))
@@ -72,8 +71,7 @@ public class Interval1D {
         if (min <= max) {
             this.min = min;
             this.max = max;
-        }
-        else throw new IllegalArgumentException("Illegal interval");
+        } else throw new IllegalArgumentException("Illegal interval");
     }
 
     /**
@@ -83,17 +81,18 @@ public class Interval1D {
      * @deprecated Replaced by {@link #min()}.
      */
     @Deprecated
-    public double left() { 
+    public double left() {
         return min;
     }
 
     /**
      * Returns the right endpoint of this interval.
+     *
      * @return the right endpoint of this interval
      * @deprecated Replaced by {@link #max()}.
      */
     @Deprecated
-    public double right() { 
+    public double right() {
         return max;
     }
 
@@ -102,7 +101,7 @@ public class Interval1D {
      *
      * @return the min endpoint of this interval
      */
-    public double min() { 
+    public double min() {
         return min;
     }
 
@@ -111,16 +110,16 @@ public class Interval1D {
      *
      * @return the max endpoint of this interval
      */
-    public double max() { 
+    public double max() {
         return max;
     }
 
     /**
      * Returns true if this interval intersects the specified interval.
      *
-     * @param  that the other interval
+     * @param that the other interval
      * @return {@code true} if this interval intersects the argument interval;
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     public boolean intersects(Interval1D that) {
         if (this.max < that.min) return false;
@@ -133,7 +132,7 @@ public class Interval1D {
      *
      * @param x the value
      * @return {@code true} if this interval contains the value {@code x};
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     public boolean contains(double x) {
         return (min <= x) && (x <= max);
@@ -160,9 +159,9 @@ public class Interval1D {
     /**
      * Compares this transaction to the specified object.
      *
-     * @param  other the other interval
+     * @param other the other interval
      * @return {@code true} if this interval equals the other interval;
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     public boolean equals(Object other) {
         if (other == this) return true;
@@ -180,28 +179,28 @@ public class Interval1D {
     public int hashCode() {
         int hash1 = ((Double) min).hashCode();
         int hash2 = ((Double) max).hashCode();
-        return 31*hash1 + hash2;
+        return 31 * hash1 + hash2;
     }
 
     // ascending order of min endpoint, breaking ties by max endpoint
     private static class MinEndpointComparator implements Comparator<Interval1D> {
         public int compare(Interval1D a, Interval1D b) {
-            if      (a.min < b.min) return -1;
+            if (a.min < b.min) return -1;
             else if (a.min > b.min) return +1;
             else if (a.max < b.max) return -1;
             else if (a.max > b.max) return +1;
-            else                    return  0;
+            else return 0;
         }
     }
 
     // ascending order of max endpoint, breaking ties by min endpoint
     private static class MaxEndpointComparator implements Comparator<Interval1D> {
         public int compare(Interval1D a, Interval1D b) {
-            if      (a.max < b.max) return -1;
+            if (a.max < b.max) return -1;
             else if (a.max > b.max) return +1;
             else if (a.min < b.min) return -1;
             else if (a.min > b.min) return +1;
-            else                    return  0;
+            else return 0;
         }
     }
 
@@ -210,13 +209,11 @@ public class Interval1D {
         public int compare(Interval1D a, Interval1D b) {
             double alen = a.length();
             double blen = b.length();
-            if      (alen < blen) return -1;
+            if (alen < blen) return -1;
             else if (alen > blen) return +1;
-            else                  return  0;
+            else return 0;
         }
     }
-
-
 
 
     /**
@@ -235,7 +232,7 @@ public class Interval1D {
         for (int i = 0; i < intervals.length; i++)
             StdOut.println(intervals[i]);
         StdOut.println();
-        
+
         StdOut.println("Sort by min endpoint");
         Arrays.sort(intervals, Interval1D.MIN_ENDPOINT_ORDER);
         for (int i = 0; i < intervals.length; i++)

@@ -19,7 +19,7 @@ public class Lc67 {
             int n = j >= 0 ? b.charAt(j--) - '0' : 0;
             int t = m + n + p;
 
-            re.append((char)(t % 2 + '0'));
+            re.append((char) (t % 2 + '0'));
 
             p = t / 2;
         }

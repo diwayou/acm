@@ -30,7 +30,7 @@ public class ProcessCity {
                 "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/12.html", "天津市",
                 "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/31.html", "上海市",
                 "http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/50.html", "重庆市"
-                );
+        );
         Map<String, String> province = Map.ofEntries(
                 Map.entry("http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/13.html", "河北省"),
                 Map.entry("http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/14.html", "山西省"),

@@ -15,7 +15,7 @@ public class Lc36 {
                 if (board[i][j] == '.') {
                     continue;
                 }
-                
+
                 int num = board[i][j] - '1';
                 int blockIndex = i / 3 * 3 + j / 3;
                 if (row[i][num] || col[j][num] || block[blockIndex][num]) {

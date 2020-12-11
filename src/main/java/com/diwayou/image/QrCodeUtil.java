@@ -33,59 +33,59 @@ public class QrCodeUtil {
 
     public static File createQrFileWithDashedLine(String url, Integer width, String bottomWord, String headWord, ErrorCorrectionLevel level,
                                                   int padding, int fontSize) throws Exception {
-            InputStream defaultLogo = QrCodeUtil.class.getResourceAsStream("/data/images/go_white.jpg");
-            BufferedImage image = createImage(url, defaultLogo, getSize(width), true, bottomWord, headWord, level, fontSize);
+        InputStream defaultLogo = QrCodeUtil.class.getResourceAsStream("/data/images/go_white.jpg");
+        BufferedImage image = createImage(url, defaultLogo, getSize(width), true, bottomWord, headWord, level, fontSize);
 
-            BufferedImage imageWithDashedLine = new BufferedImage(image.getWidth() + 2*padding,
-                    image.getHeight() + 2*padding, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g = imageWithDashedLine.createGraphics();
-            g.setColor(Color.white);
-            g.setBackground(Color.white);
+        BufferedImage imageWithDashedLine = new BufferedImage(image.getWidth() + 2 * padding,
+                image.getHeight() + 2 * padding, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = imageWithDashedLine.createGraphics();
+        g.setColor(Color.white);
+        g.setBackground(Color.white);
 
-            g.fillRect(0, 0, imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight());
+        g.fillRect(0, 0, imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight());
 
-            g.setColor(Color.black);
+        g.setColor(Color.black);
 
-            Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
-            g.setStroke(dashed);
+        Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+        g.setStroke(dashed);
 
-            int dashLineLength = padding * 6;
-            g.drawLine(0, 0, dashLineLength, 0);
-            g.drawLine(0, 0, 0, dashLineLength);
-            g.drawLine(imageWithDashedLine.getWidth(), 0,  imageWithDashedLine.getWidth() - dashLineLength, 0);
-            g.drawLine(imageWithDashedLine.getWidth(), 0, imageWithDashedLine.getWidth(), dashLineLength);
-            g.drawLine(0, imageWithDashedLine.getHeight(), 0, imageWithDashedLine.getHeight() - dashLineLength);
-            g.drawLine(0, imageWithDashedLine.getHeight(), dashLineLength, imageWithDashedLine.getHeight());
-            g.drawLine(imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight(), imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight() - dashLineLength);
-            g.drawLine(imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight(), imageWithDashedLine.getWidth() - dashLineLength, imageWithDashedLine.getHeight());
+        int dashLineLength = padding * 6;
+        g.drawLine(0, 0, dashLineLength, 0);
+        g.drawLine(0, 0, 0, dashLineLength);
+        g.drawLine(imageWithDashedLine.getWidth(), 0, imageWithDashedLine.getWidth() - dashLineLength, 0);
+        g.drawLine(imageWithDashedLine.getWidth(), 0, imageWithDashedLine.getWidth(), dashLineLength);
+        g.drawLine(0, imageWithDashedLine.getHeight(), 0, imageWithDashedLine.getHeight() - dashLineLength);
+        g.drawLine(0, imageWithDashedLine.getHeight(), dashLineLength, imageWithDashedLine.getHeight());
+        g.drawLine(imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight(), imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight() - dashLineLength);
+        g.drawLine(imageWithDashedLine.getWidth(), imageWithDashedLine.getHeight(), imageWithDashedLine.getWidth() - dashLineLength, imageWithDashedLine.getHeight());
 
-            g.drawImage(image, padding, padding, Color.white, null);
-            g.dispose();
+        g.drawImage(image, padding, padding, Color.white, null);
+        g.dispose();
 
-            File file = createFile(bottomWord + ".jpg");
+        File file = createFile(bottomWord + ".jpg");
 
-            ImageIO.write(imageWithDashedLine, QrCodeUtil.FORMAT_NAME, file);
-            return file;
+        ImageIO.write(imageWithDashedLine, QrCodeUtil.FORMAT_NAME, file);
+        return file;
     }
 
     public static File createQrFileWithDefaultLogo(String url, Integer width, String bottomWord, String headWord, ErrorCorrectionLevel level) throws Exception {
-            InputStream defaultLogo = QrCodeUtil.class.getResourceAsStream("/img/logo.jpg");
-            BufferedImage image = createImage(url, defaultLogo, getSize(width), true, bottomWord, headWord, level, 13);
+        InputStream defaultLogo = QrCodeUtil.class.getResourceAsStream("/img/logo.jpg");
+        BufferedImage image = createImage(url, defaultLogo, getSize(width), true, bottomWord, headWord, level, 13);
 
-            File file = createFile(bottomWord + ".jpg");
+        File file = createFile(bottomWord + ".jpg");
 
-            ImageIO.write(image, QrCodeUtil.FORMAT_NAME, file);
-            return file;
+        ImageIO.write(image, QrCodeUtil.FORMAT_NAME, file);
+        return file;
     }
 
     public static File createQrFileWithDefaultLogo(String url, Integer width, String bottomWord, ErrorCorrectionLevel level) throws Exception {
-            InputStream defaultLogo = QrCodeUtil.class.getResourceAsStream("/logo.png");
-            BufferedImage image = createImage(url, defaultLogo, getSize(width), true, bottomWord, level);
+        InputStream defaultLogo = QrCodeUtil.class.getResourceAsStream("/logo.png");
+        BufferedImage image = createImage(url, defaultLogo, getSize(width), true, bottomWord, level);
 
-            File file = createFile(bottomWord + ".jpg");
+        File file = createFile(bottomWord + ".jpg");
 
-            ImageIO.write(image, QrCodeUtil.FORMAT_NAME, file);
-            return file;
+        ImageIO.write(image, QrCodeUtil.FORMAT_NAME, file);
+        return file;
 
     }
 
@@ -108,12 +108,12 @@ public class QrCodeUtil {
      * @throws：
      */
     public static File createQrFile(String url, File logo, Integer width, String title, ErrorCorrectionLevel level) throws Exception {
-            BufferedImage image = createImage(url, logo, getSize(width), true, title, level);
+        BufferedImage image = createImage(url, logo, getSize(width), true, title, level);
 
-            File file = createFile(title + ".jpg");
+        File file = createFile(title + ".jpg");
 
-            ImageIO.write(image, QrCodeUtil.FORMAT_NAME, file);
-            return file;
+        ImageIO.write(image, QrCodeUtil.FORMAT_NAME, file);
+        return file;
     }
 
     /**

@@ -6,13 +6,13 @@ import java.util.List;
 
 /**
  * https://leetcode-cn.com/problems/permutations-ii/
- *
+ * <p>
  * 给定一个可包含重复数字的序列，返回所有不重复的全排列。
  */
 public class Lc47 {
 
     public static void main(String[] args) {
-        System.out.println(new Lc47().permuteUnique(new int[]{1,1,2}));
+        System.out.println(new Lc47().permuteUnique(new int[]{1, 1, 2}));
     }
 
     public List<List<Integer>> permuteUnique(int[] nums) {

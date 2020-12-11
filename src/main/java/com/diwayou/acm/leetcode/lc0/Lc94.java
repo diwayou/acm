@@ -6,18 +6,18 @@ import java.util.*;
 
 /**
  * https://leetcode-cn.com/problems/binary-tree-inorder-traversal/
- *
+ * <p>
  * 给定一个二叉树，返回它的中序遍历。
  * 示例:
  * 输入: [1,null,2,3]
- *    1
- *     \
- *      2
- *     /
- *    3
- *
+ * 1
+ * \
+ * 2
+ * /
+ * 3
+ * <p>
  * 输出: [1,3,2]
- *
+ * <p>
  * 进阶:递归算法很简单，你可以通过迭代算法完成吗？
  */
 public class Lc94 {
@@ -75,8 +75,8 @@ public class Lc94 {
     }
 
     // 线索二叉树
-    public List < Integer > inorderTraversal(TreeNode root) {
-        List < Integer > res = new ArrayList < > ();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
         TreeNode curr = root;
         TreeNode pre;
         while (curr != null) {

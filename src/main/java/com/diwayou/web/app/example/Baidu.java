@@ -11,7 +11,7 @@ import java.nio.file.Path;
 
 public class Baidu {
     public static void main(String[] args) throws Exception {
-        Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
+        Spider spider = SpiderBuilder.newBuilder(Path.of("baidu"))
                 .setCrawlThreadNum(1)
                 .build();
 

@@ -2,20 +2,20 @@ package com.diwayou.acm.leetcode.lc1000;
 
 /**
  * https://leetcode-cn.com/problems/letter-tile-possibilities/
- *
+ * <p>
  * 你有一套活字字模tiles，其中每个字模上都刻有一个字母tiles[i]。返回你可以印出的非空字母序列的数目。
- *
+ * <p>
  * 注意：本题中，每个活字字模只能使用一次。
- *
+ * <p>
  * 示例 1：
  * 输入："AAB"
  * 输出：8
  * 解释：可能的序列为 "A", "B", "AA", "AB", "BA", "AAB", "ABA", "BAA"。
- *
+ * <p>
  * 示例 2：
  * 输入："AAABBC"
  * 输出：188
- *
+ * <p>
  * 提示：
  * 1 <= tiles.length <= 7
  * tiles 由大写英文字母组成
