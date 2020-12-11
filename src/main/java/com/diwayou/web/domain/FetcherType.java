@@ -4,9 +4,9 @@ public enum FetcherType {
     /**
      * 基于java11的http client，能够抓取简单的html文本友好网站
      */
-    JAVA_HTTP,
+    JavaHttp,
     /**
-     * 基于openjfx的webview抓取数据，能够抓取一些html不友好的网站
+     * 基于openjfx的web view抓取数据，能够抓取一些html不友好的网站
      */
-    FX_WEBVIEW
+    FxWebView
 }

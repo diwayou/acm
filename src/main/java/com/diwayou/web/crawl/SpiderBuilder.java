@@ -1,8 +1,7 @@
 package com.diwayou.web.crawl;
 
 import com.diwayou.web.crawl.handler.ScriptCrawlPageHandler;
-import com.diwayou.web.store.LevelDbUrlStore;
-import com.diwayou.web.store.UrlStore;
+import com.diwayou.web.store.UrlStoreType;
 
 import java.nio.file.Path;
 
@@ -14,9 +13,11 @@ public class SpiderBuilder {
 
     private Path storePath;
 
-    private UrlStore urlStore;
+    private UrlStoreType urlStoreType = UrlStoreType.LevelDb;
 
-    private Path scriptsPath;
+    private int connTimeout = 3;
+
+    private int timeout = 5;
 
     private SpiderBuilder() {
     }
@@ -26,11 +27,8 @@ public class SpiderBuilder {
             throw new RuntimeException("create directory fail storePath=" + storePath.toAbsolutePath().toString());
         }
 
-        UrlStore urlStore = new LevelDbUrlStore(storePath);
         return new SpiderBuilder()
-                .setStorePath(storePath)
-                .setUrlStore(urlStore)
-                .setScriptsPath(storePath.resolve("scripts"));
+                .setStorePath(storePath);
     }
 
     public Spider build() {
@@ -64,21 +62,30 @@ public class SpiderBuilder {
         return this;
     }
 
-    public UrlStore getUrlStore() {
-        return urlStore;
+    public UrlStoreType getUrlStoreType() {
+        return urlStoreType;
     }
 
-    public SpiderBuilder setUrlStore(UrlStore urlStore) {
-        this.urlStore = urlStore;
+    public SpiderBuilder setUrlStoreType(UrlStoreType urlStoreType) {
+        this.urlStoreType = urlStoreType;
         return this;
     }
 
-    public Path getScriptsPath() {
-        return scriptsPath;
+    public int getConnTimeout() {
+        return connTimeout;
     }
 
-    public SpiderBuilder setScriptsPath(Path scriptsPath) {
-        this.scriptsPath = scriptsPath;
+    public SpiderBuilder setConnTimeout(int connTimeout) {
+        this.connTimeout = connTimeout;
+        return this;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public SpiderBuilder setTimeout(int timeout) {
+        this.timeout = timeout;
         return this;
     }
 }

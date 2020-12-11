@@ -29,9 +29,9 @@ public class FetcherFactory implements Closeable {
 
     public Fetcher getFetcher(FetcherType type) {
         switch (type) {
-            case JAVA_HTTP:
+            case JavaHttp:
                 return javaHttpFetcher;
-            case FX_WEBVIEW:
+            case FxWebView:
                 return fxWebviewFetcher;
             default:
                 throw new IllegalArgumentException("FetcherType不正确");

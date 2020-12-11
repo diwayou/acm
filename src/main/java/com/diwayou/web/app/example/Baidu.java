@@ -13,11 +13,10 @@ public class Baidu {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
                 .setCrawlThreadNum(1)
-                .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();
 
         Request request = new Request("https://www.baidu.com")
-                .setFetcherType(FetcherType.FX_WEBVIEW);
+                .setFetcherType(FetcherType.FxWebView);
         try (HttpRobot robot = FetcherFactory.one().getFxWebviewFetcher().getRobot()) {
             robot.get("https://www.baidu.com", 2);
             robot.executeScript("document.getElementById('kw').value = '计算机网络'", 1);

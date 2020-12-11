@@ -4,10 +4,10 @@ import com.diwayou.web.domain.HtmlDocumentPage;
 import com.diwayou.web.domain.Request;
 import com.diwayou.web.scheduler.RequestScheduler;
 import com.diwayou.web.scheduler.Scheduler;
-import com.diwayou.web.store.FilePageStore;
-import com.diwayou.web.store.LucenePageStore;
-import com.diwayou.web.store.UrlStore;
+import com.diwayou.web.store.*;
 import com.google.common.base.Preconditions;
+import lombok.extern.slf4j.Slf4j;
+import org.rocksdb.RocksDBException;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -15,14 +15,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 public class Spider implements Closeable {
-
-    private static final Logger log = Logger.getLogger("");
-
-    private SpiderBuilder builder;
 
     private Scheduler<Request> requestScheduler;
 
@@ -32,6 +27,10 @@ public class Spider implements Closeable {
     private static final int RUNNING = 1;
     private static final int STOPPED = 2;
 
+    private Path storePath;
+
+    private LevelDbStore levelDbStore;
+
     private FilePageStore filePageStore;
 
     private LucenePageStore lucenePageStore;
@@ -40,18 +39,36 @@ public class Spider implements Closeable {
 
     private UrlStore urlStore;
 
+    private int connTimeout;
+
+    private int timeout;
+
     Spider(SpiderBuilder builder) {
         Preconditions.checkNotNull(builder.getPageHandler());
         Preconditions.checkNotNull(builder.getStorePath());
-        Preconditions.checkNotNull(builder.getUrlStore());
+        Preconditions.checkNotNull(builder.getUrlStoreType());
 
-        this.builder = builder;
+        this.storePath = builder.getStorePath();
         this.pageHandler = builder.getPageHandler();
-        this.urlStore = builder.getUrlStore();
 
-        this.filePageStore = new FilePageStore(builder.getStorePath().resolve("doc").toFile());
         try {
-            this.lucenePageStore = new LucenePageStore(filePageStore, builder.getStorePath().resolve("index"));
+            this.levelDbStore = new LevelDbStore(storePath.resolve("db").toFile());
+        } catch (RocksDBException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (builder.getUrlStoreType().equals(UrlStoreType.LevelDb)) {
+            this.urlStore = new LevelDbUrlStore(levelDbStore);
+        } else {
+            this.urlStore = new MemoryUrlStore();
+        }
+
+        this.connTimeout = builder.getConnTimeout();
+        this.timeout = builder.getTimeout();
+
+        this.filePageStore = new FilePageStore(storePath.resolve("doc").toFile());
+        try {
+            this.lucenePageStore = new LucenePageStore(filePageStore, storePath.resolve("index"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,6 +86,7 @@ public class Spider implements Closeable {
         try {
             requestScheduler.close();
             lucenePageStore.close();
+            levelDbStore.close();
         } catch (IOException ignore) {
         }
     }
@@ -86,7 +104,7 @@ public class Spider implements Closeable {
     }
 
     public void submitPage(HtmlDocumentPage page) {
-        log.log(Level.INFO, String.format("提交page请求originalUrl=%s, url=%s", page.getRequest().getUrl(), page.getDocument().getURL()));
+        log.info("提交page请求originalUrl={}, url={}", page.getRequest().getUrl(), page.getDocument().getURL());
 
         if (!isRunning()) {
             throw new IllegalStateException("当前spider不在运行中state=" + state.get());
@@ -112,7 +130,7 @@ public class Spider implements Closeable {
     }
 
     public Path getStorePath() {
-        return builder.getStorePath();
+        return storePath;
     }
 
     public PageHandler getPageHandler() {
@@ -129,5 +147,17 @@ public class Spider implements Closeable {
 
     public UrlStore getUrlStore() {
         return urlStore;
+    }
+
+    public int getConnTimeout() {
+        return connTimeout;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public LevelDbStore getLevelDbStore() {
+        return levelDbStore;
     }
 }

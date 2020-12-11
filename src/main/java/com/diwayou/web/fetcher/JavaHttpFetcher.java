@@ -42,7 +42,7 @@ public class JavaHttpFetcher implements Fetcher {
 
     @Override
     public FetcherType getType() {
-        return FetcherType.JAVA_HTTP;
+        return FetcherType.JavaHttp;
     }
 
     @Override

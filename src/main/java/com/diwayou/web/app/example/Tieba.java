@@ -13,11 +13,10 @@ public class Tieba {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
                 .setCrawlThreadNum(1)
-                .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();
 
         Request request = new Request("https://tieba.baidu.com")
-                .setFetcherType(FetcherType.FX_WEBVIEW);
+                .setFetcherType(FetcherType.FxWebView);
         try (HttpRobot robot = FetcherFactory.one().getFxWebviewFetcher().getRobot()) {
             robot.get("http://tieba.baidu.com/f?ie=utf-8&kw=%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C&fr=search&red_tag=p2630938194", 10);
 

@@ -11,11 +11,10 @@ public class QQImage {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
                 .setCrawlThreadNum(1)
-                .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();
 
         Request request = new Request("https://new.qq.com/ch/photo/")
-                .setFetcherType(FetcherType.FX_WEBVIEW)
+                .setFetcherType(FetcherType.FxWebView)
                 .setTimeout(3);
         spider.submitRequest(request);
 

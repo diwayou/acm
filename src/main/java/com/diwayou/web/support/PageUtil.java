@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class PageUtil {
 
     public static boolean isHtml(Page page) {
-        if (FetcherType.FX_WEBVIEW.equals(page.getRequest().getFetcherType())) {
+        if (FetcherType.FxWebView.equals(page.getRequest().getFetcherType())) {
             return true;
         }
 

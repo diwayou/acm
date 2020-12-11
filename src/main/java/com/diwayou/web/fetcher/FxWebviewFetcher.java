@@ -54,7 +54,7 @@ public class FxWebviewFetcher implements Fetcher {
 
     @Override
     public FetcherType getType() {
-        return FetcherType.FX_WEBVIEW;
+        return FetcherType.FxWebView;
     }
 
     @Override

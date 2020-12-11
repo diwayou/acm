@@ -35,18 +35,15 @@ public class CnbetaNewsAuto {
                         String meta = document.select(".meta").text();
                         String body = document.select("#artibody > p").text();
 
-                        System.out.println(title);
-                        System.out.println(meta);
-                        System.out.println(page.getRequest().getUrl());
-
-                        System.out.println(body);
+                        System.out.printf("%s %s %s\n", title, page.getRequest().getUrl(), meta);
+                        System.out.println(body.substring(0, Math.min(280, body.length())));
                     }
                 })
                 .build();
 
 
         Request request = new Request("https://www.cnbeta.com")
-                .setFetcherType(FetcherType.JAVA_HTTP)
+                .setFetcherType(FetcherType.JavaHttp)
                 .setTimeout(2);
         Page page = FetcherFactory.one().getJavaHttpFetcher().fetch(request);
         if (page.statusCode() != 200) {
@@ -62,7 +59,7 @@ public class CnbetaNewsAuto {
         Scanner in = new Scanner(System.in);
         for (long l = Long.parseLong(maxId.substring(maxId.lastIndexOf('_') + 1)); l > 900000; l -= 2) {
             request = new Request(String.format("https://www.cnbeta.com/articles/tech/%d.htm", l))
-                    .setFetcherType(FetcherType.JAVA_HTTP)
+                    .setFetcherType(FetcherType.JavaHttp)
                     .setTimeout(2);
             spider.submitRequest(request);
 

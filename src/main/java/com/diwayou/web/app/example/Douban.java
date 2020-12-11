@@ -11,11 +11,10 @@ public class Douban {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
                 .setCrawlThreadNum(2)
-                .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();
 
         Request request = new Request("https://www.douban.com")
-                .setFetcherType(FetcherType.FX_WEBVIEW)
+                .setFetcherType(FetcherType.FxWebView)
                 .setTimeout(3);
         spider.submitRequest(request);
 

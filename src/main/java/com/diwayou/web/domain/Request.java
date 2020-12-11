@@ -21,7 +21,7 @@ public class Request {
     /**
      * 该网址抓取类型
      */
-    private FetcherType fetcherType = FetcherType.JAVA_HTTP;
+    private FetcherType fetcherType = FetcherType.JavaHttp;
 
     /**
      * 抓取超时时间，单位：秒

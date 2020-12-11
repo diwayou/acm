@@ -14,7 +14,6 @@ public class TmallItemDetail {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
                 .setCrawlThreadNum(1)
-                .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
                 .build();
 
         List<RequestScript> scripts = Lists.newArrayList();
@@ -22,7 +21,7 @@ public class TmallItemDetail {
             scripts.add(new RequestScript(String.format("window.scrollTo(0, %d)", i), 1));
         }
         Request request = new Request("https://detail.tmall.com/item.htm?id=522216409648")
-                .setFetcherType(FetcherType.FX_WEBVIEW)
+                .setFetcherType(FetcherType.FxWebView)
                 .setTimeout(2)
                 .setMaxDepth(2)
                 .setRequestScripts(scripts);

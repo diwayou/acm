@@ -62,18 +62,19 @@ public class ScriptCrawlPageHandler implements PageHandler {
                 .filter(Objects::nonNull)
                 .filter(u -> !spider.getUrlStore().contain(u))
                 .peek(u -> spider.getUrlStore().add(u))
-                .map(u -> newRequest(u, page))
+                .map(u -> newRequest(spider, u, page))
                 .filter(Request::needCrawl)
                 .collect(Collectors.toList());
 
         spider.submitRequest(requests);
     }
 
-    private Request newRequest(String newUrl, Page page) {
+    private Request newRequest(Spider spider, String newUrl, Page page) {
         return new Request(newUrl)
                 .setParentUrl(page.getRequest().getUrl())
                 .setDepth(page.getRequest().getDepth() + 1)
-                .setPriority(getPriority(newUrl));
+                .setPriority(getPriority(newUrl))
+                .setTimeout(spider.getTimeout());
     }
 
     private byte getPriority(String url) {
@@ -91,9 +92,9 @@ public class ScriptCrawlPageHandler implements PageHandler {
 
         collectUrls(document.select("a, area, link, base"), "abs:href", page, urls);
 
-        if (page.getRequest().getFetcherType().equals(FetcherType.JAVA_HTTP)) {
+        if (page.getRequest().getFetcherType().equals(FetcherType.JavaHttp)) {
             collectUrls(document.select("img, iframe, frame, embed, script"), "abs:src", page, urls);
-        } else if (page.getRequest().getFetcherType().equals(FetcherType.FX_WEBVIEW)) {
+        } else if (page.getRequest().getFetcherType().equals(FetcherType.FxWebView)) {
             Set<String> resourceUrls = ((HtmlDocumentPage) page).getResourceUrls();
 
             if (resourceUrls != null) {

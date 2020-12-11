@@ -15,7 +15,7 @@ public class DoubanPhoto {
 
         for (long l = 2576600000L; l < 2576698588L; l++) {
             Request request = new Request(String.format("https://img1.doubanio.com/view/photo/l/public/p%d.jpeg", l))
-                    .setFetcherType(FetcherType.JAVA_HTTP)
+                    .setFetcherType(FetcherType.JavaHttp)
                     .setTimeout(6);
             spider.submitRequest(request);
         }

@@ -47,7 +47,7 @@ public class GamerskyNews {
         //https://db2.gamersky.com/LabelJsonpAjax.aspx?callback=jQuery183026332377974029253_1576220918171&jsondata={"type":"updatenodelabel","isCache":true,"cacheTime":60,"nodeId":"11007","isNodeId":"true","page":2}&_=1576221018029
         for (long l = 1247677; l > 1; l -= 1) {
             Request request = new Request(String.format("https://db2.gamersky.com/LabelJsonpAjax.aspx?callback=jQuery183026332377974029253_1576220918171&jsondata={\"type\":\"updatenodelabel\",\"isCache\":true,\"cacheTime\":60,\"nodeId\":\"11007\",\"isNodeId\":\"true\",\"page\":2}&_=1576221018029", l))
-                    .setFetcherType(FetcherType.JAVA_HTTP)
+                    .setFetcherType(FetcherType.JavaHttp)
                     .setTimeout(2);
             spider.submitRequest(request);
 

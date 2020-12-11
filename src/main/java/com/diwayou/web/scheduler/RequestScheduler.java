@@ -2,6 +2,7 @@ package com.diwayou.web.scheduler;
 
 import com.diwayou.util.Json;
 import com.diwayou.web.concurrent.FixedThreadPoolExecutor;
+import com.diwayou.web.crawl.DbNamespace;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.Page;
 import com.diwayou.web.domain.Request;
@@ -31,17 +32,13 @@ public class RequestScheduler implements Scheduler<Request> {
 
     private LevelDbStore requestStore;
 
-    private static final int WAITING_NAMESPACE = 1;
-    private static final int CRAWLING_NAMESPACE = 2;
+    private static final int WAITING_NAMESPACE = DbNamespace.Waiting.getId();
+    private static final int CRAWLING_NAMESPACE = DbNamespace.Crawling.getId();
 
     public RequestScheduler(Spider spider, int threadPoolSize) {
         this.spider = spider;
         this.threadPool = new FixedThreadPoolExecutor(threadPoolSize);
-        try {
-            this.requestStore = new LevelDbStore(spider.getStorePath().resolve("requests").toFile());
-        } catch (RocksDBException e) {
-            throw new RuntimeException(e);
-        }
+        this.requestStore = spider.getLevelDbStore();
 
         requestScheduledService = Executors.newSingleThreadScheduledExecutor();
 
@@ -150,6 +147,5 @@ public class RequestScheduler implements Scheduler<Request> {
     public void close() {
         threadPool.shutdownNow();
         requestScheduledService.shutdownNow();
-        requestStore.close();
     }
 }

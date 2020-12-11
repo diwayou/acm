@@ -36,7 +36,7 @@ public class CnbetaNewsManager {
 
     private void refresh() {
         Request request = new Request("https://www.cnbeta.com")
-                .setFetcherType(FetcherType.JAVA_HTTP)
+                .setFetcherType(FetcherType.JavaHttp)
                 .setTimeout(2);
         Page page = FetcherFactory.one().getJavaHttpFetcher().fetch(request);
         if (page.statusCode() != 200) {
@@ -77,7 +77,7 @@ public class CnbetaNewsManager {
     private void load(int size) {
         for (int i = 0; i < size; i++) {
             Request request = new Request(String.format("https://www.cnbeta.com/articles/tech/%d.htm", curId.get()))
-                    .setFetcherType(FetcherType.JAVA_HTTP)
+                    .setFetcherType(FetcherType.JavaHttp)
                     .setTimeout(2);
             spiderManager.get(request, page -> {
                 String content = page.bodyAsString();

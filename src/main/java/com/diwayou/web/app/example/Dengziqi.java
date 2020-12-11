@@ -9,14 +9,14 @@ import java.nio.file.Path;
 
 public class Dengziqi {
     public static void main(String[] args) throws Exception {
-        Spider spider = SpiderBuilder.newBuilder(Path.of("D:/tmp"))
-                .setCrawlThreadNum(20)
-                .setScriptsPath(Path.of(ClassLoader.getSystemResource("scripts").toURI()))
+        Spider spider = SpiderBuilder.newBuilder(Path.of("dzq"))
+                .setCrawlThreadNum(10)
+                .setTimeout(20)
                 .build();
 
         Request request = new Request("http://geteverybodymoving.com/")
-                .setFetcherType(FetcherType.FX_WEBVIEW)
-                .setTimeout(5);
+                .setFetcherType(FetcherType.FxWebView)
+                .setTimeout(10);
         spider.submitRequest(request);
 
         spider.waitUntilStop();
