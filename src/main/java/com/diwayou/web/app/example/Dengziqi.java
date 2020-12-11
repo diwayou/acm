@@ -10,13 +10,13 @@ import java.nio.file.Path;
 public class Dengziqi {
     public static void main(String[] args) throws Exception {
         Spider spider = SpiderBuilder.newBuilder(Path.of("dzq"))
-                .setCrawlThreadNum(10)
-                .setTimeout(20)
+                .setCrawlThreadNum(5)
+                .setTimeout(100)
                 .build();
 
         Request request = new Request("http://geteverybodymoving.com/")
-                .setFetcherType(FetcherType.FxWebView)
-                .setTimeout(10);
+                .setFetcherType(FetcherType.JavaHttp)
+                .setTimeout(100);
         spider.submitRequest(request);
 
         spider.waitUntilStop();

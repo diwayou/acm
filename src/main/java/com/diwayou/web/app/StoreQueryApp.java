@@ -19,7 +19,7 @@ public class StoreQueryApp {
 
         int pageSize = 10;
         Scanner in = new Scanner(System.in);
-        try (LucenePageStoreQuery lucenePageStoreQuery = new LucenePageStoreQuery(Path.of("D:/tmp/index"))) {
+        try (LucenePageStoreQuery lucenePageStoreQuery = new LucenePageStoreQuery(Path.of("dzq/index"))) {
             while (true) {
                 System.out.println("查询：");
                 String text = in.nextLine();

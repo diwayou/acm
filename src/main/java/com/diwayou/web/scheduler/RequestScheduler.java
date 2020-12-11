@@ -1,7 +1,7 @@
 package com.diwayou.web.scheduler;
 
 import com.diwayou.util.Json;
-import com.diwayou.web.concurrent.FixedThreadPoolExecutor;
+import com.diwayou.web.concurrent.FixedRejectThreadPoolExecutor;
 import com.diwayou.web.crawl.DbNamespace;
 import com.diwayou.web.crawl.Spider;
 import com.diwayou.web.domain.Page;
@@ -37,7 +37,7 @@ public class RequestScheduler implements Scheduler<Request> {
 
     public RequestScheduler(Spider spider, int threadPoolSize) {
         this.spider = spider;
-        this.threadPool = new FixedThreadPoolExecutor(threadPoolSize);
+        this.threadPool = new FixedRejectThreadPoolExecutor(threadPoolSize);
         this.requestStore = spider.getLevelDbStore();
 
         requestScheduledService = Executors.newSingleThreadScheduledExecutor();
@@ -65,11 +65,6 @@ public class RequestScheduler implements Scheduler<Request> {
                         break;
                     }
 
-                    requestStore.write(wb -> requests.forEach(r -> {
-                        wb.delete(WAITING_NAMESPACE, genKey(r));
-                        wb.put(CRAWLING_NAMESPACE, genKey(r), genValue(r));
-                    }));
-
                     try {
                         for (Request request : requests) {
                             CompletableFuture.supplyAsync(() -> processRequest(request), threadPool)
@@ -80,6 +75,8 @@ public class RequestScheduler implements Scheduler<Request> {
                                         }
                                     });
                         }
+                    } catch (RejectedExecutionException re) {
+                        break;
                     } catch (Exception e) {
                         log.warn("", e);
                         break;
@@ -95,7 +92,7 @@ public class RequestScheduler implements Scheduler<Request> {
             } catch (Exception e) {
                 log.warn("", e);
             }
-        }, 2, 2, TimeUnit.SECONDS);
+        }, 2, 3, TimeUnit.SECONDS);
     }
 
     private byte[] genValue(Request request) {
@@ -112,6 +109,15 @@ public class RequestScheduler implements Scheduler<Request> {
     }
 
     private Request processRequest(Request request) {
+        try {
+            requestStore.write(wb -> {
+                wb.delete(WAITING_NAMESPACE, genKey(request));
+                wb.put(CRAWLING_NAMESPACE, genKey(request), genValue(request));
+            });
+        } catch (RocksDBException e) {
+            throw new RuntimeException(e);
+        }
+
         Fetcher fetcher = FetcherFactory.one().getFetcher(request.getFetcherType());
         Page page = fetcher.fetch(request);
 
