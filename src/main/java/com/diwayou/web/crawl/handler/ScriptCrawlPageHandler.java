@@ -35,7 +35,7 @@ public class ScriptCrawlPageHandler implements PageHandler {
             return;
         }
 
-        log.info("处理url=" + page.getRequest().getUrl());
+        log.info("length={},url={}", PageUtil.humanReadableContentLength(page), page.getRequest().getUrl());
 
         if (PageUtil.isHtml(page)) {
             if (AppConfig.isStoreHtml()) {

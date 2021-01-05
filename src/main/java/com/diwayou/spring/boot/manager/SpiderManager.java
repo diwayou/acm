@@ -26,8 +26,8 @@ public class SpiderManager {
 
     @PostConstruct
     public void init() {
-        spider = SpiderBuilder.newBuilder(Path.of("/Users/gaopeng/Downloads/cnbeta"))
-                .setCrawlThreadNum(2)
+        spider = SpiderBuilder.newBuilder(Path.of("cnbeta"))
+                .setCrawlThreadNum(3)
                 .setPageHandler(new PageHandler() {
                     @Override
                     public void handle(Page page, Spider spider) {

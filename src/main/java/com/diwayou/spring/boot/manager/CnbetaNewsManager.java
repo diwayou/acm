@@ -78,7 +78,7 @@ public class CnbetaNewsManager {
         for (int i = 0; i < size; i++) {
             Request request = new Request(String.format("https://www.cnbeta.com/articles/tech/%d.htm", curId.get()))
                     .setFetcherType(FetcherType.JavaHttp)
-                    .setTimeout(2);
+                    .setTimeout(3);
             spiderManager.get(request, page -> {
                 String content = page.bodyAsString();
                 Document document = Jsoup.parse(content);

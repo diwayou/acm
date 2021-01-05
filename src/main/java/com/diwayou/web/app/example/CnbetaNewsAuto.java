@@ -44,7 +44,7 @@ public class CnbetaNewsAuto {
 
         Request request = new Request("https://www.cnbeta.com")
                 .setFetcherType(FetcherType.JavaHttp)
-                .setTimeout(2);
+                .setTimeout(20);
         Page page = FetcherFactory.one().getJavaHttpFetcher().fetch(request);
         if (page.statusCode() != 200) {
             log.warn(String.format("拉取%s不是200状态", page.getRequest().getUrl()));
@@ -60,7 +60,7 @@ public class CnbetaNewsAuto {
         for (long l = Long.parseLong(maxId.substring(maxId.lastIndexOf('_') + 1)); l > 900000; l -= 2) {
             request = new Request(String.format("https://www.cnbeta.com/articles/tech/%d.htm", l))
                     .setFetcherType(FetcherType.JavaHttp)
-                    .setTimeout(2);
+                    .setTimeout(3);
             spider.submitRequest(request);
 
             String line = in.nextLine();
