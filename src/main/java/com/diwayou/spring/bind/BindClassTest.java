@@ -14,11 +14,11 @@ public class BindClassTest {
 
     public static void main(String[] args) {
         Properties properties = new Properties();
-        properties.put("user.name", "diwayou");
-        properties.put("user.age", 10);
+        properties.put("name", "diwayou");
+        properties.put("age", 10);
 
         Binder binder = new Binder(new MapConfigurationPropertySource(properties));
-        User user = binder.bindOrCreate("user", User.class);
+        User user = binder.bindOrCreate("", User.class);
 
         System.out.println(user);
     }
