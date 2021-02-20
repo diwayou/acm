@@ -1,4 +1,4 @@
-package com.diwayou.code;
+package com.diwayou.code.city;
 
 import com.diwayou.util.Json;
 import com.diwayou.web.domain.Page;

@@ -1,4 +1,4 @@
-package com.diwayou.code;
+package com.diwayou.code.city;
 
 import com.diwayou.util.Json;
 import com.diwayou.web.store.LevelDbConfig;
@@ -15,8 +15,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-import static com.diwayou.code.FetchCity.Row;
-import static com.diwayou.code.FetchCity.RowType;
+import static com.diwayou.code.city.FetchCity.Row;
+import static com.diwayou.code.city.FetchCity.RowType;
 
 /**
  * @author gaopeng

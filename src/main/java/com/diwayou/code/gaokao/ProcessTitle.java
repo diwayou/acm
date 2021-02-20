@@ -1,4 +1,4 @@
-package com.diwayou.gaokao;
+package com.diwayou.code.gaokao;
 
 import com.diwayou.util.Json;
 import org.apache.commons.lang3.StringUtils;

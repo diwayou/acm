@@ -1,4 +1,4 @@
-package com.diwayou.code;
+package com.diwayou.code.algo;
 
 import com.diwayou.acm.alg4.util.StdRandom;
 import net.algart.arrays.ArraySelector;

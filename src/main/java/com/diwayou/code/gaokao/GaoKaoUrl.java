@@ -1,4 +1,4 @@
-package com.diwayou.gaokao;
+package com.diwayou.code.gaokao;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

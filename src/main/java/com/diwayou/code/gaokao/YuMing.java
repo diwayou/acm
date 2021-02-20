@@ -1,4 +1,4 @@
-package com.diwayou.gaokao;
+package com.diwayou.code.gaokao;
 
 import java.util.Arrays;
 import java.util.List;

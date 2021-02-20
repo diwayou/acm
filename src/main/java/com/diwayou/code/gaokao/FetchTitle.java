@@ -1,4 +1,4 @@
-package com.diwayou.gaokao;
+package com.diwayou.code.gaokao;
 
 import com.beust.jcommander.internal.Lists;
 import com.diwayou.util.Json;
