@@ -31,6 +31,7 @@
         <java.version>14</java.version>
         <java.fx.version>14</java.fx.version>
         <lucene.version>8.7.0</lucene.version>
+        <easyexcel.version>2.2.7</easyexcel.version>
     </properties>
 
     <parent>
@@ -49,6 +50,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>30.0-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>${easyexcel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
