@@ -18,7 +18,7 @@ public class ProcessTitle {
     public static void main(String[] args) throws IOException {
         String content = Files.readString(Path.of("titles.json"));
 
-        List<Title> titles = Json.nonNull().fromJsonToList(content, Title.class);
+        List<Title> titles = Json.fromJsonToList(content, Title.class);
 
         List<String> lines = titles.stream()
                 .filter(t -> StringUtils.isNotBlank(t.getTitle()))

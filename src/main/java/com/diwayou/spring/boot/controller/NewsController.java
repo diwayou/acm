@@ -21,6 +21,6 @@ public class NewsController {
     public String index(@RequestParam(value = "size", defaultValue = "2") Integer size) {
         List<CnbetaNewsVo> news = cnbetaNewsManager.nextPage(size);
 
-        return Json.nonNull().toJson(news);
+        return Json.toJson(news);
     }
 }

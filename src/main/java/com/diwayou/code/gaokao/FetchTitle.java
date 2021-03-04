@@ -34,7 +34,7 @@ public class FetchTitle {
             }
         }
 
-        Files.writeString(Path.of("titles.json"), Json.nonNull().toJson(titles));
+        Files.writeString(Path.of("titles.json"), Json.toJson(titles));
     }
 
     private static String fetchTitle(String url) {

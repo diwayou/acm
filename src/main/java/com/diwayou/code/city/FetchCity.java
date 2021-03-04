@@ -147,9 +147,9 @@ public class FetchCity {
                 return;
             }
 
-            cache.write(wb -> wb.put(ns, key, Json.nonNull().toBytes(rows)));
+            cache.write(wb -> wb.put(ns, key, Json.toBytes(rows)));
         } else {
-            rows = Json.nonNull().fromJsonToList(new String(content, StandardCharsets.UTF_8), Row.class);
+            rows = Json.fromJsonToList(new String(content, StandardCharsets.UTF_8), Row.class);
         }
         if (!rows.isEmpty() && rows.get(0).type.equals(RowType.village.name)) {
             result.addAll(rows);

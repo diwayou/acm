@@ -31,9 +31,11 @@ public class Beike {
     public static void main(String[] args) throws Exception {
         List<HouseInfoStandard> result = Collections.synchronizedList(Lists.newArrayList());
 
-        // https://dl.ke.com/ershoufang/diwujun/pg3/?sug=%E7%AC%AC%E4%BA%94%E9%83%A1
-        String sug = "第五郡";
-        String urlTemplate = "https://dl.ke.com/ershoufang/diwujun/pg%d/?sug=%s";
+        // https://dl.ke.com/ershoufang/diwujun/pg3/?sug=%E7%AC%AC%E4%BA%94%E9%83%A1 第五郡
+        // https://dl.ke.com/ershoufang/meilizhicheng/pg2l3/?sug=%E6%9C%97%E6%B6%A6%E5%9B%AD 朗润园
+        String sug = "朗润园";
+        //String urlTemplate = "https://dl.ke.com/ershoufang/diwujun/pg%d/?sug=%s";
+        String urlTemplate = "https://dl.ke.com/ershoufang/meilizhicheng/pg%dl3/?sug=%s";
         int page = getPage(String.format(urlTemplate, 1, sug));
         CountDownLatch latch = new CountDownLatch(page);
         Spider spider = SpiderBuilder.newBuilder(Path.of("beike"))
@@ -102,7 +104,7 @@ public class Beike {
 
         String pageJson = document.select(".house-lst-page-box").first().attr("page-data");
 
-        Map<String, Integer> data = Json.nonNull().fromJson(pageJson, Map.class);
+        Map<String, Integer> data = Json.fromJson(pageJson, Map.class);
 
         return data.get("totalPage");
     }

@@ -59,7 +59,7 @@ public class RequestScheduler implements Scheduler<Request> {
                     List<Request> requests = pageResult.stream()
                             .map(Map.Entry::getValue)
                             .map(v -> new String(v, StandardCharsets.UTF_8))
-                            .map(v -> Json.nonNull().fromJson(v, Request.class))
+                            .map(v -> Json.fromJson(v, Request.class))
                             .collect(Collectors.toList());
                     if (requests.isEmpty()) {
                         break;
@@ -96,7 +96,7 @@ public class RequestScheduler implements Scheduler<Request> {
     }
 
     private byte[] genValue(Request request) {
-        return Json.nonNull().toBytes(request);
+        return Json.toBytes(request);
     }
 
     private byte[] genKey(Request request) {
