@@ -1,4 +1,4 @@
-package com.diwayou.code.fang;
+package com.diwayou.code.fang.beike;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.diwayou.code.fang;
+package com.diwayou.code.fang.beike;
 
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.beust.jcommander.internal.Lists;
@@ -33,9 +33,9 @@ public class Beike {
 
         // https://dl.ke.com/ershoufang/diwujun/pg3/?sug=%E7%AC%AC%E4%BA%94%E9%83%A1 第五郡
         // https://dl.ke.com/ershoufang/meilizhicheng/pg2l3/?sug=%E6%9C%97%E6%B6%A6%E5%9B%AD 朗润园
-        String sug = "朗润园";
-        //String urlTemplate = "https://dl.ke.com/ershoufang/diwujun/pg%d/?sug=%s";
-        String urlTemplate = "https://dl.ke.com/ershoufang/meilizhicheng/pg%dl3/?sug=%s";
+        String sug = "三鼎春天";
+        String urlTemplate = "https://dl.ke.com/ershoufang/diwujun/pg%d/?sug=%s";
+        //String urlTemplate = "https://dl.ke.com/ershoufang/meilizhicheng/pg%dl3/?sug=%s";
         int page = getPage(String.format(urlTemplate, 1, sug));
         CountDownLatch latch = new CountDownLatch(page);
         Spider spider = SpiderBuilder.newBuilder(Path.of("beike"))
