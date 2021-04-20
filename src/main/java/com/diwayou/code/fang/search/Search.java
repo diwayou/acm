@@ -47,7 +47,11 @@ public class Search {
 
     public static void main(String[] args) throws Exception {
         init();
-        int[] stepIds = new int[]{711360648, 711365171, 711465824};
+        // B区
+        //int[] stepIds = new int[]{711360648, 711365171, 711465824};
+        // C区
+        int[] stepIds = new int[]{712127954, 712143729};
+        String filename = "sanding-c";
 
         List<BuildingInfo> allBuildingInfo = Lists.newArrayList();
         for (int stepId : stepIds) {
@@ -63,32 +67,11 @@ public class Search {
                 .setPageHandler(new PageHandler() {
                     @Override
                     public void handle(Page page, Spider spider) {
-                        if (page.statusCode() != 200) {
-                            latch.countDown();
-                            log.warn(String.format("拉取%s不是200状态", page.getRequest().getUrl()));
-                            return;
+                        try {
+                            parsePage(page, latch);
+                        } catch (Exception e) {
+                            log.error("解析失败", e);
                         }
-
-                        String content = page.bodyAsString();
-                        Document document = Jsoup.parse(content);
-
-                        final String num = (String) page.getRequest().getAttribute(NUM_KEY);
-                        final String location = (String) page.getRequest().getAttribute(LOCATION_KEY);
-                        final String count = (String) page.getRequest().getAttribute(COUNT_KEY);
-
-                        document.select(".FCtable tr")
-                                .forEach(el -> {
-                                    List<HouseInfo> houseInfos = el.select("td").stream()
-                                            .skip(1)
-                                            .map(elm -> parseInfo(elm, num, location, count))
-                                            .filter(Objects::nonNull)
-                                            .collect(Collectors.toList());
-
-                                    HOUSE_INFO_ALL.addAll(houseInfos);
-                                });
-
-                        latch.countDown();
-                        log.info("剩余{},{}", latch.getCount(), page.getRequest().getUrl());
                     }
                 })
                 .build();
@@ -109,16 +92,45 @@ public class Search {
 
         latch.await();
 
-        ExcelUtil.write(HouseInfo.class, HOUSE_INFO_ALL, Files.newOutputStream(Path.of("sanding" + ExcelTypeEnum.XLSX.getValue())));
+        ExcelUtil.write(HouseInfo.class, HOUSE_INFO_ALL, Files.newOutputStream(Path.of(filename + ExcelTypeEnum.XLSX.getValue())));
 
         spider.waitUntilStop();
+    }
+
+    private static void parsePage(Page page, CountDownLatch latch) {
+        if (page.statusCode() != 200) {
+            latch.countDown();
+            log.warn(String.format("拉取%s不是200状态", page.getRequest().getUrl()));
+            return;
+        }
+
+        String content = page.bodyAsString();
+        Document document = Jsoup.parse(content);
+
+        final String num = (String) page.getRequest().getAttribute(NUM_KEY);
+        final String location = (String) page.getRequest().getAttribute(LOCATION_KEY);
+        final String count = (String) page.getRequest().getAttribute(COUNT_KEY);
+
+        document.select(".FCtable tr")
+                .forEach(el -> {
+                    List<HouseInfo> houseInfos = el.select("td").stream()
+                            .skip(1)
+                            .map(elm -> parseInfo(elm, num, location, count))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+
+                    HOUSE_INFO_ALL.addAll(houseInfos);
+                });
+
+        latch.countDown();
+        log.info("剩余{},{}", latch.getCount(), page.getRequest().getUrl());
     }
 
     private static List<BuildingInfo> fetchBuildingInfo(int stepId) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("xmid", String.valueOf(stepId));
         formData.add("pageNo", "1");
-        formData.add("pageSize", "20");
+        formData.add("pageSize", "50");
         String content = webClient.post()
                 .body(BodyInserters.fromFormData(formData))
                 .retrieve()
@@ -154,15 +166,6 @@ public class Search {
                 .setId(id);
     }
 
-    private static int getPage(int[][] idRange) {
-        int result = 0;
-        for (int[] range : idRange) {
-            result += range[1] - range[0] + 1;
-        }
-
-        return result;
-    }
-
     private static HouseInfo parseInfo(Element element, String num, String location, String count) {
         String level = element.text();
         if (StringUtils.isBlank(level)) {
@@ -170,8 +173,12 @@ public class Search {
         }
 
         String info = element.attr("title");
-        int miIdx = info.lastIndexOf("平方米");
-        int commaIdx = info.lastIndexOf("：");
+        int miIdx = info.length();
+        if (info.contains("元")) {
+            miIdx = info.lastIndexOf("平方米") - 1;
+        }
+        miIdx = info.lastIndexOf("平方米", miIdx);
+        int commaIdx = info.lastIndexOf("：", miIdx);
         String innerArea = info.substring(commaIdx + 1, miIdx);
         miIdx = info.lastIndexOf("平方米", miIdx - 1);
         commaIdx = info.lastIndexOf("：", commaIdx - 1);

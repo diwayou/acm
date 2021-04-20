@@ -71,7 +71,7 @@ public class RequestScheduler implements Scheduler<Request> {
                                     .thenApply(this::commitRequest)
                                     .whenComplete((r, e) -> {
                                         if (e != null) {
-                                            log.warn("处理请求失败url=" + r.getUrl(), e);
+                                            log.error("处理请求失败", e.getCause());
                                         }
                                     });
                         }
