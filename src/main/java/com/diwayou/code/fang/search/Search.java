@@ -63,7 +63,7 @@ public class Search {
         int page = allBuildingInfo.size();
         CountDownLatch latch = new CountDownLatch(page);
         Spider spider = SpiderBuilder.newBuilder(Path.of("sanding"))
-                .setCrawlThreadNum(4)
+                .setCrawlThreadNum(8)
                 .setPageHandler(new PageHandler() {
                     @Override
                     public void handle(Page page, Spider spider) {
