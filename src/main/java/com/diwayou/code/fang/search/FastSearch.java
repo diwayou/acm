@@ -1,7 +1,6 @@
 package com.diwayou.code.fang.search;
 
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.beust.jcommander.internal.Lists;
 import com.diwayou.util.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +14,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.ReactorNetty;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -31,6 +31,10 @@ public class FastSearch {
     private static WebClient webClient;
 
     private static void init() {
+        System.setProperty(ReactorNetty.IO_SELECT_COUNT, "" + Math.max(Runtime.getRuntime()
+                .availableProcessors(), 4));
+        System.setProperty(ReactorNetty.IO_WORKER_COUNT, "20");
+
         webClient = WebClient.builder()
                 .baseUrl("http://124.93.228.101:8087/bd/tgxm/").build();
     }
@@ -43,52 +47,14 @@ public class FastSearch {
         Integer[] stepIds = new Integer[]{712127954, 712143729};
         String filename = "sanding-c";
 
-        Mono<List<Mono<List<HouseInfo>>>> monoResult = Flux.fromArray(stepIds)
+        List<HouseInfo> result = Flux.merge(Flux.fromArray(stepIds)
                 .map(FastSearch::fetchBuildingInfo)
-                .map(FastSearch::fetchHouse)
-                .map(Flux::merge)
-                .map(fl -> fl.reduce(Lists.<HouseInfo>newArrayList(), (arr, data) -> {
-                    arr.addAll(data);
-                    return arr;
-                }))
-                .collectList();
-
-        List<HouseInfo> result = Flux.merge(Objects.requireNonNull(monoResult.block()))
-                .reduce(Lists.<HouseInfo>newArrayList(), (arr, infos) -> {
-                    arr.addAll(infos);
-                    return arr;
-                }).block();
+                .map(FastSearch::fetchHouse))
+                .flatMap(Flux::fromIterable)
+                .collectList()
+                .block();
 
         ExcelUtil.write(HouseInfo.class, result, Files.newOutputStream(Path.of(filename + ExcelTypeEnum.XLSX.getValue())));
-    }
-
-    private static Mono<Flux<List<HouseInfo>>> fetchHouse(Mono<List<BuildingInfo>> buildings) {
-        return buildings.map(houseInfos ->
-                houseInfos.stream()
-                        .map(info -> webClient.get()
-                                .uri("/getLi?lid={id}", info.getId())
-                                .retrieve()
-                                .bodyToMono(String.class)
-                                .map(s -> Tuples.of(info, s)))
-                        .map(FastSearch::parsePage)
-                        .collect(Collectors.toList()))
-                .map(Flux::merge);
-    }
-
-    private static Mono<List<HouseInfo>> parsePage(Mono<Tuple2<BuildingInfo, String>> body) {
-        return body.map(t2 -> {
-            Document doc = Jsoup.parse(t2.getT2());
-            BuildingInfo buildingInfo = t2.getT1();
-
-            return doc.select(".FCtable tr").stream()
-                    .map(el -> el.select("td").stream()
-                            .skip(1)
-                            .map(elm -> parseInfo(elm, buildingInfo.getNum(), buildingInfo.getLocation(), buildingInfo.getHouseCount()))
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList()))
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-        });
     }
 
     private static Mono<List<BuildingInfo>> fetchBuildingInfo(int stepId) {
@@ -108,6 +74,35 @@ public class FastSearch {
                         .map(FastSearch::parseBuildingInfo)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList()));
+    }
+
+    private static Flux<List<HouseInfo>> fetchHouse(Mono<List<BuildingInfo>> buildings) {
+        return Flux.merge(buildings.map(houseInfos ->
+                houseInfos.stream()
+                        .map(info -> webClient.get()
+                                .uri("/getLi?lid={id}", info.getId())
+                                .retrieve()
+                                .bodyToMono(String.class)
+                                .map(s -> Tuples.of(info, s)))
+                        .map(FastSearch::parsePage)
+                        .collect(Collectors.toList()))
+                .map(Flux::merge));
+    }
+
+    private static Mono<List<HouseInfo>> parsePage(Mono<Tuple2<BuildingInfo, String>> body) {
+        return body.map(t2 -> {
+            Document doc = Jsoup.parse(t2.getT2());
+            BuildingInfo buildingInfo = t2.getT1();
+
+            return doc.select(".FCtable tr").stream()
+                    .map(el -> el.select("td").stream()
+                            .skip(1)
+                            .map(elm -> parseInfo(elm, buildingInfo.getNum(), buildingInfo.getLocation(), buildingInfo.getHouseCount()))
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList()))
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+        });
     }
 
     private static BuildingInfo parseBuildingInfo(Element el) {
