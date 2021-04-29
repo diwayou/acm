@@ -117,11 +117,15 @@ public class FastSearch {
         String url = els.get(0).select("a").get(0).attr("href");
         String id = url.substring(url.lastIndexOf("=") + 1);
 
-        return new BuildingInfo()
+        BuildingInfo buildingInfo = new BuildingInfo()
                 .setNum(num)
                 .setLocation(location)
                 .setHouseCount(houseCount)
                 .setId(id);
+
+//        log.info("{} {}", Thread.currentThread().getName(), buildingInfo);
+
+        return buildingInfo;
     }
 
     private static HouseInfo parseInfo(Element element, String num, String location, String count) {
@@ -149,7 +153,7 @@ public class FastSearch {
                 .setArea(area)
                 .setInnerArea(innerArea)
                 .setAreaPercent(String.format("%.2f", Double.parseDouble(innerArea) / Double.parseDouble(area) * 100));
-        log.info("{}", houseInfo);
+//        log.info("{} {}", Thread.currentThread().getName(), houseInfo);
 
         return houseInfo;
     }
