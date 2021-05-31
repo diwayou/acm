@@ -42,10 +42,12 @@ public class FastSearch {
     public static void main(String[] args) throws Exception {
         init();
         // B区
-        //Integer[] stepIds = new Integer[]{711360648, 711365171, 711465824};
+        //String[] stepIds = new String[]{"711360648", "711365171", "711465824"};
         // C区
-        Integer[] stepIds = new Integer[]{712127954, 712143729};
-        String filename = "sanding-c";
+        //String[] stepIds = new String[]{"712127954", "712143729"};
+        // 岳麓山
+        String[] stepIds = new String[]{"85383de9690c4d1d80a26671ed868b89"};
+        String filename = "yuelushan";
 
         List<HouseInfo> result = Flux.merge(Flux.fromArray(stepIds)
                 .map(FastSearch::fetchBuildingInfo)
@@ -57,9 +59,9 @@ public class FastSearch {
         ExcelUtil.write(HouseInfo.class, result, Files.newOutputStream(Path.of(filename + ExcelTypeEnum.XLSX.getValue())));
     }
 
-    private static Mono<List<BuildingInfo>> fetchBuildingInfo(int stepId) {
+    private static Mono<List<BuildingInfo>> fetchBuildingInfo(String stepId) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("xmid", String.valueOf(stepId));
+        formData.add("xmid", stepId);
         formData.add("pageNo", "1");
         formData.add("pageSize", "50");
 
@@ -134,6 +136,17 @@ public class FastSearch {
             return null;
         }
 
+        String style = element.attr("style");
+        String color = style.substring(style.lastIndexOf(" ") + 1);
+        String sold;
+        if (color.equals("#00CC00")) {
+            sold = "已售";
+        } else if (color.equals("black")) {
+            sold = "未售";
+        } else {
+            sold = "不可售";
+        }
+
         String info = element.attr("title");
         int miIdx = info.length();
         if (info.contains("元")) {
@@ -152,6 +165,7 @@ public class FastSearch {
                 .setLevel(level)
                 .setArea(area)
                 .setInnerArea(innerArea)
+                .setSold(sold)
                 .setAreaPercent(String.format("%.2f", Double.parseDouble(innerArea) / Double.parseDouble(area) * 100));
 //        log.info("{} {}", Thread.currentThread().getName(), houseInfo);
 

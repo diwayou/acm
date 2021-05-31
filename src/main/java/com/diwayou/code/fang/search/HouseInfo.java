@@ -54,4 +54,10 @@ public class HouseInfo {
      */
     @ExcelProperty("得房率")
     private String areaPercent;
+
+    /**
+     * 售卖状态
+     */
+    @ExcelProperty("售卖状态")
+    private String sold;
 }
